@@ -35,8 +35,10 @@ class HeartCareApp extends StatelessWidget {
           title: "Heart Care",
           debugShowCheckedModeBanner: false,
           initialRoute: AppPages.INITIAL,
+          transitionDuration: const Duration(milliseconds: 0),
           getPages: AppPages.routes,
           theme: ThemeData(
+            useMaterial3: false,
             fontFamily: 'Poppins',
             primaryColor: const Color(0xFF06283D), // example custom color
             scaffoldBackgroundColor: Colors.white,
