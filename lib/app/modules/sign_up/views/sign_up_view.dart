@@ -21,6 +21,7 @@ class SignUpView extends GetView<SignUpController> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController phoneController = TextEditingController();
   String countryCode = "966";
+  String selectedCode = "966";
 
   @override
   Widget build(BuildContext context) {
@@ -116,10 +117,14 @@ Widget buildStepOne({
       ),
       SizedBox(height: 16.h),
       AppPhoneField(
-        label: "Mobile Number",
-        controller: phoneController,
-        countryCode: countryCode,
-        onSelectCode: () {},
+        label: "Phone Number",
+        selectedCode: "966",
+        countryCodes: ["966", "971", "965", "974"],
+        onCodeChanged: (newCode) {
+          //selectedCode = newCode;
+        },
+        controller: TextEditingController(),
+        labelColor: Colors.black,
       ),
       SizedBox(height: 16.h),
       AppTextField(

@@ -5,8 +5,11 @@ class AppTextField extends StatefulWidget {
   final String hintText;
   final TextEditingController? controller;
   final bool isPassword;
+  final bool showLabel;
   final TextInputType keyboardType;
   final Color labelColor;
+  final double radius;
+  final String? suffixText;
 
   const AppTextField({
     super.key,
@@ -14,8 +17,11 @@ class AppTextField extends StatefulWidget {
     required this.hintText,
     this.controller,
     this.isPassword = false,
+    this.showLabel = true,
     this.keyboardType = TextInputType.text,
-    this.labelColor = Colors.white, // default color
+    this.labelColor = Colors.white,
+    this.radius = 30,
+    this.suffixText,
   });
 
   @override
@@ -42,12 +48,15 @@ class _AppTextFieldState extends State<AppTextField> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(
-          widget.label,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: widget.labelColor, // use custom color
+        Visibility(
+          visible: widget.showLabel,
+          child: Text(
+            widget.label,
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: widget.labelColor,
+            ),
           ),
         ),
         const SizedBox(height: 8),
@@ -63,7 +72,7 @@ class _AppTextFieldState extends State<AppTextField> {
             contentPadding:
                 const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(30),
+              borderRadius: BorderRadius.circular(widget.radius),
               borderSide: BorderSide.none,
             ),
             suffixIcon: widget.isPassword
@@ -75,6 +84,11 @@ class _AppTextFieldState extends State<AppTextField> {
                     onPressed: _toggleVisibility,
                   )
                 : null,
+            suffixText: widget.suffixText,
+            suffixStyle: const TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+            ),
           ),
         ),
       ],

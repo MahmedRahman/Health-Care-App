@@ -18,21 +18,21 @@ class OnboardingView extends GetView<OnboardingController> {
         isTextPage: true,
       ),
       _OnboardingPageData(
-        title: "Stop On Top Of Your Heart Health",
+        title: "Get Connected and Stay on Top of Your Heart Health",
         description:
-            "Monitor heart rate, blood pressure, and oxygen. Get alerts for abnormal vitals.",
+            "Track heart rate, blood pressure, oxygen levels, blood sugar, fluids balance and Receive alerts for abnormal vitals and medication reminders",
         image: "assets/images/onboarding/1.png",
       ),
       _OnboardingPageData(
-        title: "Never Miss a Dose Again",
+        title: "Never Miss a Dose",
         description:
-            "Set reminders for medications and get alerts when it’s time for a refill.",
+            "Set gentle reminders for medications and receive alerts when it’s time for a refill.",
         image: "assets/images/onboarding/2.png",
       ),
       _OnboardingPageData(
         title: "Quick Access To Care",
         description:
-            "Book virtual appointments with your doctor or connect instantly for advice.",
+            "Need help?  Book virtual appointments with your doctor or connect instantly for advice",
         image: "assets/images/onboarding/3.png",
       ),
     ];

@@ -3,16 +3,18 @@ import 'package:flutter/material.dart';
 class AppPhoneField extends StatelessWidget {
   final String label;
   final TextEditingController? controller;
-  final String countryCode;
-  final VoidCallback onSelectCode;
+  final String selectedCode;
+  final List<String> countryCodes;
+  final ValueChanged<String> onCodeChanged;
   final Color labelColor;
 
   const AppPhoneField({
     super.key,
     required this.label,
     this.controller,
-    this.countryCode = "966",
-    required this.onSelectCode,
+    this.selectedCode = "966",
+    required this.countryCodes,
+    required this.onCodeChanged,
     this.labelColor = Colors.grey,
   });
 
@@ -38,21 +40,28 @@ class AppPhoneField extends StatelessWidget {
           child: Row(
             children: [
               const SizedBox(width: 16),
-              GestureDetector(
-                onTap: onSelectCode,
-                child: Row(
-                  children: [
-                    Text(
-                      countryCode,
+              DropdownButton<String>(
+                value: selectedCode,
+                underline: const SizedBox(),
+                icon: const Icon(Icons.arrow_drop_down, color: Colors.black54),
+                items: countryCodes.map((code) {
+                  return DropdownMenuItem<String>(
+                    value: code,
+                    child: Text(
+                      code,
                       style: const TextStyle(
                         fontSize: 18,
-                        fontWeight: FontWeight.w600,
+                        fontWeight: FontWeight.w400,
                         color: Colors.black87,
                       ),
                     ),
-                    const Icon(Icons.arrow_drop_down, color: Colors.black54),
-                  ],
-                ),
+                  );
+                }).toList(),
+                onChanged: (newCode) {
+                  if (newCode != null) {
+                    onCodeChanged(newCode);
+                  }
+                },
               ),
               const SizedBox(width: 8),
               Container(
