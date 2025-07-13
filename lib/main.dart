@@ -9,12 +9,10 @@ import 'app/routes/app_pages.dart';
 
 void main() {
   runApp(const HeartCareApp());
-
   // تغيير لون الستاتس بار
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(
       statusBarColor: AppColors.primary, // ← اللون اللي تريده
-
       statusBarIconBrightness:
           Brightness.light, // ← لون الأيقونات (light or dark)
     ),
@@ -23,7 +21,6 @@ void main() {
 
 class HeartCareApp extends StatelessWidget {
   const HeartCareApp({super.key});
-
   @override
   Widget build(BuildContext context) {
     return ScreenUtilInit(

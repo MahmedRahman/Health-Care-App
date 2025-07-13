@@ -1,90 +1,109 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/routes/app_pages.dart';
 import 'package:health_care_app/app/widgets/app_date_field.dart';
 import 'package:health_care_app/app/widgets/app_drop_down_field.dart';
+import 'package:health_care_app/app/widgets/app_icon_button.dart';
 import 'package:health_care_app/app/widgets/app_id_card.dart';
 import 'package:health_care_app/app/widgets/app_image_picker_box.dart';
 import 'package:health_care_app/app/widgets/app_primary_button.dart';
 import 'package:health_care_app/app/widgets/app_text_field.dart';
 
-import '../controllers/profile_controller.dart';
+import '../controllers/patient_info_controller.dart';
 
-class ProfileView extends GetView<ProfileController> {
-  //String selectedCountry = "UAE";
-  RxBool isPersonalInfo = true.obs;
-  ProfileView({Key? key}) : super(key: key);
+class PatientInfoView extends GetView<PatientInfoController> {
+  PatientInfoView({Key? key}) : super(key: key);
+  RxInt currentStep = 1.obs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.textLight.withOpacity(0.1),
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title:
-            const Text('Profile', style: TextStyle(color: AppColors.primary)),
+        title: const Text(
+          'Patient Info',
+          style: TextStyle(
+            color: AppColors.primary,
+          ),
+        ),
         centerTitle: false,
+        leading: IconButton(
+          icon: const Icon(
+            Icons.close,
+            color: AppColors.primary,
+          ),
+          onPressed: () {
+            Get.back();
+          },
+        ),
+        backgroundColor: Colors.transparent,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          children: [
-            SizedBox(height: 8.h),
-            Obx(() {
-              return Row(
-                children: [
-                  Expanded(
-                    child: AppPrimaryButton(
-                      onPressed: () {
-                        isPersonalInfo.value = true;
-                      },
-                      text: "Personal Info",
-                      borderRadius: 12,
-                      backgroundColor: isPersonalInfo.value
-                          ? AppColors.primary
-                          : Colors.white,
-                      textColor:
-                          isPersonalInfo.value ? Colors.white : Colors.black,
-                    ),
-                  ),
-                  const SizedBox(width: 16),
-                  Expanded(
-                    child: AppPrimaryButton(
-                      onPressed: () {
-                        isPersonalInfo.value = false;
-                      },
-                      text: "Health Info",
-                      borderRadius: 12,
-                      backgroundColor: !isPersonalInfo.value
-                          ? AppColors.primary
-                          : Colors.white,
-                      textColor:
-                          !isPersonalInfo.value ? Colors.white : Colors.black,
-                    ),
-                  ),
-                ],
-              );
-            }),
-            SizedBox(height: 8.h),
-            Expanded(
-              child: Obx(() {
-                return Visibility(
-                  visible: isPersonalInfo.value,
-                  child: ProfilePersonalInfo(),
-                  replacement: ProfileHealthInfo(),
-                );
-              }),
-            ),
-            const SizedBox(height: 16),
-            AppPrimaryButton(
-              onPressed: () {},
-              text: "Save",
-            ),
-            const SizedBox(height: 90),
-          ],
-        ),
+        child: Obx(() {
+          return Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(height: 16.h),
+              CustomStepper(
+                currentStep: currentStep.value,
+                steps: ['Personal', 'Diagnosis', 'Finish'],
+              ),
+              SizedBox(height: 16.h),
+              Expanded(
+                child: (currentStep.value == 1)
+                    ? const ProfilePersonalInfo()
+                    : (currentStep.value == 2)
+                        ? const ProfileHealthInfo()
+                        : const finsh(),
+              ),
+              const SizedBox(height: 24),
+              AppPrimaryButton(
+                onPressed: () {
+                  if (currentStep.value == 3) {
+                    Get.toNamed(Routes.HOME);
+                  }
+                  if (currentStep.value < 3) {
+                    currentStep.value++;
+                  }
+                },
+                text: (currentStep.value == 3) ? "Home" : "Next",
+              ),
+              const SizedBox(height: 35),
+            ],
+          );
+        }),
       ),
+    );
+  }
+}
+
+class finsh extends StatelessWidget {
+  const finsh({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const SizedBox(height: 24),
+        SvgPicture.asset("assets/svg/Checkmark.svg"),
+        Center(
+          child: Text(
+            ' Your Info Added \nsuccessfully  ',
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              fontSize: 20.sp,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -496,6 +515,96 @@ class ProfilePersonalInfo extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class CustomStepper extends StatelessWidget {
+  final int currentStep; // الخطوة الحالية (تبدأ من 1)
+  final List<String> steps;
+
+  // الألوان
+  final Color activeColor;
+  final Color inactiveColor;
+  final Color checkColor;
+
+  const CustomStepper({
+    super.key,
+    required this.currentStep,
+    required this.steps,
+    this.activeColor = const Color(0xFFF47C50), // اللون البرتقالي
+    this.inactiveColor = const Color(0xFFB0BEC5), // الرمادي الفاتح
+    this.checkColor = const Color(0xFF06283D), // الأزرق الغامق
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: double.infinity,
+      child: Row(
+        children: List.generate(steps.length, (index) {
+          final stepNumber = index + 1;
+          final isActive = stepNumber == currentStep;
+          final isCompleted = stepNumber < currentStep;
+
+          return Expanded(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                // الدائرة
+                Container(
+                  width: 32,
+                  height: 32,
+                  decoration: BoxDecoration(
+                    color: isCompleted
+                        ? checkColor
+                        : isActive
+                            ? Colors.transparent
+                            : inactiveColor,
+                    border: Border.all(
+                      color: isActive ? activeColor : inactiveColor,
+                      width: 2,
+                    ),
+                    shape: BoxShape.circle,
+                  ),
+                  child: Center(
+                    child: isCompleted
+                        ? Icon(Icons.check, color: Colors.white, size: 18)
+                        : Text(
+                            '$stepNumber',
+                            style: TextStyle(
+                              color: isActive ? activeColor : Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                  ),
+                ),
+                // النص
+                SizedBox(width: 4),
+                Text(
+                  steps[index],
+                  style: TextStyle(
+                    color: isActive || isCompleted ? checkColor : inactiveColor,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+                // الخط الفاصل
+                if (index != steps.length - 1) ...[
+                  SizedBox(width: 4),
+                  Expanded(
+                    child: Container(
+                      height: 2,
+                      color:
+                          stepNumber < currentStep ? checkColor : inactiveColor,
+                    ),
+                  ),
+                  SizedBox(width: 8),
+                ],
+              ],
+            ),
+          );
+        }),
       ),
     );
   }

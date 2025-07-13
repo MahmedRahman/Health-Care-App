@@ -42,6 +42,15 @@ class MoreView extends GetView<MoreController> {
             ),
             SizedBox(height: 12.h),
             MoreItem(
+              title: "Patient Info",
+              icon: "assets/svg/more_info.svg",
+              color: Color(0xff6A6565),
+              onTap: () {
+                Get.toNamed(Routes.PATIENT_INFO);
+              },
+            ),
+            SizedBox(height: 12.h),
+            MoreItem(
               title: "Delete Account",
               icon: "assets/svg/more_delete_icon.svg",
               color: Color(0xffF34F4F),

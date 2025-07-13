@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:health_care_app/app/constants/colors.dart';
 
 class AppAgreementCheck extends StatelessWidget {
   final bool value;
@@ -18,6 +19,7 @@ class AppAgreementCheck extends StatelessWidget {
     return Row(
       children: [
         Checkbox(
+          activeColor: AppColors.primary,
           value: value,
           onChanged: onChanged,
         ),

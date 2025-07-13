@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/PatientInfo/bindings/patient_info_binding.dart';
+import '../modules/PatientInfo/views/patient_info_view.dart';
 import '../modules/PdfViewer/bindings/pdf_viewer_binding.dart';
 import '../modules/PdfViewer/views/pdf_viewer_view.dart';
 import '../modules/about_app/bindings/about_app_binding.dart';
@@ -121,6 +123,11 @@ class AppPages {
       name: _Paths.ABOUT_APP,
       page: () => const AboutAppView(),
       binding: AboutAppBinding(),
+    ),
+    GetPage(
+      name: _Paths.PATIENT_INFO,
+      page: () => PatientInfoView(),
+      binding: PatientInfoBinding(),
     ),
   ];
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_care_app/app/constants/colors.dart';
 
 class AppPhoneField extends StatelessWidget {
   final String label;
@@ -52,7 +53,7 @@ class AppPhoneField extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w400,
-                        color: Colors.black87,
+                        color: AppColors.textLight,
                       ),
                     ),
                   );
@@ -76,7 +77,7 @@ class AppPhoneField extends StatelessWidget {
                   keyboardType: TextInputType.phone,
                   decoration: const InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Please Add your Mobile Number",
+                    hintText: "Phone number",
                     hintStyle: TextStyle(color: Colors.grey),
                   ),
                 ),

@@ -122,13 +122,13 @@ Widget buildStepOne({
       SizedBox(height: 16.h),
       AppPhoneField(
         label: "Phone Number",
-        selectedCode: "966",
-        countryCodes: ["966", "971", "965", "974"],
+        selectedCode: "+20",
+        countryCodes: ["966", "971", "965", "974", "+20"],
+        labelColor: AppColors.textLight,
         onCodeChanged: (newCode) {
           //selectedCode = newCode;
         },
         controller: TextEditingController(),
-        labelColor: Colors.black,
       ),
       SizedBox(height: 16.h),
       AppTextField(
@@ -137,18 +137,6 @@ Widget buildStepOne({
         controller: emailController,
         keyboardType: TextInputType.emailAddress,
         labelColor: AppColors.textLight,
-      ),
-      SizedBox(height: 16.h),
-      AppAgreementCheck(
-        value: true,
-        onChanged: (val) {},
-        onTermsTap: () async {
-          print("Terms of Use tapped!");
-
-          Get.to(() => const PdfViewerPage(assetPath: 'assets/pdfs/terms.pdf'));
-
-          // You can open a new page or dialog here
-        },
       ),
       SizedBox(height: 16.h),
       AppPrimaryButton(
@@ -189,6 +177,19 @@ class buildStepTwo extends StatelessWidget {
           controller: TextEditingController(),
           isPassword: true,
           labelColor: AppColors.textLight,
+        ),
+        SizedBox(height: 16.h),
+        AppAgreementCheck(
+          value: true,
+          onChanged: (val) {},
+          onTermsTap: () async {
+            print("Terms of Use tapped!");
+
+            Get.to(
+                () => const PdfViewerPage(assetPath: 'assets/pdfs/terms.pdf'));
+
+            // You can open a new page or dialog here
+          },
         ),
         SizedBox(height: 32.h),
         AppPrimaryButton(

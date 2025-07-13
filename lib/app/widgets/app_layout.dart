@@ -133,6 +133,12 @@ class LayoutMiddleware extends GetMiddleware {
   GetPage? onPageCalled(GetPage? page) {
     final child = page?.page() ?? Container();
 
+    if (page?.name == '/home') {
+      if (Get.isRegistered<NavigationController>()) {
+        Get.find<NavigationController>().selectedIndex.value = 0;
+      }
+    }
+
     final routesWithLayout = [
       '/home',
       '/care-gevers',
