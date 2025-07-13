@@ -18,6 +18,7 @@ abstract class Routes {
   static const NOTIFICATION = _Paths.NOTIFICATION;
   static const CONTACT_US = _Paths.CONTACT_US;
   static const ABOUT_APP = _Paths.ABOUT_APP;
+  static const PDF_VIEWER = _Paths.PDF_VIEWER;
 }
 
 abstract class _Paths {
@@ -37,4 +38,5 @@ abstract class _Paths {
   static const NOTIFICATION = '/notification';
   static const CONTACT_US = '/contact-us';
   static const ABOUT_APP = '/about-app';
+  static const PDF_VIEWER = '/pdf-viewer';
 }

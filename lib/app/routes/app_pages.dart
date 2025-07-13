@@ -1,5 +1,7 @@
 import 'package:get/get.dart';
 
+import '../modules/PdfViewer/bindings/pdf_viewer_binding.dart';
+import '../modules/PdfViewer/views/pdf_viewer_view.dart';
 import '../modules/about_app/bindings/about_app_binding.dart';
 import '../modules/about_app/views/about_app_view.dart';
 import '../modules/care_gevers/bindings/care_gevers_binding.dart';

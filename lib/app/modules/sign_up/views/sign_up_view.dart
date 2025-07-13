@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/modules/PdfViewer/views/pdf_viewer_view.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
 import 'package:health_care_app/app/widgets/app_agreement_check.dart';
 import 'package:health_care_app/app/widgets/app_phone_field.dart';
@@ -138,8 +142,11 @@ Widget buildStepOne({
       AppAgreementCheck(
         value: true,
         onChanged: (val) {},
-        onTermsTap: () {
+        onTermsTap: () async {
           print("Terms of Use tapped!");
+
+          Get.to(() => const PdfViewerPage(assetPath: 'assets/pdfs/terms.pdf'));
+
           // You can open a new page or dialog here
         },
       ),
