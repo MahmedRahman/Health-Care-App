@@ -185,8 +185,9 @@ class buildStepTwo extends StatelessWidget {
           onTermsTap: () async {
             print("Terms of Use tapped!");
 
-            Get.to(
-                () => const PdfViewerPage(assetPath: 'assets/pdfs/terms.pdf'));
+            Get.to(() => const TermsPage());
+            // Get.to(
+            //     () => const PdfViewerPage(assetPath: 'assets/pdfs/terms.pdf'));
 
             // You can open a new page or dialog here
           },
