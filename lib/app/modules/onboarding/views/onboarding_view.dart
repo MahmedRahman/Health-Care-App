@@ -38,179 +38,202 @@ class OnboardingView extends GetView<OnboardingController> {
     ];
 
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            PageView.builder(
-              controller: controller.pageController,
-              onPageChanged: controller.onPageChanged,
-              itemCount: pages.length,
-              itemBuilder: (context, index) {
-                final page = pages[index];
-                return Padding(
-                  padding: const EdgeInsets.all(20),
-                  child: Column(
-                    crossAxisAlignment: page.image != null
-                        ? CrossAxisAlignment.center
-                        : CrossAxisAlignment.start,
-                    children: [
-                      GestureDetector(
-                        onTap: controller.skip,
-                        child: Align(
-                          alignment: Alignment.topRight,
-                          child: TextButton(
-                            onPressed: controller.skip,
-                            child: Text(
-                              "Skip",
-                              style: TextStyle(
-                                color: AppColors.primary,
-                                fontSize: 16.sp,
+      body: Stack(
+        children: [
+          PageView.builder(
+            controller: controller.pageController,
+            onPageChanged: controller.onPageChanged,
+            itemCount: pages.length,
+            itemBuilder: (context, index) {
+              final page = pages[index];
+              return Column(
+                children: [
+                  page.image != null
+                      ? Stack(
+                          children: [
+                            if (page.image != null)
+                              Container(
+                                // color: Colors.red,
+                                child: Center(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.only(
+                                      bottomLeft: Radius.circular(20),
+                                      bottomRight: Radius.circular(20),
+                                    ), // ← your desired radius
+                                    child: Image.asset(
+                                      width: double.infinity,
+
+                                      page.image!,
+                                      fit: BoxFit
+                                          .fill, // optional, depends on your design
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            Positioned(
+                              top: 20,
+                              right: 20,
+                              child: GestureDetector(
+                                onTap: controller.skip,
+                                child: Align(
+                                  alignment: Alignment.topRight,
+                                  child: TextButton(
+                                    onPressed: controller.skip,
+                                    style: TextButton.styleFrom(
+                                      foregroundColor: AppColors.primary,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                    child: Text(
+                                      "Skip",
+                                      style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16.sp,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
-                        ),
-                      ),
-                      if (page.isTextPage) ...[
-                        const SizedBox(height: 60),
-                        Text(
-                          page.title,
-                          style: page.image != null
-                              ? TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.4,
-                                )
-                              : TextStyle(
-                                  fontSize: 28.sp,
-                                  fontWeight: FontWeight.w600,
-                                  height: 1.4,
-                                ),
-                        ),
-                        const SizedBox(height: 16),
-                        Text(
-                          page.description,
-                          style: page.image != null
-                              ? TextStyle(
-                                  fontSize: 16.sp,
-                                  color: Colors.black54,
-                                )
-                              : TextStyle(
-                                  fontSize: 18.sp,
-                                  color: Colors.black54,
-                                  height: 1.5,
-                                  fontWeight: FontWeight.w500,
-                                ),
-                        ),
-                      ] else ...[
-                        if (page.image != null)
-                          Center(
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.circular(
-                                  20), // ← your desired radius
-                              child: Image.asset(
-                                page.image!,
-                                fit: BoxFit
-                                    .cover, // optional, depends on your design
-                              ),
-                            ),
-                          ),
-                        const SizedBox(height: 16),
-                        Padding(
-                          padding: page.image != null
-                              ? EdgeInsets.symmetric(
-                                  horizontal: 12,
-                                )
-                              : EdgeInsets.zero,
-                          child: Text(
+                          ],
+                        )
+                      : Container(),
+                  Padding(
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      crossAxisAlignment: page.image != null
+                          ? CrossAxisAlignment.center
+                          : CrossAxisAlignment.start,
+                      children: [
+                        if (page.isTextPage) ...[
+                          const SizedBox(height: 60),
+                          Text(
                             page.title,
-                            textAlign: TextAlign.center,
                             style: page.image != null
                                 ? TextStyle(
-                                    fontSize: 24.sp,
+                                    fontSize: 24,
                                     fontWeight: FontWeight.bold,
+                                    height: 1.4,
                                   )
                                 : TextStyle(
-                                    fontSize: 20.sp,
-                                    fontWeight: FontWeight.w900,
+                                    fontSize: 28.sp,
+                                    fontWeight: FontWeight.w600,
                                     height: 1.4,
                                   ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          page.description,
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.black54,
+                          const SizedBox(height: 16),
+                          Text(
+                            page.description,
+                            style: page.image != null
+                                ? TextStyle(
+                                    fontSize: 16.sp,
+                                    color: Colors.black54,
+                                  )
+                                : TextStyle(
+                                    fontSize: 18.sp,
+                                    color: Colors.black54,
+                                    height: 1.5,
+                                    fontWeight: FontWeight.w500,
+                                  ),
                           ),
-                        ),
+                        ] else ...[
+                          const SizedBox(height: 16),
+                          Padding(
+                            padding: page.image != null
+                                ? EdgeInsets.symmetric(
+                                    horizontal: 12,
+                                  )
+                                : EdgeInsets.zero,
+                            child: Text(
+                              page.title,
+                              textAlign: TextAlign.center,
+                              style: page.image != null
+                                  ? TextStyle(
+                                      fontSize: 24.sp,
+                                      fontWeight: FontWeight.bold,
+                                    )
+                                  : TextStyle(
+                                      fontSize: 20.sp,
+                                      fontWeight: FontWeight.w900,
+                                      height: 1.4,
+                                    ),
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            page.description,
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black54,
+                            ),
+                          ),
+                        ],
                       ],
-                    ],
+                    ),
                   ),
-                );
-              },
-            ),
+                ],
+              );
+            },
+          ),
 
-            // Indicator
-            Positioned(
-              bottom: 100,
-              left: 0,
-              right: 0,
-              child: Obx(() {
-                return Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: List.generate(
-                    pages.length,
-                    (index) => Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 4),
-                      width: controller.currentPage.value == index ? 16 : 8,
-                      height: 8,
-                      decoration: BoxDecoration(
-                        color: controller.currentPage.value == index
-                            ? AppColors.primary
-                            : Colors.grey.shade400,
-                        borderRadius: BorderRadius.circular(4),
-                      ),
+          // Indicator
+          Positioned(
+            bottom: 100,
+            left: 0,
+            right: 0,
+            child: Obx(() {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  pages.length,
+                  (index) => Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: controller.currentPage.value == index ? 16 : 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: controller.currentPage.value == index
+                          ? AppColors.primary
+                          : Colors.grey.shade400,
+                      borderRadius: BorderRadius.circular(4),
                     ),
                   ),
-                );
-              }),
-            ),
+                ),
+              );
+            }),
+          ),
 
-            // Button
-            Positioned(
-              bottom: 30,
-              left: 20,
-              right: 20,
-              child: Obx(() {
-                return SizedBox(
-                  width: double.infinity,
-                  child: ElevatedButton(
-                    onPressed: controller.nextPage,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF06283D),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+          // Button
+          Positioned(
+            bottom: 30,
+            left: 20,
+            right: 20,
+            child: Obx(() {
+              return SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: controller.nextPage,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF06283D),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
                     ),
-                    child: Text(
-                      controller.currentPage.value == pages.length - 1
-                          ? "Start"
-                          : "Next ->",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 16.sp,
-                        fontWeight: FontWeight.w600,
-                      ),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
+                  ),
+                  child: Text(
+                    controller.currentPage.value == pages.length - 1
+                        ? "Start"
+                        : "Next ->",
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.sp,
+                      fontWeight: FontWeight.w600,
                     ),
                   ),
-                );
-              }),
-            ),
-          ],
-        ),
+                ),
+              );
+            }),
+          ),
+        ],
       ),
     );
   }

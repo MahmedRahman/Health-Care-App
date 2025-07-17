@@ -26,24 +26,24 @@ class NavigationController extends GetxController {
   }
 }
 
+const List<String> svgIcons = [
+  "assets/svg/Home.svg",
+  "assets/svg/Care_Gevers.svg",
+  "assets/svg/Profile.svg",
+  "assets/svg/Contact.svg",
+  "assets/svg/More.svg",
+];
+
+const List<String> labels = [
+  "Home",
+  "Care Givers",
+  "Profile",
+  "Contact",
+  "More",
+];
+
 class AppLayout extends StatelessWidget {
   final Widget body;
-
-  static final List<String> svgIcons = [
-    "assets/svg/Home.svg",
-    "assets/svg/Care_Gevers.svg",
-    "assets/svg/Profile.svg",
-    "assets/svg/Contact.svg",
-    "assets/svg/More.svg"
-  ];
-
-  static final List<String> labels = [
-    "Home",
-    "Care Gevers",
-    "Profile",
-    "Contact",
-    "More"
-  ];
 
   const AppLayout({
     Key? key,
@@ -66,58 +66,53 @@ class AppLayout extends StatelessWidget {
               left: 0,
               right: 0,
               bottom: 0,
-              child: Obx(
-                () => Container(
-                  height: 70.h,
-                  decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(18),
-                      topRight: Radius.circular(18),
-                    ),
+              child: Container(
+                height: 60.h,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(18.w),
+                    topRight: Radius.circular(18.w),
                   ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: List.generate(5, (index) {
-                      final isSelected =
-                          navController.selectedIndex.value == index;
-
-                      return Expanded(
-                        child: GestureDetector(
-                          onTap: () => navController.changeTab(index),
-                          child: Container(
-                            //decoration: BoxDecoration(color: Colors.red),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SvgPicture.asset(
-                                  svgIcons[index],
-                                  width: 24,
-                                  height: 24,
-                                  colorFilter: ColorFilter.mode(
-                                    isSelected
-                                        ? AppColors.primary
-                                        : Colors.grey,
-                                    BlendMode.srcIn,
-                                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: List.generate(5, (index) {
+                    return Expanded(
+                      child: GestureDetector(
+                        onTap: () => navController.changeTab(index),
+                        child: Obx(() {
+                          final isSelected =
+                              navController.selectedIndex.value == index;
+                          return Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              SizedBox(height: 4.h),
+                              SvgPicture.asset(
+                                svgIcons[index],
+                                width: 24.w,
+                                height: 24.h,
+                                colorFilter: ColorFilter.mode(
+                                  isSelected ? AppColors.primary : Colors.grey,
+                                  BlendMode.srcIn,
                                 ),
-                                const SizedBox(height: 4),
-                                Text(
-                                  labels[index],
-                                  style: TextStyle(
-                                    color: isSelected
-                                        ? AppColors.primary
-                                        : Colors.grey,
-                                    fontSize: 12,
-                                  ),
-                                )
-                              ],
-                            ),
-                          ),
-                        ),
-                      );
-                    }),
-                  ),
+                              ),
+                              SizedBox(height: 4.h),
+                              Text(
+                                labels[index],
+                                style: TextStyle(
+                                  color: isSelected
+                                      ? AppColors.primary
+                                      : Colors.grey,
+                                  fontSize: 12.sp,
+                                ),
+                              ),
+                            ],
+                          );
+                        }),
+                      ),
+                    );
+                  }),
                 ),
               ),
             ),

@@ -19,7 +19,6 @@ class SplashController extends GetxController {
       if (videoController.value.position == videoController.value.duration) {
         // بعد انتهاء الفيديو
 
-        SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
         Get.offAllNamed('/onboarding'); // غيّر المسار حسب شاشتك التالية
       }
     });

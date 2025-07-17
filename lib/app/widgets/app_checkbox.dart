@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppCheckBox extends StatelessWidget {
   final bool value;
@@ -26,11 +27,20 @@ class AppCheckBox extends StatelessWidget {
             side: const BorderSide(color: Colors.white),
             activeColor: Colors.white,
             checkColor: const Color(0xFF06283D),
+            materialTapTargetSize: MaterialTapTargetSize.shrinkWrap,
+
+            visualDensity: VisualDensity.compact, // يقلل الحجم الإضافي
           ),
-          const SizedBox(width: 8),
-          Text(
-            label,
-            style: const TextStyle(color: Colors.white),
+          Flexible(
+            child: Text(
+              label,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 16.sp,
+              ),
+            ),
           ),
         ],
       ),

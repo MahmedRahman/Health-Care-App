@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTextButton extends StatelessWidget {
   final String text;
@@ -26,8 +27,10 @@ class AppTextButton extends StatelessWidget {
       ),
       child: Text(
         text,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
         style: TextStyle(
-          fontSize: 14,
+          fontSize: 14.sp,
           fontWeight: FontWeight.w500,
           color:
               textColor ?? color, // استخدم textColor إذا تم تحديده، وإلا color

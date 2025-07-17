@@ -1,9 +1,11 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppRichTextButton extends StatelessWidget {
   final String normalText;
   final String actionText;
+  final Color actionTextColor;
   final VoidCallback onTap;
 
   const AppRichTextButton({
@@ -11,6 +13,7 @@ class AppRichTextButton extends StatelessWidget {
     required this.normalText,
     required this.actionText,
     required this.onTap,
+    this.actionTextColor = Colors.white,
   });
 
   @override
@@ -18,15 +21,15 @@ class AppRichTextButton extends StatelessWidget {
     return RichText(
       text: TextSpan(
         text: normalText,
-        style: const TextStyle(
+        style: TextStyle(
           color: Colors.grey,
-          fontSize: 16,
+          fontSize: 16.sp,
         ),
         children: [
           TextSpan(
             text: ' $actionText',
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: actionTextColor,
               fontWeight: FontWeight.bold,
             ),
             recognizer: TapGestureRecognizer()..onTap = onTap,

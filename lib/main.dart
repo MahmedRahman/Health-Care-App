@@ -1,14 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-
+import 'package:device_preview/device_preview.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
 
 import 'app/routes/app_pages.dart';
+//use   device_preview: ^1.3.1
 
 void main() {
-  runApp(const HeartCareApp());
+  runApp(
+    DevicePreview(
+      builder: (context) => const HeartCareApp(),
+    ),
+  );
   // تغيير لون الستاتس بار
   SystemChrome.setSystemUIOverlayStyle(
     const SystemUiOverlayStyle(

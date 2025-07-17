@@ -1,3 +1,4 @@
+import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
@@ -24,6 +25,7 @@ class OnboardingController extends GetxController {
   }
 
   void finishOnboarding() {
+    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     Get.offAllNamed(Routes.SIGN_IN);
   }
 

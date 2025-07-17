@@ -11,6 +11,7 @@ import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
 import 'package:health_care_app/app/widgets/app_rich_text_button.dart';
 import 'package:health_care_app/app/widgets/app_text_button.dart';
 import 'package:health_care_app/app/widgets/app_text_field.dart';
+import 'package:health_care_app/app/widgets/layout/app_page_wrapper.dart';
 
 import '../controllers/sign_in_controller.dart';
 
@@ -28,20 +29,20 @@ class SignInView extends GetView<SignInController> {
         title: const Text('Sign In'),
         centerTitle: true,
       ),
-      body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 24.sp),
+      body: AppPageWrapper(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 61.h),
+            SizedBox(height: 40.h),
             Text(
               "Login your account",
               style: TextStyle(
-                fontSize: 20.sp,
+                fontSize: 24.sp,
+                fontWeight: FontWeight.w700,
                 color: Colors.white,
               ),
             ),
-            SizedBox(height: 31.h),
+            SizedBox(height: 24.h),
             AppTextField(
               label: "Email Address",
               hintText: "Enter your email address",
@@ -55,14 +56,15 @@ class SignInView extends GetView<SignInController> {
               controller: passwordController,
               isPassword: true,
             ),
+            SizedBox(height: 16.h),
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 AppCheckBox(
                   value: false,
                   onChanged: (newValue) {},
                   label: "Remember Me",
                 ),
-                const Spacer(),
                 AppTextButton(
                   text: "Forgot Password",
                   onPressed: () {
@@ -71,7 +73,7 @@ class SignInView extends GetView<SignInController> {
                 ),
               ],
             ),
-            SizedBox(height: 60.h),
+            SizedBox(height: 24.h),
             Row(
               children: [
                 Expanded(
@@ -89,8 +91,8 @@ class SignInView extends GetView<SignInController> {
                 ),
               ],
             ),
-            SizedBox(height: 30.h),
-            Row(
+            SizedBox(height: 24.h),
+            const Row(
               children: [
                 Expanded(
                   child: Divider(
@@ -115,21 +117,17 @@ class SignInView extends GetView<SignInController> {
                 ),
               ],
             ),
-            SizedBox(height: 60.h),
+            SizedBox(height: 24.h),
             Row(
               children: [
                 Spacer(),
                 AppIconButtonSvg(
                   assetPath: 'assets/svg/fb.svg',
-                  onPressed: () {
-                    print("Facebook button pressed!");
-                  },
+                  onPressed: () {},
                 ),
                 SizedBox(width: 16.w),
                 AppIconButtonSvg(
-                  onPressed: () {
-                    print("Facebook button pressed!");
-                  },
+                  onPressed: () {},
                   assetPath: 'assets/svg/apple.svg',
                 ),
                 SizedBox(width: 16.w),
@@ -140,7 +138,7 @@ class SignInView extends GetView<SignInController> {
                 Spacer(),
               ],
             ),
-            SizedBox(height: 30.h),
+            SizedBox(height: 24.h),
             Center(
               child: AppRichTextButton(
                 normalText: "Don’t have an account?",
@@ -149,7 +147,8 @@ class SignInView extends GetView<SignInController> {
                   Get.toNamed(Routes.SIGN_UP);
                 },
               ),
-            )
+            ),
+            const SizedBox(height: 20),
           ],
         ),
       ),
