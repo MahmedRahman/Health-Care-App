@@ -222,10 +222,29 @@ class MedicineAddView extends GetView<MedicineAddController> {
                   SizedBox(height: 16.h),
                   SelectableTimingGrid(
                     timings: [
-                      ['9:00 AM', '12:00 PM', '3:00 PM'],
-                      ['6:00 PM', '9:00 PM'],
+                      [
+                        '1:00 AM',
+                        '2:00 PM',
+                        '3:00 PM',
+                        '4:00 PM',
+                        '4:00 PM',
+                      ],
+                      [
+                        '5:00 PM',
+                        '6:00 PM',
+                        '7:00 PM',
+                        '8:00 PM',
+                        '4:00 PM',
+                      ],
+                      [
+                        '9:00 PM',
+                        '10:00 PM',
+                        '11:00 PM',
+                        '12:00 PM',
+                        '4:00 PM',
+                      ],
                     ],
-                    initialSelectedTimes: {'12:00 PM', '9:00 PM'},
+                    initialSelectedTimes: {},
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please select at least one time';

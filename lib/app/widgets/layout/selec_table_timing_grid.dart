@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
+import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 class SelectableTimingGrid extends FormField<Set<String>> {
   SelectableTimingGrid({
     Key? key,
@@ -16,11 +19,13 @@ class SelectableTimingGrid extends FormField<Set<String>> {
           builder: (FormFieldState<Set<String>> state) {
             final TimingController controller = Get.put(TimingController());
 
-            // Apply initial selected times
+            /// ✅ تأجيل إعداد القيم المبدئية لما بعد build
             if (initialSelectedTimes != null &&
                 controller.selectedTimes.isEmpty) {
-              controller.setInitialSelection(initialSelectedTimes);
-              state.didChange(initialSelectedTimes);
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                controller.setInitialSelection(initialSelectedTimes);
+                state.didChange(initialSelectedTimes);
+              });
             }
 
             void handleTap(String time) {
