@@ -3,6 +3,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/helper/snack_bar_helper.dart';
+import 'package:health_care_app/app/helper/validation_helper.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
 import 'package:health_care_app/app/widgets/app_primary_button.dart';
 import 'package:health_care_app/app/widgets/app_text_field.dart';
@@ -34,40 +36,61 @@ class NewPasswordView extends GetView<NewPasswordController> {
           fontWeight: FontWeight.bold,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Container(
-          width: double.infinity,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 16.h),
-              AppTextField(
-                label: "Password",
-                hintText: "Enter your password",
-                controller: TextEditingController(),
-                isPassword: true,
-                labelColor: AppColors.textLight,
+      body: controller.obx((state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Container(
+            width: double.infinity,
+            child: Form(
+              key: controller.formKey,
+              autovalidateMode: controller.autoValidateMode,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 16.h),
+                  AppTextField(
+                    label: "Password",
+                    hintText: "Enter your password",
+                    controller: controller.passwordController,
+                    isPassword: true,
+                    labelColor: AppColors.textLight,
+                    validator: ValidationHelper.validatePassword,
+                  ),
+                  SizedBox(height: 12.h),
+                  AppTextField(
+                    label: "Confirm Password",
+                    hintText: "Confirm password",
+                    controller: controller.confirmPasswordController,
+                    isPassword: true,
+                    labelColor: AppColors.textLight,
+                    validator: (value) =>
+                        ValidationHelper.validateConfirmPassword(
+                      value,
+                      controller.passwordController.text,
+                    ),
+                  ),
+                  SizedBox(height: 24.h),
+                  AppPrimaryButton(
+                    text: "Done",
+                    onPressed: () {
+                      if (controller.formKey.currentState!.validate()) {
+                        Get.offAllNamed(Routes.HOME);
+                        SnackbarHelper.showSuccess(
+                          "Password updated successfully",
+                        );
+                      } else {
+                        controller.autoValidateMode =
+                            AutovalidateMode.onUserInteraction;
+                        controller.update();
+                      }
+                    },
+                  ),
+                ],
               ),
-              SizedBox(height: 12.h),
-              AppTextField(
-                label: "Confirm Password",
-                hintText: "Confirm password",
-                controller: TextEditingController(),
-                isPassword: true,
-                labelColor: AppColors.textLight,
-              ),
-              SizedBox(height: 24.h),
-              AppPrimaryButton(
-                text: "Done",
-                onPressed: () {
-                  Get.offAllNamed(Routes.HOME);
-                },
-              ),
-            ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

@@ -16,6 +16,12 @@ import '../modules/forget_password/bindings/forget_password_binding.dart';
 import '../modules/forget_password/views/forget_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
 import '../modules/home/views/home_view.dart';
+import '../modules/medications/bindings/medications_binding.dart';
+import '../modules/medications/views/medications_view.dart';
+import '../modules/medicine_add/bindings/medicine_add_binding.dart';
+import '../modules/medicine_add/views/medicine_add_view.dart';
+import '../modules/medicine_details/bindings/medicine_details_binding.dart';
+import '../modules/medicine_details/views/medicine_details_view.dart';
 import '../modules/more/bindings/more_binding.dart';
 import '../modules/more/views/more_view.dart';
 import '../modules/new_password/bindings/new_password_binding.dart';
@@ -128,6 +134,21 @@ class AppPages {
       name: _Paths.PATIENT_INFO,
       page: () => PatientInfoView(),
       binding: PatientInfoBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEDICATIONS,
+      page: () => const MedicationsView(),
+      binding: MedicationsBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEDICINE_DETAILS,
+      page: () => const MedicineDetailsView(),
+      binding: MedicineDetailsBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEDICINE_ADD,
+      page: () => const MedicineAddView(),
+      binding: MedicineAddBinding(),
     ),
   ];
 }

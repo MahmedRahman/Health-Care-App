@@ -18,7 +18,6 @@ class SplashController extends GetxController {
     videoController.addListener(() {
       if (videoController.value.position == videoController.value.duration) {
         // بعد انتهاء الفيديو
-
         Get.offAllNamed('/onboarding'); // غيّر المسار حسب شاشتك التالية
       }
     });

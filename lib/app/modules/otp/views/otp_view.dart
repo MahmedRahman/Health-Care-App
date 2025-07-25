@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/helper/snack_bar_helper.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
 import 'package:health_care_app/app/widgets/app_primary_button.dart';
 import 'package:health_care_app/app/widgets/app_text_button.dart';
@@ -83,7 +84,9 @@ class OtpView extends GetView<OtpController> {
               SizedBox(height: 24.h),
               AppTextButton(
                 text: "Resend Code",
-                onPressed: () {},
+                onPressed: () {
+                  SnackbarHelper.showSuccess("Code has been resent");
+                },
                 color: AppColors.primary,
               ),
             ],

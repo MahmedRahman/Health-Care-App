@@ -238,6 +238,7 @@ class ProfilePersonalInfo extends StatelessWidget {
             child: AppImagePickerBox(
               size: 120,
               borderRadius: 20,
+              onImageSelected: (image) {},
             ),
           ),
           SizedBox(height: 16.h),
@@ -360,6 +361,7 @@ class ProfilePersonalInfo extends StatelessWidget {
                   showLabel: true,
                   labelColor: Colors.black,
                   radius: 12,
+                  onDateSelected: (date) {},
                 ),
               ),
               const SizedBox(width: 16),

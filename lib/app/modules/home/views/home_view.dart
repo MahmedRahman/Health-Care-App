@@ -5,6 +5,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/modules/home/component/profile_Info.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
 
 import '../controllers/home_controller.dart';
@@ -19,7 +20,7 @@ class HomeView extends GetView<HomeController> {
         statusBarIconBrightness: Brightness.light, // لون الأيقونات أبيض
       ),
       child: Scaffold(
-        backgroundColor: AppColors.primary,
+        backgroundColor: AppColors.background,
         body: SafeArea(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -27,24 +28,14 @@ class HomeView extends GetView<HomeController> {
               ProfileInfo(),
               SizedBox(height: 18.h),
               Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: AppColors.background,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(16.r),
-                      topRight: Radius.circular(16.r),
-                    ),
-                  ),
-                  child: Column(
-                    children: [
-                      SizedBox(height: 24.h),
-                      VitalsignsBox(),
-                      SizedBox(height: 24.h),
-                      QuickLinks(),
-                    ],
-                  ),
+                child: Column(
+                  children: [
+                    VitalsignsBox(),
+                    SizedBox(height: 24.h),
+                    QuickLinks(),
+                  ],
                 ),
-              )
+              ),
             ],
           ),
         ),
@@ -74,52 +65,121 @@ class QuickLinks extends StatelessWidget {
             ),
           ),
           SizedBox(height: 8.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              DashboardItem(
-                svgPath: "assets/svg/Vitals.svg",
-                label: "Vitals",
-                iconColor: Colors.red,
-                onTap: () {},
-              ),
-              DashboardItem(
-                svgPath: "assets/svg/Medications.svg",
-                label: "Medications",
-                iconColor: Colors.blue,
-                onTap: () {},
-              ),
-              DashboardItem(
-                svgPath: "assets/svg/Images.svg",
-                label: "Images",
-                iconColor: Colors.green,
-                onTap: () {},
-              ),
-            ],
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                DashboardItem(
+                  svgPath: "assets/svg/Vitals.svg",
+                  label: "Vitals",
+                  iconColor: Colors.red,
+                  onTap: () {},
+                ),
+                SizedBox(width: 8.w),
+                DashboardItem(
+                  svgPath: "assets/svg/Medications.svg",
+                  label: "Medications",
+                  iconColor: Colors.blue,
+                  onTap: () {
+                    Get.toNamed(Routes.MEDICATIONS);
+                  },
+                ),
+                SizedBox(width: 8.w),
+                DashboardItem(
+                  svgPath: "assets/svg/Images.svg",
+                  label: "Images",
+                  iconColor: Colors.green,
+                  onTap: () {},
+                ),
+                SizedBox(width: 8.w),
+                DashboardItem(
+                  svgPath: "assets/svg/Appointments.svg",
+                  label: "Appointments",
+                  iconColor: Color(0xffCCBE7A),
+                  onTap: () {},
+                ),
+                SizedBox(width: 8.w),
+                DashboardItem(
+                  svgPath: "assets/svg/Labs.svg",
+                  label: "Labs",
+                  // iconColor: Colors.blue,
+                  onTap: () {},
+                ),
+                SizedBox(width: 8.w),
+                DashboardItem(
+                  svgPath: "assets/svg/Reports.svg",
+                  label: "Reports",
+                  // iconColor: Colors.green,
+                  onTap: () {},
+                ),
+              ],
+            ),
+          ),
+          SizedBox(height: 16.h),
+          DashboardItemHorizontal(
+            title: "vitals",
+            svgPath: "assets/svg/Vitals.svg",
+            iconColor: Colors.red,
+            onTap: () {},
           ),
           SizedBox(height: 8.h),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              DashboardItem(
-                svgPath: "assets/svg/Appointments.svg",
-                label: "Appointments",
-                iconColor: Color(0xffCCBE7A),
-                onTap: () {},
-              ),
-              DashboardItem(
-                svgPath: "assets/svg/Labs.svg",
-                label: "Labs",
-                // iconColor: Colors.blue,
-                onTap: () {},
-              ),
-              DashboardItem(
-                svgPath: "assets/svg/Reports.svg",
-                label: "Reports",
-                // iconColor: Colors.green,
-                onTap: () {},
-              ),
-            ],
+          DashboardItemHorizontal(
+            title: "Medications",
+            svgPath: "assets/svg/Medications.svg",
+            iconColor: Colors.blue,
+            onTap: () {
+              Get.toNamed(Routes.MEDICATIONS);
+            },
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class DashboardItemHorizontal extends StatelessWidget {
+  final String title;
+  final String svgPath;
+  final Color iconColor;
+  final Function() onTap;
+  const DashboardItemHorizontal({
+    super.key,
+    required this.title,
+    required this.svgPath,
+    required this.iconColor,
+    required this.onTap,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16.r),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Row(
+        children: [
+          SvgPicture.asset(
+            svgPath,
+            color: iconColor,
+            width: 24.w,
+            height: 24.h,
+          ),
+          SizedBox(width: 8.w),
+          Text(
+            title,
+            style: TextStyle(
+              fontSize: 16.sp,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+            ),
+          ),
+          const Spacer(),
+          Icon(
+            Icons.arrow_forward_ios,
+            color: Colors.black,
           ),
         ],
       ),
@@ -190,100 +250,6 @@ class VitalsignsBox extends StatelessWidget {
             ],
           ),
         ],
-      ),
-    );
-  }
-}
-
-class ProfileInfo extends StatelessWidget {
-  const ProfileInfo({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      child: Padding(
-        padding: const EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0),
-        child: Column(
-          children: [
-            Row(
-              children: [
-                Text(
-                  "Hi, Ahmed",
-                  style: TextStyle(
-                    fontSize: 22.sp,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-                const Spacer(),
-                InkWell(
-                  onTap: () {
-                    Get.toNamed(Routes.NOTIFICATION);
-                  },
-                  child: Container(
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: Colors.white,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Icon(
-                        Icons.notifications_active_outlined,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 24.h,
-            ),
-            Row(
-              children: [
-                Image.asset(
-                  "assets/images/image.png",
-                  height: 80.h,
-                  width: 80.w,
-                ),
-                SizedBox(
-                  width: 16.w,
-                ),
-                Column(
-                  children: [
-                    Text(
-                      "Male,42 Years",
-                      style: TextStyle(
-                        color: Color(0xffCCCCCC),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                    Text(
-                      "ID: 12345678",
-                      style: TextStyle(
-                        color: Color(0xffCCCCCC),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                    Text(
-                      "Heart Attack",
-                      style: TextStyle(
-                        color: Color(0xffCCCCCC),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.sp,
-                      ),
-                    ),
-                  ],
-                )
-              ],
-            ),
-            SizedBox(height: 8.h),
-          ],
-        ),
       ),
     );
   }

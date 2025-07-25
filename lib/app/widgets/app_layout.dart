@@ -58,66 +58,64 @@ class AppLayout extends StatelessWidget {
     );
 
     return Scaffold(
-      body: SafeArea(
-        child: Stack(
-          children: [
-            Positioned.fill(child: body),
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              child: Container(
-                height: 60.h,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(18.w),
-                    topRight: Radius.circular(18.w),
-                  ),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: List.generate(5, (index) {
-                    return Expanded(
-                      child: GestureDetector(
-                        onTap: () => navController.changeTab(index),
-                        child: Obx(() {
-                          final isSelected =
-                              navController.selectedIndex.value == index;
-                          return Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              SizedBox(height: 4.h),
-                              SvgPicture.asset(
-                                svgIcons[index],
-                                width: 24.w,
-                                height: 24.h,
-                                colorFilter: ColorFilter.mode(
-                                  isSelected ? AppColors.primary : Colors.grey,
-                                  BlendMode.srcIn,
-                                ),
-                              ),
-                              SizedBox(height: 4.h),
-                              Text(
-                                labels[index],
-                                style: TextStyle(
-                                  color: isSelected
-                                      ? AppColors.primary
-                                      : Colors.grey,
-                                  fontSize: 12.sp,
-                                ),
-                              ),
-                            ],
-                          );
-                        }),
-                      ),
-                    );
-                  }),
+      body: Stack(
+        children: [
+          Positioned.fill(child: body),
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            child: Container(
+              height: 60.h,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(18.w),
+                  topRight: Radius.circular(18.w),
                 ),
               ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: List.generate(5, (index) {
+                  return Expanded(
+                    child: GestureDetector(
+                      onTap: () => navController.changeTab(index),
+                      child: Obx(() {
+                        final isSelected =
+                            navController.selectedIndex.value == index;
+                        return Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            SizedBox(height: 4.h),
+                            SvgPicture.asset(
+                              svgIcons[index],
+                              width: 24.w,
+                              height: 24.h,
+                              colorFilter: ColorFilter.mode(
+                                isSelected ? AppColors.primary : Colors.grey,
+                                BlendMode.srcIn,
+                              ),
+                            ),
+                            SizedBox(height: 4.h),
+                            Text(
+                              labels[index],
+                              style: TextStyle(
+                                color: isSelected
+                                    ? AppColors.primary
+                                    : Colors.grey,
+                                fontSize: 12.sp,
+                              ),
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  );
+                }),
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

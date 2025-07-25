@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/helper/validation_helper.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
 import 'package:health_care_app/app/widgets/app_button.dart';
 import 'package:health_care_app/app/widgets/app_primary_button.dart';
@@ -36,51 +37,64 @@ class ForgetPasswordView extends GetView<ForgetPasswordController> {
           fontWeight: FontWeight.bold,
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 24.0),
-        child: Column(
-          children: [
-            const SizedBox(height: 24),
-            Text(
-              "Forgot Password ?",
-              style: TextStyle(
-                fontSize: 20.sp,
-                color: AppColors.primary,
-                fontWeight: FontWeight.w600,
+      body: controller.obx((state) {
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            children: [
+              const SizedBox(height: 24),
+              Text(
+                "Forgot Password ?",
+                style: TextStyle(
+                  fontSize: 20.sp,
+                  color: AppColors.primary,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-            SizedBox(height: 8.h),
-            Text(
-              "Enter your email",
-              style: TextStyle(
-                fontSize: 16.sp,
-                color: AppColors.textLight,
-                fontWeight: FontWeight.w400,
+              SizedBox(height: 8.h),
+              Text(
+                "Enter your email",
+                style: TextStyle(
+                  fontSize: 16.sp,
+                  color: AppColors.textLight,
+                  fontWeight: FontWeight.w400,
+                ),
               ),
-            ),
-            SizedBox(height: 16.h),
-            SvgPicture.asset(
-              "assets/svg/forget_password.svg",
-              height: 200.h,
-              width: 200.w,
-            ),
-            AppTextField(
-              label: "Email Address",
-              hintText: "Enter your email address",
-              controller: TextEditingController(),
-              keyboardType: TextInputType.emailAddress,
-              labelColor: AppColors.textLight,
-            ),
-            SizedBox(height: 16.h),
-            AppPrimaryButton(
-              text: "Send verification code",
-              onPressed: () {
-                Get.toNamed(Routes.OTP);
-              },
-            ),
-          ],
-        ),
-      ),
+              SizedBox(height: 16.h),
+              SvgPicture.asset(
+                "assets/svg/forget_password.svg",
+                height: 200.h,
+                width: 200.w,
+              ),
+              Form(
+                key: controller.formKey,
+                autovalidateMode: controller.autoValidateMode,
+                child: AppTextField(
+                  label: "Email Address",
+                  hintText: "Enter your email address",
+                  controller: controller.emailController,
+                  keyboardType: TextInputType.emailAddress,
+                  labelColor: AppColors.textLight,
+                  validator: ValidationHelper.validateEmail,
+                ),
+              ),
+              SizedBox(height: 16.h),
+              AppPrimaryButton(
+                text: "Send verification code",
+                onPressed: () {
+                  if (controller.formKey.currentState!.validate()) {
+                    Get.toNamed(Routes.OTP);
+                  } else {
+                    controller.autoValidateMode =
+                        AutovalidateMode.onUserInteraction;
+                    controller.update();
+                  }
+                },
+              ),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

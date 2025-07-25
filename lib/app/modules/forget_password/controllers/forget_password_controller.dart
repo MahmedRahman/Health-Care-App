@@ -1,23 +1,21 @@
+import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-class ForgetPasswordController extends GetxController {
-  //TODO: Implement ForgetPasswordController
+class ForgetPasswordController extends GetxController with StateMixin {
+  TextEditingController emailController = TextEditingController();
+  final formKey = GlobalKey<FormState>();
 
-  final count = 0.obs;
+  AutovalidateMode autoValidateMode = AutovalidateMode.disabled;
+
   @override
   void onInit() {
     super.onInit();
+    change(null, status: RxStatus.success());
   }
 
-  @override
-  void onReady() {
-    super.onReady();
+  void sendVerificationCode() {
+    if (formKey.currentState!.validate()) {
+      change(null, status: RxStatus.success());
+    }
   }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

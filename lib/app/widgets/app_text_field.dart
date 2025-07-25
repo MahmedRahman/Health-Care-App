@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 
 class AppTextField extends StatefulWidget {
   final String label;
@@ -9,7 +11,9 @@ class AppTextField extends StatefulWidget {
   final TextInputType keyboardType;
   final Color labelColor;
   final double radius;
+  final String icon;
   final String? suffixText;
+  final String? Function(String?)? validator;
 
   const AppTextField({
     super.key,
@@ -21,7 +25,9 @@ class AppTextField extends StatefulWidget {
     this.keyboardType = TextInputType.text,
     this.labelColor = Colors.white,
     this.radius = 30,
+    this.icon = '',
     this.suffixText,
+    this.validator,
   });
 
   @override
@@ -50,30 +56,74 @@ class _AppTextFieldState extends State<AppTextField> {
       children: [
         Visibility(
           visible: widget.showLabel,
-          child: Text(
-            widget.label,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: widget.labelColor,
+          child: Visibility(
+            visible: widget.icon.isNotEmpty,
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(widget.radius),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Image.asset(
+                      widget.icon,
+                    ),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Text(
+                  widget.label,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: widget.labelColor,
+                  ),
+                ),
+              ],
+            ),
+            replacement: Padding(
+              padding: const EdgeInsets.only(
+                left: 8,
+                right: 8,
+              ),
+              child: Text(
+                widget.label,
+                style: TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w500,
+                  color: widget.labelColor,
+                ),
+              ),
             ),
           ),
         ),
-        const SizedBox(height: 8),
-        TextField(
+        SizedBox(height: 4.h),
+        TextFormField(
           controller: widget.controller,
           obscureText: widget.isPassword ? _obscureText : false,
           keyboardType: widget.keyboardType,
+          validator: widget.validator,
           decoration: InputDecoration(
             hintText: widget.hintText,
             filled: true,
             fillColor: Colors.white,
             hintStyle: const TextStyle(color: Colors.grey),
-            contentPadding:
-                const EdgeInsets.symmetric(vertical: 18, horizontal: 20),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 18,
+              horizontal: 20,
+            ),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(widget.radius),
               borderSide: BorderSide.none,
+            ),
+            errorBorder: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(widget.radius),
+              borderSide: const BorderSide(
+                color: Colors.red,
+                width: 1.5,
+              ),
             ),
             suffixIcon: widget.isPassword
                 ? IconButton(
@@ -85,9 +135,9 @@ class _AppTextFieldState extends State<AppTextField> {
                   )
                 : null,
             suffixText: widget.suffixText,
-            suffixStyle: const TextStyle(
+            suffixStyle: TextStyle(
               color: Colors.black,
-              fontSize: 16,
+              fontSize: 16.sp,
             ),
           ),
         ),

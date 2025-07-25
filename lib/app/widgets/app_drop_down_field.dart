@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class AppDropdownField extends StatelessWidget {
   final String label;
@@ -8,6 +10,7 @@ class AppDropdownField extends StatelessWidget {
   final bool showLabel;
   final Color labelColor;
   final double radius;
+  final String icon;
 
   const AppDropdownField({
     super.key,
@@ -18,6 +21,7 @@ class AppDropdownField extends StatelessWidget {
     this.showLabel = true,
     this.labelColor = Colors.black,
     this.radius = 30,
+    this.icon = '',
   });
 
   @override
@@ -27,12 +31,38 @@ class AppDropdownField extends StatelessWidget {
       children: [
         Visibility(
           visible: showLabel,
-          child: Text(
-            label,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.w500,
-              color: labelColor,
+          child: Visibility(
+            visible: icon.isNotEmpty,
+            child: Row(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(radius),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: SvgPicture.asset(icon),
+                  ),
+                ),
+                SizedBox(width: 8.w),
+                Text(
+                  label,
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                    color: labelColor,
+                  ),
+                ),
+              ],
+            ),
+            replacement: Text(
+              label,
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.w500,
+                color: labelColor,
+              ),
             ),
           ),
         ),

@@ -10,7 +10,9 @@ class OnboardingController extends GetxController {
   void nextPage() {
     if (currentPage.value < 3) {
       pageController.nextPage(
-          duration: const Duration(milliseconds: 300), curve: Curves.easeInOut);
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      );
     } else {
       finishOnboarding();
     }
@@ -25,7 +27,7 @@ class OnboardingController extends GetxController {
   }
 
   void finishOnboarding() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
+    //SystemChrome.setEnabledSystemUIMode(SystemUiMode.edgeToEdge);
     Get.offAllNamed(Routes.SIGN_IN);
   }
 

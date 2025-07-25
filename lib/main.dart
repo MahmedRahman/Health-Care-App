@@ -3,25 +3,23 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:get/get.dart';
-import 'package:health_care_app/app/constants/colors.dart';
-
 import 'app/routes/app_pages.dart';
-//use   device_preview: ^1.3.1
 
 void main() {
   runApp(
     DevicePreview(
+      enabled: false,
       builder: (context) => const HeartCareApp(),
     ),
   );
   // تغيير لون الستاتس بار
-  SystemChrome.setSystemUIOverlayStyle(
-    const SystemUiOverlayStyle(
-      statusBarColor: AppColors.primary, // ← اللون اللي تريده
-      statusBarIconBrightness:
-          Brightness.light, // ← لون الأيقونات (light or dark)
-    ),
-  );
+  // SystemChrome.setSystemUIOverlayStyle(
+  //   const SystemUiOverlayStyle(
+  //     statusBarColor: AppColors.primary, // ← اللون اللي تريده
+  //     statusBarIconBrightness:
+  //         Brightness.light, // ← لون الأيقونات (light or dark)
+  //   ),
+  // );
 }
 
 class HeartCareApp extends StatelessWidget {
@@ -53,7 +51,9 @@ class HeartCareApp extends StatelessWidget {
           builder: (context, child) {
             // Add MediaQuery fix for text scaling if needed
             return MediaQuery(
-              data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+              data: MediaQuery.of(context).copyWith(
+                textScaler: TextScaler.linear(1.0),
+              ),
               child: child!,
             );
           },
