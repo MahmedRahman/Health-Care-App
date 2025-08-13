@@ -19,32 +19,33 @@ class ContactUsView extends GetView<ContactUsController> {
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.background,
-        //title: const Text('ContactUsView'),
+        centerTitle: false,
+        title: const Text('Contact Us', style: TextStyle(color: Colors.black)),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.black),
           onPressed: () {
             Get.back();
           },
         ),
-        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Column(
             children: [
-              SvgPicture.asset("assets/svg/info.svg"),
-              SizedBox(height: 24.h),
-              Center(
-                child: Text(
-                  "We’re Here To Help..!",
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w600,
-                    color: Colors.black,
-                  ),
-                ),
-              ),
+              //SvgPicture.asset("assets/svg/info.svg"),
+              // SizedBox(height: 24.h),
+              // Center(
+              //   child: Text(
+              //     "We’re Here To Help..!",
+              //     style: TextStyle(
+              //       fontSize: 24.sp,
+              //       fontWeight: FontWeight.w600,
+              //       color: Colors.black,
+              //     ),
+              //   ),
+              // ),
+
               SizedBox(height: 16.h),
               AppTextField(
                 label: "Name",
@@ -77,28 +78,33 @@ class ContactUsView extends GetView<ContactUsController> {
                 labelColor: Colors.black,
               ),
               SizedBox(height: 16.h),
-              Row(
-                children: [
-                  Expanded(
-                    child: AppPrimaryButton(
-                      text: "Send Message",
-                      onPressed: () {},
-                    ),
-                  ),
-                  SizedBox(width: 8.w),
-                  SizedBox(
-                    width: 48.w,
-                    height: 48.w,
-                    child: AppIconButtonSvg(
-                      onPressed: () {
-                        print("Facebook button pressed!");
-                      },
-                      assetPath: 'assets/svg/apple.svg',
-                    ),
-                  ),
-                ],
+              AppPrimaryButton(
+                text: "Send Message",
+                onPressed: () {},
               ),
               SizedBox(height: 16.h),
+              AppPrimaryButton(
+                text: "WhatsApp",
+                onPressed: () {},
+              ),
+              // Row(
+              //   children: [
+              //     SizedBox(width: 8.w),
+              //     SizedBox(
+              //       width: 48.w,
+              //       height: 48.w,
+              //       child: AppIconButtonSvg(
+              //         onPressed: () {
+              //           print("Facebook button pressed!");
+              //         },
+              //         assetPath: 'assets/svg/apple.svg',
+              //       ),
+              //     ),
+              //   ],
+              // ),
+
+              SizedBox(height: 25.h),
+
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -107,13 +113,13 @@ class ContactUsView extends GetView<ContactUsController> {
                     label: "Phone",
                     value: "55 215647",
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 25.h),
                   ContactInfoItem(
                     icon: "assets/svg/email.svg",
                     label: "Email",
                     value: "walid.eltahlawy@gmail.com",
                   ),
-                  SizedBox(height: 16.h),
+                  SizedBox(height: 25.h),
                   ContactInfoItem(
                     icon: "assets/svg/map.svg",
                     label: "Adress",

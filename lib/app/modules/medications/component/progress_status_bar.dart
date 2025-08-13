@@ -14,19 +14,15 @@ class ProgressStatusBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 16.h,
+      height: 16.h, // عدلت الحجم ليتماشى مع الصورة
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
-        gradient: LinearGradient(
-          colors: [Colors.blue.shade100, Colors.white],
-          begin: Alignment.centerLeft,
-          end: Alignment.centerRight,
-        ),
+        borderRadius: BorderRadius.circular(30),
+        color: Colors.white,
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            blurRadius: 6,
-            offset: const Offset(0, 3),
+            color: Colors.black.withOpacity(0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 2),
           ),
         ],
       ),
@@ -37,37 +33,43 @@ class ProgressStatusBar extends StatelessWidget {
             widthFactor: percentage.clamp(0.0, 1.0),
             child: Container(
               decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(30),
                 gradient: const LinearGradient(
-                  colors: [Color(0xFF5DADE2), Color(0xFF85C1E9)],
+                  colors: [
+                    Color(0xFFFF7E5F),
+                    Color(0xFFFFB88C)
+                  ], // تدرج برتقالي
+                  begin: Alignment.centerLeft,
+                  end: Alignment.centerRight,
                 ),
               ),
             ),
           ),
           // النص
           Padding(
-            padding: EdgeInsets.symmetric(horizontal: 8.w),
+            padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
-              //mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Expanded(
-                  child: Center(
+                  child: Align(
+                    alignment: Alignment.centerLeft,
                     child: Text(
                       '${(percentage * 100).toInt()}%',
                       style: const TextStyle(
                         color: Colors.white,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: Center(
+                  child: Align(
+                    alignment: Alignment.centerRight,
                     child: Text(
                       '$daysLeft Days left',
                       style: const TextStyle(
                         color: Colors.black54,
-                        fontWeight: FontWeight.w400,
+                        fontWeight: FontWeight.w500,
                       ),
                     ),
                   ),

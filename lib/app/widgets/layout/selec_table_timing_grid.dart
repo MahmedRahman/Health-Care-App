@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
 import 'package:flutter/material.dart';
@@ -12,6 +13,8 @@ class SelectableTimingGrid extends FormField<Set<String>> {
     FormFieldValidator<Set<String>>? validator,
     Function(Set<String>)? onSelectionChanged,
     Set<String>? initialSelectedTimes,
+    bool showLabel = true,
+    bool showIcon = true,
   }) : super(
           key: key,
           initialValue: initialSelectedTimes ?? <String>{},
@@ -39,20 +42,21 @@ class SelectableTimingGrid extends FormField<Set<String>> {
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Row(
-                  children: [
-                    Icon(Icons.alarm, color: Colors.black54),
-                    SizedBox(width: 8),
-                    Text(
-                      'Timing',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.black87,
+                if (showLabel)
+                  Row(
+                    children: [
+                      if (showIcon) Icon(Icons.alarm, color: Colors.black54),
+                      SizedBox(width: 8),
+                      Text(
+                        'Timing',
+                        style: TextStyle(
+                          fontSize: 14.sp,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.black87,
+                        ),
                       ),
-                    ),
-                  ],
-                ),
+                    ],
+                  ),
                 const SizedBox(height: 12),
                 Obx(() => Column(
                       children: timings.map((row) {
@@ -105,9 +109,9 @@ class SelectableTimingGrid extends FormField<Set<String>> {
                     padding: const EdgeInsets.only(left: 8, top: 4),
                     child: Text(
                       state.errorText ?? '',
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: Colors.red,
-                        fontSize: 12,
+                        fontSize: 12.sp,
                       ),
                     ),
                   ),

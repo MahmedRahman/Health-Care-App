@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
 
 class ProfileInfo extends StatelessWidget {
   const ProfileInfo({
@@ -11,10 +12,20 @@ class ProfileInfo extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.primary,
+        //  color: AppColors.primary,
+        gradient: LinearGradient(
+          begin: Alignment.centerLeft,
+          end: Alignment.topRight,
+          stops: [0.0, .8, 1.0],
+          colors: [
+            Color(0xFF033E8A), // أبيض خفيف من فوق
+            Color(0xFF033E8A).withOpacity(.8),
+            Color(0xFF99CCFF), // أزرق فاتح من تحت
+          ],
+        ),
         borderRadius: BorderRadius.only(
-          bottomLeft: Radius.circular(16.r),
-          bottomRight: Radius.circular(16.r),
+          bottomLeft: Radius.circular(40.r),
+          bottomRight: Radius.circular(40.r),
         ),
       ),
       child: Padding(
@@ -23,56 +34,77 @@ class ProfileInfo extends StatelessWidget {
           children: [
             Row(
               children: [
+                Text(
+                  "Hi, Ahmed",
+                  style: TextStyle(
+                    fontSize: 29.sp,
+                    fontWeight: FontWeight.w500,
+                    color: Colors.white,
+                  ),
+                ),
+                const Spacer(),
+                AppIconButtonSvg(
+                  assetPath: 'assets/svg/notifications.svg',
+                  iconSize: 40.w,
+                  onPressed: () {},
+                ),
+              ],
+            ),
+            SizedBox(height: 24.h),
+            Row(
+              children: [
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      "Hi, Ahmed",
-                      style: TextStyle(
-                        fontSize: 22.sp,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
                     Row(
                       children: [
-                        Text(
-                          "Male,42 Years",
-                          style: TextStyle(
-                            color: Color(0xffCCCCCC),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.sp,
+                        ClipOval(
+                          child: Image.asset(
+                            "assets/images/ix_user-profile-filled.png",
+                            height: 80.h,
+                            width: 80.w,
                           ),
                         ),
                         SizedBox(width: 8.w),
-                        Text(
-                          "ID: 12345678",
-                          style: TextStyle(
-                            color: Color(0xffCCCCCC),
-                            fontWeight: FontWeight.w400,
-                            fontSize: 14.sp,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              children: [
+                                Text(
+                                  "Male,42 Years",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                                SizedBox(width: 8.w),
+                                Text(
+                                  "ID: 12345678",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w400,
+                                    fontSize: 14.sp,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              "Heart Attack",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 14.sp,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
-                    Text(
-                      "Heart Attack",
-                      style: TextStyle(
-                        color: Color(0xffCCCCCC),
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.sp,
-                      ),
-                    )
                   ],
                 ),
                 const Spacer(),
-                ClipOval(
-                  child: Image.asset(
-                    "assets/images/image.png",
-                    height: 80.h,
-                    width: 80.w,
-                  ),
-                ),
               ],
             ),
             SizedBox(

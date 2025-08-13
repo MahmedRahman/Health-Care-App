@@ -24,8 +24,8 @@ class AppIconButtonSvg extends StatelessWidget {
       ),
       child: IconButton(
         onPressed: onPressed,
-        iconSize: iconSize + 16, // adjust clickable area
-        splashRadius: iconSize + 2,
+        iconSize: iconSize, // adjust clickable area
+        splashRadius: iconSize,
         icon: SvgPicture.asset(
           assetPath,
           width: iconSize,

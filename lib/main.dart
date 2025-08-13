@@ -12,14 +12,6 @@ void main() {
       builder: (context) => const HeartCareApp(),
     ),
   );
-  // تغيير لون الستاتس بار
-  // SystemChrome.setSystemUIOverlayStyle(
-  //   const SystemUiOverlayStyle(
-  //     statusBarColor: AppColors.primary, // ← اللون اللي تريده
-  //     statusBarIconBrightness:
-  //         Brightness.light, // ← لون الأيقونات (light or dark)
-  //   ),
-  // );
 }
 
 class HeartCareApp extends StatelessWidget {

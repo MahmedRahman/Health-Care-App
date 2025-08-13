@@ -1,4 +1,5 @@
 import 'package:get/get.dart';
+import 'package:health_care_app/app/modules/home/views/home_view.dart';
 
 import '../modules/PatientInfo/bindings/patient_info_binding.dart';
 import '../modules/PatientInfo/views/patient_info_view.dart';
@@ -15,7 +16,6 @@ import '../modules/contact_us/views/contact_us_view.dart';
 import '../modules/forget_password/bindings/forget_password_binding.dart';
 import '../modules/forget_password/views/forget_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
-import '../modules/home/views/home_view.dart';
 import '../modules/medications/bindings/medications_binding.dart';
 import '../modules/medications/views/medications_view.dart';
 import '../modules/medicine_add/bindings/medicine_add_binding.dart';

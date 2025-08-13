@@ -67,24 +67,6 @@ class MedicineAddView extends GetView<MedicineAddController> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 16.h),
-                  //Doctor Name Input Text
-                  AppTextField(
-                    label: 'Doctor Name',
-                    hintText: 'Enter doctor name',
-                    controller: controller.doctorNameController,
-                    keyboardType: TextInputType.text,
-                    radius: 8.r,
-                    icon: 'assets/images/doctor_name.png',
-                    showLabel: true,
-                    labelColor: AppColorsMedications.black,
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please enter doctor name';
-                      }
-                      return null;
-                    },
-                  ),
 
                   SizedBox(height: 16.h),
                   Row(
@@ -202,23 +184,7 @@ class MedicineAddView extends GetView<MedicineAddController> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 16.h),
-                  AppBottomSheetDropdown(
-                    label: 'Duration',
-                    value: controller.selectedDuration.value,
-                    items: controller.durationNames,
-                    onChanged: (value) {
-                      controller.selectedDuration.value = value!;
-                    },
-                    radius: 8.r,
-                    icon: 'assets/svg/Frequency.svg',
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        return 'Please select duration';
-                      }
-                      return null;
-                    },
-                  ),
+
                   SizedBox(height: 16.h),
                   SelectableTimingGrid(
                     timings: [
@@ -255,6 +221,58 @@ class MedicineAddView extends GetView<MedicineAddController> {
                       print("Selected: $times");
                     },
                   ),
+
+                  SizedBox(height: 16.h),
+
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppBottomSheetDropdown(
+                          label: 'Duration',
+                          value: controller.selectedDuration.value,
+                          items: controller.durationNames,
+                          onChanged: (value) {
+                            controller.selectedDuration.value = value!;
+                          },
+                          radius: 8.r,
+                          icon: 'assets/svg/Dose.svg',
+                          validator: (value) {
+                            if (value!.isEmpty) {
+                              return 'Please select duration';
+                            }
+                            return null;
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 16.w),
+                      Expanded(
+                        child: Column(
+                          children: [
+                            SizedBox(height: 40.h),
+                            AppBottomSheetDropdown(
+                              label: 'Duration',
+                              value: controller.selectedDuration.value,
+                              showLabel: false,
+                              items: controller.durationNames,
+                              onChanged: (value) {
+                                controller.selectedDuration.value = value!;
+                              },
+                              radius: 8.r,
+                              icon: 'assets/svg/Dose.svg',
+                              validator: (value) {
+                                if (value!.isEmpty) {
+                                  return 'Please select duration';
+                                }
+                                return null;
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+
+                  SizedBox(height: 16.h),
                   Row(
                     children: [
                       Expanded(
@@ -292,6 +310,7 @@ class MedicineAddView extends GetView<MedicineAddController> {
                       ),
                     ],
                   ),
+
                   SizedBox(height: 16.h),
 
                   //Description
@@ -330,6 +349,25 @@ class MedicineAddView extends GetView<MedicineAddController> {
                     },
                   ),
                   SizedBox(height: 16.h),
+                  //Doctor Name Input Text
+                  AppTextField(
+                    label: 'Doctor Name',
+                    hintText: 'Enter doctor name',
+                    controller: controller.doctorNameController,
+                    keyboardType: TextInputType.text,
+                    radius: 8.r,
+                    icon: 'assets/images/doctor_name.png',
+                    showLabel: true,
+                    labelColor: AppColorsMedications.black,
+                    validator: (value) {
+                      if (value!.isEmpty) {
+                        return 'Please enter doctor name';
+                      }
+                      return null;
+                    },
+                  ),
+                  SizedBox(height: 16.h),
+
                   AppPrimaryButton(
                     text: 'Add Medicine',
                     onPressed: () {

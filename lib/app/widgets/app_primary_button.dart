@@ -6,12 +6,14 @@ class AppPrimaryButton extends StatelessWidget {
   final Color backgroundColor;
   final Color textColor;
   final double borderRadius;
+  final Color borderColor;
 
   const AppPrimaryButton({
     super.key,
     required this.text,
     required this.onPressed,
     this.backgroundColor = const Color(0xFF06283D), // example purple
+    this.borderColor = Colors.white,
     this.textColor = Colors.white,
     this.borderRadius = 12, // default radius
   });
@@ -26,6 +28,9 @@ class AppPrimaryButton extends StatelessWidget {
           backgroundColor: backgroundColor,
           foregroundColor: textColor,
           shape: RoundedRectangleBorder(
+            side: BorderSide(
+              color: borderColor,
+            ),
             borderRadius: BorderRadius.circular(borderRadius),
           ),
           padding: const EdgeInsets.symmetric(vertical: 18),
