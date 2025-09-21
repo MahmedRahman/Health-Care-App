@@ -1,23 +1,14 @@
 import 'package:get/get.dart';
+import 'package:health_care_app/app/core/auth_service.dart';
+import 'package:health_care_app/app/core/network/api_request.dart';
+import 'package:health_care_app/app/routes/app_pages.dart';
 
 class MoreController extends GetxController {
-  //TODO: Implement MoreController
+  void logout() async {
+    Response response = await ApiRequest().logout();
 
-  final count = 0.obs;
-  @override
-  void onInit() {
-    super.onInit();
+    if (response.statusCode == 200) {
+      await AuthService.to.logout();
+    }
   }
-
-  @override
-  void onReady() {
-    super.onReady();
-  }
-
-  @override
-  void onClose() {
-    super.onClose();
-  }
-
-  void increment() => count.value++;
 }

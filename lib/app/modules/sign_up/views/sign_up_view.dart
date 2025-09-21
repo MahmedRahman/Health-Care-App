@@ -26,7 +26,7 @@ class SignUpView extends GetView<SignUpController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.accent,
+      backgroundColor: Color(0xfffF2F2F2),
       appBar: AppBar(
         title: const Text('Sign Up'),
         centerTitle: true,

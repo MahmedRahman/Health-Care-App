@@ -8,6 +8,7 @@ import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/core/auth_service.dart';
 import 'package:health_care_app/app/modules/home/component/profile_Info.dart';
 import 'package:health_care_app/app/modules/home/component/quick_links.dart';
 import 'package:health_care_app/app/modules/home/component/vital_signs_bottom_sheet.dart';
@@ -22,8 +23,10 @@ import 'package:health_care_app/app/modules/home/views/oxygen_saturation/add_oxy
 import 'package:health_care_app/app/modules/home/views/oxygen_saturation/filter_oxygen_saturation.dart';
 import 'package:health_care_app/app/modules/home/views/rbs/add_rbs.dart';
 import 'package:health_care_app/app/modules/home/views/rbs/filter_rbs.dart';
+import 'package:health_care_app/app/modules/home/views/update_background_screen.dart';
 import 'package:health_care_app/app/modules/home/views/weight/add_weight.dart';
 import 'package:health_care_app/app/modules/home/views/weight/filter_weight.dart';
+import 'package:health_care_app/app/modules/home/views/weight/vital_signs_bottom_sheet_key.dart';
 
 import 'package:health_care_app/app/routes/app_pages.dart';
 import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
@@ -36,272 +39,197 @@ class HomeView extends GetView<HomeController> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
-        statusBarColor: Color(0xFF033E8A), // لون الهيدر
+        statusBarColor: Color(0xFF2445CE), // لون الهيدر
         statusBarIconBrightness: Brightness.light, // لون الأيقونات أبيض
       ),
       child: Scaffold(
-        backgroundColor: AppColors.background,
+        backgroundColor: Color(0xFFF2F2F2),
         body: SafeArea(
           child: Container(
-            color: Color(0xFFF9FBFD),
+            // color: Color(0xFFF9FBFD),
             child: SingleChildScrollView(
               scrollDirection: Axis.vertical,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ProfileInfo(),
-                  SizedBox(height: 18.h),
-                  Column(
+                  Stack(
+                    clipBehavior: Clip.none,
                     children: [
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Vital signs",
-                              style: TextStyle(
-                                fontSize: 18.sp,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                              ),
-                            ),
-                            SizedBox(height: 8.h),
-                            Row(
-                              children: [
-                                VitalSignsCard(
-                                  title: "Blood Pressure",
-                                  imagePath: "assets/images/blood_pressure.png",
-                                  value: "120/80",
-                                  color: Color(0xffD04244),
-                                  textColor: Colors.white,
-                                  onTap: () {
-                                    Get.bottomSheet(
-                                      VitalSignsBottomSheet(
-                                        onFilterPressed: () {
-                                          Get.bottomSheet(
-                                            const FilterBloodPressureBottomSheet(),
-                                            isScrollControlled: true,
-                                            backgroundColor: Colors.transparent,
-                                          );
-                                        },
-                                        onAddPressed: () {
-                                          Get.bottomSheet(
-                                            AddBloodPressure(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.white,
-                                          );
-                                        },
-                                        title: "Blood Pressure",
-                                        value: "50",
-                                        unit: "mm/dl",
-                                        keyColor: Color(0xffD04244),
-                                        chartData: toDailyData(chartData),
-                                        line2ChartData:
-                                            toDailyData(line2ChartData),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                SizedBox(width: 8.w),
-                                VitalSignsCard(
-                                  title: "Heart Rate",
-                                  imagePath: "assets/images/heart_rate.png",
-                                  value: "60 bpm",
-                                  onTap: () {
-                                    Get.bottomSheet(
-                                      VitalSignsBottomSheet(
-                                        onFilterPressed: () {
-                                          Get.bottomSheet(
-                                            const FilterHeartRateBottomSheet(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.transparent,
-                                          );
-                                        },
-                                        onAddPressed: () {
-                                          //full screen
-                                          Get.bottomSheet(
-                                            AddHeartRate(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.white,
-                                          );
-                                        },
-                                        title: "Heart Rate",
-                                        value: "60",
-                                        unit: "bpm",
-                                        keyColor: Color(0xff18A86B),
-                                        chartData: toDailyData(chartData),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8.h),
-                            Row(
-                              children: [
-                                VitalSignsCard(
-                                  title: "Oxygen Saturation",
-                                  imagePath:
-                                      "assets/images/oxygen_saturation.png",
-                                  value: "95%",
-                                  color: Color(0xffDEBC36),
-                                  textColor: Colors.black,
-                                  onTap: () {
-                                    Get.bottomSheet(
-                                      VitalSignsBottomSheet(
-                                        onFilterPressed: () {
-                                          Get.bottomSheet(
-                                            const FilterOxygenSaturationBottomSheet(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.transparent,
-                                          );
-                                        },
-                                        onAddPressed: () {
-                                          Get.bottomSheet(
-                                            AddOxygenSaturation(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.white,
-                                          );
-                                        },
-                                        title: "Oxygen Saturation",
-                                        value: "95%",
-                                        unit: "%",
-                                        keyColor: Color(0xffDEBC36),
-                                        chartData: toDailyData(chartData),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                SizedBox(width: 8.w),
-                                VitalSignsCard(
-                                  title: "Weight",
-                                  imagePath: "assets/images/weight.png",
-                                  value: "70 kg",
-                                  onTap: () {
-                                    Get.bottomSheet(
-                                      VitalSignsBottomSheet(
-                                        onFilterPressed: () {
-                                          Get.bottomSheet(
-                                            const FilterWeightBottomSheet(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.transparent,
-                                          );
-                                        },
-                                        onAddPressed: () {
-                                          Get.bottomSheet(
-                                            AddWeight(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.white,
-                                          );
-                                        },
-                                        title: "Weight",
-                                        value: "70",
-                                        unit: "kg",
-                                        keyColor: Color(0xffDEBC36),
-                                        chartData: toDailyData(chartData),
-                                        line2ChartData:
-                                            toDailyData(line2ChartData),
-                                      ),
-                                      isScrollControlled: true,
-                                      backgroundColor: Colors.transparent,
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                            SizedBox(height: 8.h),
-                            Row(
-                              children: [
-                                VitalSignsCard(
-                                  title: "R.B.S",
-                                  imagePath: "assets/images/rbs.png",
-                                  value: "112 mg/dl",
-                                  onTap: () {
-                                    Get.bottomSheet(
-                                      VitalSignsBottomSheet(
-                                        onFilterPressed: () {
-                                          Get.bottomSheet(
-                                            const FilterRBSBottomSheet(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.transparent,
-                                          );
-                                        },
-                                        onAddPressed: () {
-                                          Get.bottomSheet(
-                                            AddRBS(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.white,
-                                          );
-                                        },
-                                        title: "R.B.S",
-                                        value: "112",
-                                        unit: "mg/dl",
-                                        keyColor: Color(0xffDEBC36),
-                                        chartData: toDailyData(chartData),
-                                        line2ChartData:
-                                            toDailyData(line2ChartData),
-                                        line3ChartData:
-                                            toDailyData(line3ChartData),
-                                      ),
-                                    );
-                                  },
-                                ),
-                                SizedBox(width: 8.w),
-                                VitalSignsCard(
-                                  title: "Fluid Balance",
-                                  imagePath: "assets/images/fluid_balance.png",
-                                  value: "-200 ml",
-                                  onTap: () {
-                                    Get.bottomSheet(
-                                      VitalSignsBottomSheet(
-                                        onFilterPressed: () {
-                                          Get.bottomSheet(
-                                            const FilterFluidBalanceBottomSheet(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.transparent,
-                                          );
-                                        },
-                                        onAddPressed: () {
-                                          Get.bottomSheet(
-                                            AddFluidBalance(),
-                                            isScrollControlled:
-                                                true, // يسمح بالتحكم في الطول
-                                            backgroundColor: Colors.white,
-                                          );
-                                        },
-                                        title: "Fluid Balance",
-                                        value: "-200",
-                                        unit: "ml",
-                                        keyColor: Color(0xffDEBC36),
-                                        chartData: toDailyData(chartData),
-                                      ),
-                                    );
-                                  },
-                                ),
-                              ],
-                            ),
-                          ],
-                        ),
+                      ProfileInfo(
+                        userName: Get.find<AuthService>()
+                                .currentUser
+                                .value?['firstName']
+                                .toString() ??
+                            "User",
+                        userAge: Get.find<AuthService>()
+                                .currentUser
+                                .value?['age']
+                                 ??
+                            "Age",
+                        userGender: Get.find<AuthService>()
+                                .currentUser
+                                .value?['gender']
+                               ??
+                            "Gender",
+                        userId: Get.find<AuthService>()
+                                .currentUser
+                                .value?['hospitalId']
+                                .toString() ??
+                            "ID",
+                        onTap: () {
+                          Get.bottomSheet(
+                            UpdateBackgroundScreen(),
+                            isScrollControlled: false,
+                            backgroundColor: Colors.transparent,
+                          );
+                        },
                       ),
-                      SizedBox(height: 24.h),
-                      QuickLinks(),
-                      SizedBox(height: 124.h),
                     ],
                   ),
+                  SizedBox(height: 12.h),
+                  VitalSigns(),
+                  SizedBox(height: 12.h),
+                  QuickLinks(),
+                  SizedBox(height: 20.h),
                 ],
               ),
             ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class VitalSigns extends StatelessWidget {
+  const VitalSigns({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20),
+      child: Container(
+        height: 290,
+        width: Get.width - 40,
+        decoration: BoxDecoration(
+          border: Border.all(color: Colors.black12),
+          borderRadius: BorderRadius.circular(12.r),
+          color: Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: ListView(
+            //crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(height: 8.h),
+              Row(
+                children: [
+                  VitalSignsCard(
+                    title: "Blood Pressure",
+                    imagePath: "assets/images/blood_pressure.png",
+                    value: "120/80",
+                    color: Color(0xffD04244),
+                    textColor: Colors.white,
+                    onTap: () {
+                      Get.bottomSheet(
+                        VitalSignsBottomSheetKey(
+                          index: 0.obs,
+                        ),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                  SizedBox(width: 8.w),
+                  VitalSignsCard(
+                    title: "Heart Rate",
+                    imagePath: "assets/images/heart_rate.png",
+                    value: "60 bpm",
+                    onTap: () {
+                      Get.bottomSheet(
+                        VitalSignsBottomSheetKey(
+                          index: 1.obs,
+                        ),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.h),
+              Row(
+                children: [
+                  VitalSignsCard(
+                    title: "Oxygen Saturation",
+                    imagePath: "assets/images/oxygen_saturation.png",
+                    value: "95%",
+                    color: Color(0xffDEBC36),
+                    textColor: Colors.black,
+                    onTap: () {
+                      Get.bottomSheet(
+                        VitalSignsBottomSheetKey(
+                          index: 2.obs,
+                        ),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                  SizedBox(width: 8.w),
+                  VitalSignsCard(
+                    title: "Weight",
+                    imagePath: "assets/images/weight.png",
+                    value: "70 kg",
+                    onTap: () {
+                      Get.bottomSheet(
+                        VitalSignsBottomSheetKey(
+                          index: 3.obs,
+                        ),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                ],
+              ),
+              SizedBox(height: 8.h),
+              Row(
+                children: [
+                  VitalSignsCard(
+                    title: "R.B.S",
+                    imagePath: "assets/images/rbs.png",
+                    value: "112 mg/dl",
+                    onTap: () {
+                      Get.bottomSheet(
+                        VitalSignsBottomSheetKey(
+                          index: 4.obs,
+                        ),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                  SizedBox(width: 8.w),
+                  VitalSignsCard(
+                    title: "Fluid Balance",
+                    imagePath: "assets/images/fluid_balance.png",
+                    value: "-200 ml",
+                    onTap: () {
+                      Get.bottomSheet(
+                        VitalSignsBottomSheetKey(
+                          index: 5.obs,
+                        ),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                  ),
+                ],
+              ),
+            ],
           ),
         ),
       ),

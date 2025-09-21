@@ -31,13 +31,6 @@ class QuickLinks extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                // DashboardItem(
-                //   svgPath: "assets/svg/Vitals.svg",
-                //   label: "Vitals",
-                //   iconColor: Colors.red,
-                //   onTap: () {},
-                // ),
-                // SizedBox(width: 8.w),
                 DashboardItem(
                   svgPath: "assets/svg/Medications.svg",
                   label: "Medications",
@@ -51,7 +44,9 @@ class QuickLinks extends StatelessWidget {
                   svgPath: "assets/svg/Images.svg",
                   label: "Images",
                   iconColor: Colors.green,
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(Routes.MEDICAL_IMAGES);
+                  },
                 ),
                 SizedBox(width: 8.w),
                 DashboardItem(
@@ -65,7 +60,9 @@ class QuickLinks extends StatelessWidget {
                   svgPath: "assets/svg/Labs.svg",
                   label: "Labs",
                   // iconColor: Colors.blue,
-                  onTap: () {},
+                  onTap: () {
+                    Get.toNamed(Routes.LABS);
+                  },
                 ),
                 SizedBox(width: 8.w),
                 DashboardItem(
@@ -77,7 +74,7 @@ class QuickLinks extends StatelessWidget {
               ],
             ),
           ),
-          SizedBox(height: 8.h),
+          SizedBox(height: 12.h),
           DashboardItemHorizontal(
             title: "Medications",
             svgPath: "assets/svg/Medications.svg",

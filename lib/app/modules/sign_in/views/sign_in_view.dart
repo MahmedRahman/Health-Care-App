@@ -21,153 +21,161 @@ class SignInView extends GetView<SignInController> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.primary,
-      appBar: AppBar(
-        title: const Text('Sign In'),
-        centerTitle: true,
-      ),
-      body: controller.obx((state) {
-        return AppPageWrapper(
-          child: Form(
-            key: controller.formKey,
-            autovalidateMode: controller.autoValidateMode,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(height: 40.h),
-                Text(
-                  "Login your account",
-                  style: TextStyle(
-                    fontSize: 24.sp,
-                    fontWeight: FontWeight.w700,
-                    color: Colors.white,
+    final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: AppColors.primary,
+        appBar: AppBar(
+          title: const Text('Sign In'),
+          centerTitle: true,
+          backgroundColor: AppColors.primary,
+        ),
+        body: controller.obx((state) {
+          return AppPageWrapper(
+            child: Form(
+              key: formKey,
+              autovalidateMode: controller.autoValidateMode,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: 40.h),
+                  Text(
+                    "Login your account",
+                    style: TextStyle(
+                      fontSize: 24.sp,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                    ),
                   ),
-                ),
-                SizedBox(height: 24.h),
-                AppTextField(
-                  label: "Email Address",
-                  hintText: "Enter your email address",
-                  controller: controller.emailController,
-                  keyboardType: TextInputType.emailAddress,
-                  validator: ValidationHelper.validateEmail,
-                ),
-                SizedBox(height: 16.h),
-                AppTextField(
-                  label: "Password",
-                  hintText: "Enter your password",
-                  controller: controller.passwordController,
-                  validator: ValidationHelper.validatePassword,
-                  isPassword: true,
-                ),
-                SizedBox(height: 16.h),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    AppCheckBox(
-                      value: controller.rememberMe,
-                      onChanged: (newValue) {
-                        controller.rememberMeOnClick(
-                          newValue!,
-                        );
-                      },
-                      label: "Remember Me",
-                    ),
-                    AppTextButton(
-                      text: "Forgot Password",
-                      onPressed: () {
-                        Get.toNamed(Routes.FORGET_PASSWORD);
-                      },
-                    ),
-                  ],
-                ),
-                SizedBox(height: 24.h),
-                Row(
-                  children: [
-                    Expanded(
-                      child: AppButton(
-                        text: "Sign in",
+                  SizedBox(height: 24.h),
+                  AppTextField(
+                    label: "Email Address",
+                    hintText: "Enter your email address",
+                    controller: controller.emailController,
+                    keyboardType: TextInputType.emailAddress,
+                    validator: ValidationHelper.validateEmail,
+                  ),
+                  SizedBox(height: 16.h),
+                  AppTextField(
+                    label: "Password",
+                    hintText: "Enter your password",
+                    controller: controller.passwordController,
+                    validator: ValidationHelper.validatePassword,
+                    isPassword: true,
+                  ),
+                  SizedBox(height: 16.h),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      AppCheckBox(
+                        value: controller.rememberMe,
+                        onChanged: (newValue) {
+                          controller.rememberMeOnClick(
+                            newValue!,
+                          );
+                        },
+                        label: "Remember Me",
+                      ),
+                      AppTextButton(
+                        text: "Forgot Password",
+                        color: Color(0xfff63A6F7),
                         onPressed: () {
-                          if (controller.formKey.currentState!.validate()) {
-                            controller.signIn();
-                          } else {
-                            controller.autoValidateMode =
-                                AutovalidateMode.onUserInteraction;
-                            controller.update();
-                          }
+                          Get.toNamed(Routes.FORGET_PASSWORD);
                         },
                       ),
-                    ),
-                    SizedBox(width: 16.w),
-                    AppIconButtonSvg(
-                      assetPath: 'assets/svg/face.svg',
-                      onPressed: () {},
-                    ),
-                  ],
-                ),
-                SizedBox(height: 24.h),
-                const Row(
-                  children: [
-                    Expanded(
-                      child: Divider(
-                        color: Colors.white,
-                        thickness: 1,
-                        endIndent: 10,
-                      ),
-                    ),
-                    Text(
-                      "Or continue with",
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
-                    ),
-                    Expanded(
-                      child: Divider(
-                        color: Colors.white,
-                        thickness: 1,
-                        indent: 10,
-                      ),
-                    ),
-                  ],
-                ),
-                SizedBox(height: 24.h),
-                Row(
-                  children: [
-                    Spacer(),
-                    AppIconButtonSvg(
-                      assetPath: 'assets/svg/fb.svg',
-                      onPressed: () {},
-                    ),
-                    SizedBox(width: 16.w),
-                    AppIconButtonSvg(
-                      onPressed: () {},
-                      assetPath: 'assets/svg/apple.svg',
-                    ),
-                    SizedBox(width: 16.w),
-                    AppIconButtonSvg(
-                      assetPath: 'assets/svg/google.svg',
-                      onPressed: () {},
-                    ),
-                    Spacer(),
-                  ],
-                ),
-                SizedBox(height: 24.h),
-                Center(
-                  child: AppRichTextButton(
-                    normalText: "Don’t have an account?",
-                    actionText: "Sign Up",
-                    onTap: () {
-                      Get.toNamed(Routes.SIGN_UP);
-                    },
+                    ],
                   ),
-                ),
-                const SizedBox(height: 20),
-              ],
+                  SizedBox(height: 24.h),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: AppButton(
+                          text: "Sign in",
+                          onPressed: () {
+                            FocusScope.of(context).unfocus();
+                            if (formKey.currentState!.validate()) {
+                              controller.signIn();
+                            } else {
+                              controller.autoValidateMode =
+                                  AutovalidateMode.onUserInteraction;
+                              controller.update();
+                            }
+                          },
+                        ),
+                      ),
+                      SizedBox(width: 16.w),
+                      AppIconButtonSvg(
+                        assetPath: 'assets/svg/face.svg',
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24.h),
+                  const Row(
+                    children: [
+                      Expanded(
+                        child: Divider(
+                          color: Colors.white,
+                          thickness: 1,
+                          endIndent: 10,
+                        ),
+                      ),
+                      Text(
+                        "Or continue with",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                      Expanded(
+                        child: Divider(
+                          color: Colors.white,
+                          thickness: 1,
+                          indent: 10,
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 24.h),
+                  Row(
+                    children: [
+                      Spacer(),
+                      AppIconButtonSvg(
+                        assetPath: 'assets/svg/fb.svg',
+                        onPressed: () {},
+                      ),
+                      SizedBox(width: 16.w),
+                      AppIconButtonSvg(
+                        onPressed: () {},
+                        assetPath: 'assets/svg/apple.svg',
+                      ),
+                      SizedBox(width: 16.w),
+                      AppIconButtonSvg(
+                        assetPath: 'assets/svg/google.svg',
+                        onPressed: () {},
+                      ),
+                      Spacer(),
+                    ],
+                  ),
+                  SizedBox(height: 24.h),
+                  Center(
+                    child: AppRichTextButton(
+                      normalText: "Don’t have an account?",
+                      actionText: "Sign Up",
+                      onTap: () {
+                        Get.toNamed(Routes.SIGN_UP);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 20),
+                ],
+              ),
             ),
-          ),
-        );
-      }),
+          );
+        }),
+      ),
     );
   }
 }

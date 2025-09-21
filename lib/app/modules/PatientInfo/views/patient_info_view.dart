@@ -54,7 +54,7 @@ class PatientInfoView extends GetView<PatientInfoController> {
               SizedBox(height: 16.h),
               Expanded(
                 child: (currentStep.value == 1)
-                    ? const ProfilePersonalInfo()
+                    ? ProfilePersonalInfo()
                     : (currentStep.value == 2)
                         ? const ProfileHealthInfo()
                         : const finsh(),
@@ -222,10 +222,22 @@ class ProfileHealthInfo extends StatelessWidget {
   }
 }
 
-class ProfilePersonalInfo extends StatelessWidget {
-  const ProfilePersonalInfo({
-    super.key,
-  });
+class ProfilePersonalInfo extends GetView<PatientInfoController> {
+
+  
+  TextEditingController firstName = TextEditingController();
+  TextEditingController lastName = TextEditingController();
+  TextEditingController phoneNumber = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController id = TextEditingController();
+
+  TextEditingController Address_countary = TextEditingController();
+  TextEditingController Address_city = TextEditingController();
+  TextEditingController Address_area = TextEditingController();
+  TextEditingController Address_starets_name = TextEditingController();
+
+
+
 
   @override
   Widget build(BuildContext context) {

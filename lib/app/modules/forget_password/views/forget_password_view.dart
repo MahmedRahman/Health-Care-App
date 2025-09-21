@@ -17,24 +17,24 @@ class ForgetPasswordView extends GetView<ForgetPasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.accent,
+      backgroundColor: Color(0xfffF2F2F2),
       appBar: AppBar(
         title: const Text('Reset password'),
-        backgroundColor: AppColors.accent,
+        backgroundColor: Color(0xfffF2F2F2),
         centerTitle: false,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: AppColors.primary,
+            color: Colors.black,
           ),
           onPressed: () {
             Get.back();
           },
         ),
-        titleTextStyle: const TextStyle(
-          color: AppColors.primary,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+        titleTextStyle: TextStyle(
+          color: Colors.black,
+          fontSize: 18.sp,
+          fontWeight: FontWeight.w500,
         ),
       ),
       body: controller.obx((state) {
@@ -46,9 +46,9 @@ class ForgetPasswordView extends GetView<ForgetPasswordController> {
               Text(
                 "Forgot Password ?",
                 style: TextStyle(
-                  fontSize: 20.sp,
-                  color: AppColors.primary,
-                  fontWeight: FontWeight.w600,
+                  fontSize: 16.sp,
+                  color: Colors.black,
+                  fontWeight: FontWeight.w500,
                 ),
               ),
               SizedBox(height: 8.h),
@@ -61,16 +61,15 @@ class ForgetPasswordView extends GetView<ForgetPasswordController> {
                 ),
               ),
               SizedBox(height: 16.h),
-              SvgPicture.asset(
-                "assets/svg/forget_password.svg",
-                height: 200.h,
-                width: 200.w,
+              Image.asset(
+                "assets/images/foget_image.png",
               ),
+              SizedBox(height: 16.h),
               Form(
                 key: controller.formKey,
                 autovalidateMode: controller.autoValidateMode,
                 child: AppTextField(
-                  label: "Email Address",
+                  label: "Email",
                   hintText: "Enter your email address",
                   controller: controller.emailController,
                   keyboardType: TextInputType.emailAddress,
@@ -80,10 +79,11 @@ class ForgetPasswordView extends GetView<ForgetPasswordController> {
               ),
               SizedBox(height: 16.h),
               AppPrimaryButton(
-                text: "Send verification code",
-                onPressed: () {
+                text: "Send Verification Code",
+                onPressed:  () {
                   if (controller.formKey.currentState!.validate()) {
-                    Get.toNamed(Routes.OTP);
+                    controller.sendVerificationCode();
+                   
                   } else {
                     controller.autoValidateMode =
                         AutovalidateMode.onUserInteraction;

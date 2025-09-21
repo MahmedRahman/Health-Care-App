@@ -188,205 +188,163 @@ class VitalSignsBottomSheet extends GetView {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(32.r),
-          topRight: Radius.circular(32.r),
-        ),
-      ),
-      child: SingleChildScrollView(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Column(
-            children: [
-              SizedBox(height: 24.h),
-              Row(
-                children: [
-                  Text(
-                    "Vital signs",
-                    style: TextStyle(
-                      fontSize: 18.sp,
-                      fontWeight: FontWeight.w500,
-                      color: Colors.black,
-                    ),
+    return Column(
+      children: [
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 16.0),
+          child: Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(12.r),
+              border: Border.all(color: Colors.black12),
+            ),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Row(
+                    children: [
+                      SizedBox(width: 4.w),
+                      Text(
+                        value,
+                        style: TextStyle(
+                          fontSize: 20.sp,
+                          fontWeight: FontWeight.w500,
+                          color: keyColor,
+                        ),
+                      ),
+                      SizedBox(width: 4.w),
+                      Text(
+                        unit,
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
+                          color: keyColor,
+                        ),
+                      ),
+                      SizedBox(width: 4.w),
+                    ],
                   ),
-                  const Spacer(),
-                  AppIconButtonSvg(
-                    assetPath: 'assets/svg/filter.svg',
-                    iconSize: 32.w,
-                    onPressed: onFilterPressed,
-                  ),
-                  SizedBox(width: 4.w),
-                  AppIconButtonSvg(
-                    assetPath: 'assets/svg/plus.svg',
-                    iconSize: 32.w,
-                    onPressed: onAddPressed,
-                  ),
-                  SizedBox(width: 4.w),
-                ],
-              ),
-              SizedBox(height: 8.h),
-              Container(
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16.r),
-                  border: Border.all(color: Colors.black12),
                 ),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(
-                        vertical: 8.0,
-                        horizontal: 8.0,
-                      ),
-                      child: Row(
-                        children: [
-                          Text(
-                            title,
-                            style: TextStyle(
-                              fontSize: 18.sp,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
+                Padding(
+                  padding: const EdgeInsets.only(left: 8.0, right: 32.0),
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: SizedBox(
+                      height: 230,
+                      width: chartData.length * 50,
+                      child: Padding(
+                        padding: const EdgeInsets.only(bottom: 15),
+                        child: LineChart(
+                          LineChartData(
+                            showingTooltipIndicators: [],
+                            gridData: FlGridData(show: true),
+                            clipData: FlClipData(
+                              top: false,
+                              bottom: false,
+                              left: false,
+                              right: false,
                             ),
-                          ),
-                          SizedBox(width: 4.w),
-                          SvgPicture.asset(
-                            'assets/svg/info-empty.svg',
-                            width: 24.w,
-                            height: 24.h,
-                          ),
-                          const Spacer(),
-                          Text(
-                            value,
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w500,
-                              color: keyColor,
-                            ),
-                          ),
-                          SizedBox(width: 4.w),
-                          Text(
-                            unit,
-                            style: TextStyle(
-                              fontSize: 16.sp,
-                              fontWeight: FontWeight.w500,
-                              color: keyColor,
-                            ),
-                          ),
-                          SizedBox(width: 4.w),
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 0.h),
+                            titlesData: FlTitlesData(
+                              bottomTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  interval: 1,
+                                  reservedSize: 40, // جرّب 32-40 حسب الخط
+                                  getTitlesWidget: (value, meta) {
+                                    final matchedPoint = chartData.firstWhere(
+                                      (item) =>
+                                          (item['x'] as num).toDouble() ==
+                                          value,
+                                      orElse: () => {"label": ""},
+                                    );
+                                    final label =
+                                        (matchedPoint['label'] ?? '') as String;
 
-                    // ✅ Line Chart with scroll
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0, right: 32.0),
-                      child: SingleChildScrollView(
-                        scrollDirection: Axis.horizontal,
-                        child: SizedBox(
-                          height: 230,
-                          width: chartData.length * 50,
-                          child: LineChart(
-                            LineChartData(
-                              gridData: FlGridData(show: false),
-                              clipData: FlClipData(
-                                top: false,
-                                bottom: false,
-                                left: false,
-                                right: false,
-                              ),
-                              titlesData: FlTitlesData(
-                                bottomTitles: AxisTitles(
-                                  sideTitles: SideTitles(
-                                    showTitles: true,
-                                    interval: 1,
-                                    getTitlesWidget: (value, meta) {
-                                      final matchedPoint = chartData.firstWhere(
-                                        (item) => item['x'].toDouble() == value,
-                                        orElse: () => {"label": ""},
-                                      );
-
-                                      final label = matchedPoint['label'] ?? '';
-
-                                      return Text(
+                                    return SideTitleWidget(
+                                      axisSide: meta.axisSide,
+                                      space: 6, // مسافة بين الرسم والعنوان
+                                      child: Text(
                                         label,
                                         style: const TextStyle(
                                             fontSize: 10, color: Colors.grey),
-                                      );
-                                    },
-                                  ),
+                                      ),
+                                    );
+                                  },
                                 ),
-                                leftTitles: AxisTitles(
-                                  sideTitles: SideTitles(
-                                    showTitles: true,
-                                    reservedSize: 42,
-                                  ),
-                                ),
-                                topTitles: AxisTitles(
-                                    sideTitles: SideTitles(showTitles: false)),
-                                rightTitles: AxisTitles(
-                                    sideTitles: SideTitles(showTitles: false)),
                               ),
-                              borderData: FlBorderData(show: false),
-                              minX: 0,
-                              maxX: chartData.length.toDouble() - 1,
-                              minY: minY,
-                              maxY: maxY + 20,
-                              lineBarsData: [
-                                LineChartBarData(
-                                  isCurved: true,
-                                  color: Colors.green,
-                                  barWidth: 2,
-                                  belowBarData: BarAreaData(show: false),
-                                  dotData: FlDotData(
-                                    show: true,
-                                    getDotPainter: (spot, percent, bar, index) {
-                                      return FlDotCirclePainter(
-                                        radius: 4,
-                                        color: Colors.green,
-                                        strokeWidth: 1,
-                                        strokeColor: Colors.white,
-                                      );
-                                    },
-                                  ),
-                                  spots: chartSpots,
+                              leftTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  reservedSize: 42,
                                 ),
-                                LineChartBarData(
-                                  isCurved: true,
-                                  color: Colors.red,
-                                  barWidth: 2,
-                                  belowBarData: BarAreaData(show: false),
-                                  dotData: FlDotData(
-                                    show: true,
-                                    getDotPainter: (spot, percent, bar, index) {
-                                      return FlDotCirclePainter(
-                                        radius: 4,
-                                        color: Colors.red,
-                                        strokeWidth: 1,
-                                        strokeColor: Colors.white,
-                                      );
-                                    },
-                                  ),
-                                  spots: line2Spots,
+                              ),
+                              topTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: false,
                                 ),
-                              ],
+                              ),
+                              rightTitles: AxisTitles(
+                                sideTitles: SideTitles(
+                                  showTitles: true,
+                                  reservedSize: 20,
+                                ),
+                              ),
                             ),
+                            borderData: FlBorderData(show: false),
+                            minX: 0,
+                            maxX: chartData.length.toDouble() - 1,
+                            minY: minY,
+                            maxY: maxY + 20,
+                            lineBarsData: [
+                              LineChartBarData(
+                                isCurved: true,
+                                color: Colors.green,
+                                barWidth: 2,
+                                belowBarData: BarAreaData(show: false),
+                                dotData: FlDotData(
+                                  show: true,
+                                  getDotPainter: (spot, percent, bar, index) {
+                                    return FlDotCirclePainter(
+                                      radius: 4,
+                                      color: Colors.green,
+                                      strokeWidth: 1,
+                                      strokeColor: Colors.white,
+                                    );
+                                  },
+                                ),
+                                spots: chartSpots,
+                              ),
+                              LineChartBarData(
+                                isCurved: true,
+                                color: Colors.red,
+                                barWidth: 2,
+                                belowBarData: BarAreaData(show: false),
+                                dotData: FlDotData(
+                                  show: true,
+                                  getDotPainter: (spot, percent, bar, index) {
+                                    return FlDotCirclePainter(
+                                      radius: 4,
+                                      color: Colors.red,
+                                      strokeWidth: 1,
+                                      strokeColor: Colors.white,
+                                    );
+                                  },
+                                ),
+                                spots: line2Spots,
+                              ),
+                            ],
                           ),
                         ),
                       ),
                     ),
-                    const SizedBox(height: 16),
-                  ],
+                  ),
                 ),
-              ),
-              const SizedBox(height: 32),
-            ],
+              ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }

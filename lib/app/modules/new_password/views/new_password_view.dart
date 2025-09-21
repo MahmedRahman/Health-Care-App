@@ -16,15 +16,18 @@ class NewPasswordView extends GetView<NewPasswordController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.accent,
+      backgroundColor: Color(0xfffF2F2F2),
       appBar: AppBar(
-        title: const Text('Enter New Password'),
-        backgroundColor: AppColors.accent,
+        title: const Text(
+          'Enter New Password',
+          style: TextStyle(color: Colors.black),
+        ),
+        backgroundColor: Color(0xfffF2F2F2),
         centerTitle: false,
         leading: IconButton(
           icon: const Icon(
             Icons.arrow_back_ios,
-            color: AppColors.primary,
+            color: Colors.black,
           ),
           onPressed: () {
             Get.back();

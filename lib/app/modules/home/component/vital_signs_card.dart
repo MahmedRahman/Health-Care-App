@@ -28,19 +28,20 @@ class VitalSignsCard extends GetView {
         child: Container(
           decoration: BoxDecoration(
             color: color,
-            borderRadius: BorderRadius.circular(12.r),
+            borderRadius: BorderRadius.circular(8.r),
+            border: Border.all(color: Color(0xffB9B7B7)),
           ),
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Image.asset(
                   imagePath,
-                  width: 24.w,
-                  height: 24.h,
+                  width: 18.w,
+                  height: 18.h,
                 ),
-                SizedBox(height: 8.h),
+                SizedBox(height: 4.h),
                 Text(
                   title,
                   style: TextStyle(

@@ -26,6 +26,7 @@ class DashboardItem extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: Colors.black12),
           boxShadow: [
             BoxShadow(
               color: Colors.black12,

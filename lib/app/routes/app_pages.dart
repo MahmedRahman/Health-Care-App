@@ -1,5 +1,4 @@
 import 'package:get/get.dart';
-import 'package:health_care_app/app/modules/home/views/home_view.dart';
 
 import '../modules/PatientInfo/bindings/patient_info_binding.dart';
 import '../modules/PatientInfo/views/patient_info_view.dart';
@@ -16,6 +15,11 @@ import '../modules/contact_us/views/contact_us_view.dart';
 import '../modules/forget_password/bindings/forget_password_binding.dart';
 import '../modules/forget_password/views/forget_password_view.dart';
 import '../modules/home/bindings/home_binding.dart';
+import '../modules/home/views/home_view.dart';
+import '../modules/labs/bindings/labs_binding.dart';
+import '../modules/labs/views/labs_view.dart';
+import '../modules/medical_images/bindings/medical_images_binding.dart';
+import '../modules/medical_images/views/medical_images_view.dart';
 import '../modules/medications/bindings/medications_binding.dart';
 import '../modules/medications/views/medications_view.dart';
 import '../modules/medicine_add/bindings/medicine_add_binding.dart';
@@ -83,7 +87,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.OTP,
-      page: () => const OtpView(),
+      page: () =>  OtpView(),
       binding: OtpBinding(),
     ),
     GetPage(
@@ -149,6 +153,16 @@ class AppPages {
       name: _Paths.MEDICINE_ADD,
       page: () => const MedicineAddView(),
       binding: MedicineAddBinding(),
+    ),
+    GetPage(
+      name: _Paths.MEDICAL_IMAGES,
+      page: () => const MedicalImagesView(),
+      binding: MedicalImagesBinding(),
+    ),
+    GetPage(
+      name: _Paths.LABS,
+      page: () => const LabsView(),
+      binding: LabsBinding(),
     ),
   ];
 }

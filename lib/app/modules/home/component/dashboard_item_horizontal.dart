@@ -21,6 +21,7 @@ class DashboardItemHorizontal extends StatelessWidget {
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(16.r),
+        border: Border.all(color: Colors.black12),
       ),
       padding: const EdgeInsets.all(16),
       child: Row(

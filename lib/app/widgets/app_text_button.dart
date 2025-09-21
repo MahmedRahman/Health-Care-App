@@ -3,14 +3,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class AppTextButton extends StatelessWidget {
   final String text;
-  final VoidCallback onPressed;
+   VoidCallback? onPressed;
   final Color color;
   final Color? textColor; // اللون الخاص بالنص
 
-  const AppTextButton({
+   AppTextButton({
     super.key,
     required this.text,
-    required this.onPressed,
+     this.onPressed,
     this.color = Colors.red,
     this.textColor, // قابل للاختيار
   });

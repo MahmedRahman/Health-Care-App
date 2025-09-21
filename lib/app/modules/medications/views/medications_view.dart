@@ -19,8 +19,9 @@ class MedicationsView extends GetView<MedicationsController> {
   Widget build(BuildContext context) {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: const SystemUiOverlayStyle(
-        statusBarColor: Colors.blue, // لون الهيدر
-        statusBarIconBrightness: Brightness.light, // لون الأيقونات أبيض
+        statusBarColor: Color(0xFF60A5FA), // لون خلفية الـ Status Bar (أندرويد)
+        statusBarIconBrightness: Brightness.light, // لون الأيقونات (أندرويد)
+        statusBarBrightness: Brightness.dark, // لون الأيقونات في iOS (عكسي)
       ),
       child: Scaffold(
         backgroundColor: AppColorsMedications.grey,
@@ -28,6 +29,9 @@ class MedicationsView extends GetView<MedicationsController> {
           backgroundColor: AppColorsMedications.primary, // الأزرق المتدرج
           elevation: 0,
           automaticallyImplyLeading: false,
+          systemOverlayStyle:
+              SystemUiOverlayStyle.light, // أيقونات بيضاء بالـ Status Bar
+
           title: Row(
             children: [
               IconButton(

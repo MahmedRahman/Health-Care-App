@@ -3,15 +3,26 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:device_preview/device_preview.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:health_care_app/app/core/auth_service.dart';
+import 'package:health_care_app/app/modules/medical_images/widgets/filter_controller.dart';
+import 'package:health_care_app/app/modules/medical_images/widgets/upload_controller.dart';
 import 'app/routes/app_pages.dart';
 
-void main() {
+void main() async {
+  
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await GetStorage.init();
+  await Get.put(AuthService());
+
   runApp(
     DevicePreview(
       enabled: false,
       builder: (context) => const HeartCareApp(),
     ),
   );
+
 }
 
 class HeartCareApp extends StatelessWidget {
@@ -27,6 +38,11 @@ class HeartCareApp extends StatelessWidget {
           title: "Heart Care",
           debugShowCheckedModeBanner: false,
           initialRoute: AppPages.INITIAL,
+          initialBinding: BindingsBuilder(() {
+            Get.put(UploadController());
+            Get.put(FilterController());
+            
+          }),
           transitionDuration: const Duration(milliseconds: 0),
           getPages: AppPages.routes,
           theme: ThemeData(

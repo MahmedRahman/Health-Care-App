@@ -73,8 +73,8 @@ class MoreView extends GetView<MoreController> {
             ),
             Spacer(),
             LogoutButton(
-              onPressed: () {
-                Get.offAndToNamed(Routes.SIGN_IN);
+              onPressed: () async {
+                controller.logout();
               },
             ),
             SizedBox(height: 80.h),
