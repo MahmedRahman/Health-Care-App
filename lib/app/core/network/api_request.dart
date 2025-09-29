@@ -83,8 +83,7 @@ class ApiRequest {
     );
   }
 
-
- Future<Response> sendOTP({
+  Future<Response> sendOTP({
     required String email,
   }) async {
     return await webServices.execute(
@@ -94,8 +93,6 @@ class ApiRequest {
     );
   }
 
-
-
   Future<Response> verifyOTP({
     required String email,
     required String otp,
@@ -104,9 +101,9 @@ class ApiRequest {
       endpoint: "$baseUrl/verify/mail/otp",
       method: HttpMethod.POST,
       requiresAuth: false,
-      body:{
-      "otp": "$otp",
-      "email": "$email",
+      body: {
+        "otp": "$otp",
+        "email": "$email",
       },
     );
   }
@@ -119,7 +116,7 @@ class ApiRequest {
       endpoint: "$baseUrl/edit/password",
       method: HttpMethod.PUT,
       requiresAuth: false,
-      body:{
+      body: {
         "email": "$email",
         "password": "$newPassword",
       },
@@ -131,8 +128,131 @@ class ApiRequest {
       endpoint: "$baseUrl/get/user/profile",
       method: HttpMethod.GET,
       requiresAuth: true,
-    
     );
   }
 
+  Future<Response> getDiagnosePrimary() async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/primary/diagnose/list",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> getDiagnoseSecondary() async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/secondary/diagnose/list",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> getDiagnoseTeritary() async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/teritary/list",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> getTeamList() async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/physician/team/list",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> getNurseNamesList() async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/nurse/names/list",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> updateProfile({
+    required id,
+    profImg,
+    firstName,
+    lastName,
+    hospitalId,
+    country,
+    city,
+    address,
+    gender,
+    dob,
+    age,
+    race,
+    weight,
+    height,
+    bsa,
+    bmi,
+    maritalStatus,
+    language,
+    nameOfKin,
+    clinicName,
+    diagnosesPrimary,
+    diagnosesSecondary,
+    teritiaryList,
+    nurseNames,
+    physicianTeam,
+    nationalId,
+    idCard,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/update/$id/profile",
+      method: HttpMethod.PUT,
+      requiresAuth: true,
+      body: {
+        "profImg": "$profImg",
+        "firstName": "$firstName",
+        "lastName": "$lastName",
+        // "verified": false,
+        // "emailVerified": false,
+        "hospitalId": "$hospitalId",
+        //"emailAddress": "atpfreelancer2020@gmail.com",
+        //"telephoneNumber": null,
+        "country": "$country",
+        "city": "$city",
+        "address": "$address",
+        "nationalId": "$nationalId",
+        "idCard": "$idCard",
+
+        // "street": null,
+        // "area": null,
+        //"skinColor": null,
+
+        "dateOfBirth": "$dob",
+        "race": "$race",
+        "gender": "$gender",
+        "age": "$age",
+
+        "weight": "$weight",
+        "height": "$height",
+        "bsa": "$bsa",
+        "bmi": "$bmi",
+
+        "maritalStatus": "$maritalStatus",
+        "language": "$language",
+
+        "nameOfKin": "$nameOfKin",
+        "clinicName": "$clinicName",
+
+        "diagnosesPrimary": diagnosesPrimary,
+        "diagnosesSecondary": diagnosesSecondary,
+        "teritiaryList": teritiaryList,
+
+        "nurseNames": nurseNames,
+        "physicianTeam": physicianTeam,
+
+        "bloodPressure": [],
+        "bloodRate": [],
+        "oxygenSaturation": [],
+        "weightUser": [],
+        "bloodSugarRandom": [],
+        "fluidBalance": []
+      },
+    );
+  }
 }

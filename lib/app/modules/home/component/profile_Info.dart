@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/modules/home/component/app_circle_image.dart';
 import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
 
 class ProfileInfo extends StatelessWidget {
@@ -10,6 +11,7 @@ class ProfileInfo extends StatelessWidget {
   String userAge = ""; // Example age
   String userGender = ""; // Example
   String userId = ""; // Example ID
+  String base64String = "";
   ProfileInfo({
     super.key,
     this.onTap,
@@ -17,6 +19,7 @@ class ProfileInfo extends StatelessWidget {
     this.userAge = "",
     this.userGender = "",
     this.userId = "",
+    this.base64String = "",
   });
 
   @override
@@ -133,12 +136,18 @@ class ProfileInfo extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          ClipOval(
-                            child: Image.asset(
-                              "assets/images/ix_user-profile-filled.png",
-                              height: 80.h,
-                              width: 80.w,
-                            ),
+                          // ClipOval(
+                          //   child: Image.asset(
+                          //     "assets/images/ix_user-profile-filled.png",
+                          //     height: 80.h,
+                          //     width: 80.w,
+                          //   ),
+                          // ),
+                          AppCircleImage(
+                            base64String: base64String,
+                            size: 80,
+                            placeholder:
+                                "assets/images/ix_user-profile-filled.png",
                           ),
                           SizedBox(width: 8.w),
                           Column(

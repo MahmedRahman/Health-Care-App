@@ -65,13 +65,12 @@ class WebServices extends GetConnect {
         body,
       );
 
-      // Check if the response contains HTML content (which might indicate unauthorized access)
-      if (response.body is String &&
-          (response.body.toString().contains('<html') ||
-              response.body.toString().contains('<!DOCTYPE html'))) {
-        // This is likely an HTML login page, indicating unauthorized access
-        throw UnauthorizedException();
-      }
+      // // Check if the response contains HTML content (which might indicate unauthorized access)
+      // if ((response.body.toString().contains('<html') ||
+      //     response.body.toString().contains('<!DOCTYPE html'))) {
+      //   // This is likely an HTML login page, indicating unauthorized access
+      //   throw UnauthorizedException();
+      // }
 
       // Logging Response (Only if logging is enabled)
       if (enableLogging) HttpHelper.logResponse(response);
@@ -85,12 +84,9 @@ class WebServices extends GetConnect {
       if (e is UnauthorizedException) {
         (e).handleUnauthorized(enableLogging: enableLogging);
 
-        Get.snackbar(
-          "Session Expired",
-          "Please log in again.",
-          snackPosition: SnackPosition.BOTTOM,
-        );
-        AuthService.to.logout();
+        if (Get.currentRoute != '/sign-in') {
+          AuthService.to.logout();
+        }
 
         throw e;
       } else {

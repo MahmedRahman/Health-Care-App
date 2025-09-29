@@ -13,8 +13,7 @@ class AuthService extends GetxService {
 
   final _token = RxnString();
 
-  final Rxn<Map<dynamic,dynamic>> currentUser = Rxn<Map<dynamic,dynamic>>();
-
+  final Rxn<Map<dynamic, dynamic>> currentUser = Rxn<Map<dynamic, dynamic>>();
 
   String? get token => _token.value;
 
@@ -33,9 +32,6 @@ class AuthService extends GetxService {
       Response response = await ApiRequest().getUserProfile();
       if (response.statusCode == 200) {
         currentUser.value = response.body;
-
-       
-
       } else {
         // Handle error, possibly clear auth
         await clearAuth();

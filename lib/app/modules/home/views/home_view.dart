@@ -37,62 +37,58 @@ class HomeView extends GetView<HomeController> {
   HomeController controller = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: const SystemUiOverlayStyle(
-        statusBarColor: Color(0xFF2445CE), // لون الهيدر
-        statusBarIconBrightness: Brightness.light, // لون الأيقونات أبيض
-      ),
-      child: Scaffold(
-        backgroundColor: Color(0xFFF2F2F2),
-        body: SafeArea(
-          child: Container(
-            // color: Color(0xFFF9FBFD),
-            child: SingleChildScrollView(
-              scrollDirection: Axis.vertical,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    clipBehavior: Clip.none,
-                    children: [
-                      ProfileInfo(
-                        userName: Get.find<AuthService>()
-                                .currentUser
-                                .value?['firstName']
-                                .toString() ??
-                            "User",
-                        userAge: Get.find<AuthService>()
-                                .currentUser
-                                .value?['age']
-                                 ??
-                            "Age",
-                        userGender: Get.find<AuthService>()
-                                .currentUser
-                                .value?['gender']
-                               ??
-                            "Gender",
-                        userId: Get.find<AuthService>()
-                                .currentUser
-                                .value?['hospitalId']
-                                .toString() ??
-                            "ID",
-                        onTap: () {
-                          Get.bottomSheet(
-                            UpdateBackgroundScreen(),
-                            isScrollControlled: false,
-                            backgroundColor: Colors.transparent,
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  SizedBox(height: 12.h),
-                  VitalSigns(),
-                  SizedBox(height: 12.h),
-                  QuickLinks(),
-                  SizedBox(height: 20.h),
-                ],
-              ),
+    return Scaffold(
+      backgroundColor: Color(0xFFF2F2F2),
+      body: SafeArea(
+        child: Container(
+          // color: Color(0xFFF9FBFD),
+          child: SingleChildScrollView(
+            scrollDirection: Axis.vertical,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Stack(
+                  clipBehavior: Clip.none,
+                  children: [
+                    ProfileInfo(
+                      userName: Get.find<AuthService>()
+                              .currentUser
+                              .value?['firstName']
+                              .toString() ??
+                          "User",
+                      userAge:
+                          Get.find<AuthService>().currentUser.value?['age'] ??
+                              "Age",
+                      userGender: Get.find<AuthService>()
+                              .currentUser
+                              .value?['gender'] ??
+                          "Gender",
+                      userId: Get.find<AuthService>()
+                              .currentUser
+                              .value?['hospitalId']
+                              .toString() ??
+                          "ID",
+                      base64String: Get.find<AuthService>()
+                              .currentUser
+                              .value?['profImg']
+                              .toString() ??
+                          "ID",
+                      onTap: () {
+                        Get.bottomSheet(
+                          UpdateBackgroundScreen(),
+                          isScrollControlled: false,
+                          backgroundColor: Colors.transparent,
+                        );
+                      },
+                    ),
+                  ],
+                ),
+                SizedBox(height: 12.h),
+                VitalSigns(),
+                SizedBox(height: 12.h),
+                QuickLinks(),
+                SizedBox(height: 20.h),
+              ],
             ),
           ),
         ),
@@ -111,7 +107,7 @@ class VitalSigns extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.only(left: 20),
       child: Container(
-        height: 290,
+        // height: 290,
         width: Get.width - 40,
         decoration: BoxDecoration(
           border: Border.all(color: Colors.black12),
@@ -120,7 +116,7 @@ class VitalSigns extends StatelessWidget {
         ),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
-          child: ListView(
+          child: Column(
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(height: 8.h),

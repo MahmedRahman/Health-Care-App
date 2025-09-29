@@ -19,36 +19,43 @@ class NewPasswordController extends GetxController with StateMixin {
   }
 
   void changePassword() async {
-    if (passwordController.text == confirmPasswordController.text) {
+    if (passwordController.text != confirmPasswordController.text) {
+      Get.snackbar(
+        "Error",
+        "Passwords do not match.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
 
-Response response = await ApiRequest().resetPassword(
+    try {
+      Response response = await ApiRequest().resetPassword(
         email: Get.arguments['email'],
         newPassword: passwordController.text,
       );
 
-
-      if (response.statusCode == 200) {
-        Get.snackbar(
-          "Success",
-          "Password has been changed successfully.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
-        Get.offAllNamed(Routes.SIGN_IN);
-      } else {
-        Get.snackbar(
-          "Error",
-          "Failed to change password. Please try again.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-      }
-
-
-
-      change(null, status: RxStatus.success());
+      Get.snackbar(
+        "Success",
+        "Password has been changed successfully.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
+      Get.offAllNamed(
+        Routes.SIGN_IN,
+      );
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Failed to change password. Please try again.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
+
+    change(null, status: RxStatus.success());
   }
 }

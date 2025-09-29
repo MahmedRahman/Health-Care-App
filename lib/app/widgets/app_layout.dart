@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
@@ -58,67 +59,40 @@ class AppLayout extends StatelessWidget {
     );
 
     return Scaffold(
-      body: Stack(
-        children: [
-          Positioned.fill(child: body),
-          Positioned(
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              height: 60.h,
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(18.w),
-                  topRight: Radius.circular(18.w),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: List.generate(5, (index) {
-                  return Expanded(
-                    child: GestureDetector(
-                      onTap: () => navController.changeTab(index),
-                      child: Obx(() {
-                        final isSelected =
-                            navController.selectedIndex.value == index;
-                        return Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            SizedBox(height: 4.h),
-                            SvgPicture.asset(
-                              svgIcons[index],
-                              width: 24.w,
-                              height: 24.h,
-                              colorFilter: ColorFilter.mode(
-                                isSelected ? AppColors.primary : Colors.grey,
-                                BlendMode.srcIn,
-                              ),
-                            ),
-                            SizedBox(height: 4.h),
-                            Text(
-                              labels[index],
-                              style: TextStyle(
-                                color: isSelected
-                                    ? AppColors.primary
-                                    : Colors.grey,
-                                fontSize: 12.sp,
-                              ),
-                            ),
-                          ],
-                        );
-                      }),
-                    ),
-                  );
-                }),
-              ),
-            ),
-          ),
-        ],
-      ),
+      resizeToAvoidBottomInset: false,
+      body: body,
+      bottomNavigationBar: Obx(() {
+        final current = navController.selectedIndex.value;
+
+        return NavigationBar(
+          selectedIndex: current,
+          onDestinationSelected: navController.changeTab,
+          height: 60.h,
+          backgroundColor: Colors.white,
+          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+          destinations: List.generate(svgIcons.length, (index) {
+            return NavigationDestination(
+              icon: navIcon(svgIcons[index], false),
+              selectedIcon: navIcon(svgIcons[index], true),
+              label: labels[index],
+            );
+          }),
+        );
+      }),
     );
   }
+}
+
+Widget navIcon(String assetPath, bool isSelected) {
+  return SvgPicture.asset(
+    assetPath,
+    width: 24.w,
+    height: 24.h,
+    colorFilter: ColorFilter.mode(
+      isSelected ? AppColors.primary : Colors.grey,
+      BlendMode.srcIn,
+    ),
+  );
 }
 
 class LayoutMiddleware extends GetMiddleware {
@@ -143,7 +117,9 @@ class LayoutMiddleware extends GetMiddleware {
     if (routesWithLayout.contains(page?.name)) {
       return GetPage(
         name: page!.name,
-        page: () => AppLayout(body: child),
+        page: () => AppLayout(
+          body: child,
+        ),
         transition: page.transition,
         binding: page.binding,
       );
@@ -152,3 +128,67 @@ class LayoutMiddleware extends GetMiddleware {
     return page;
   }
 }
+
+
+   //  Stack(
+      //   children: [
+      //     Positioned.fill(
+      //       child: body,
+      //     ),
+      //     Positioned(
+      //       left: 0,
+      //       right: 0,
+      //       bottom: 0,
+      //       child: Container(
+      //         height: 60.h,
+      //         decoration: BoxDecoration(
+      //           color: Colors.white,
+      //           borderRadius: BorderRadius.only(
+      //             topLeft: Radius.circular(18.w),
+      //             topRight: Radius.circular(18.w),
+      //           ),
+      //         ),
+      //         child: Row(
+      //           mainAxisAlignment: MainAxisAlignment.spaceAround,
+      //           children: List.generate(5, (index) {
+      //             return Expanded(
+      //               child: GestureDetector(
+      //                 onTap: () => navController.changeTab(index),
+      //                 child: Obx(() {
+      //                   final isSelected =
+      //                       navController.selectedIndex.value == index;
+      //                   return Column(
+      //                     mainAxisAlignment: MainAxisAlignment.center,
+      //                     children: [
+      //                       SizedBox(height: 4.h),
+      //                       SvgPicture.asset(
+      //                         svgIcons[index],
+      //                         width: 24.w,
+      //                         height: 24.h,
+      //                         colorFilter: ColorFilter.mode(
+      //                           isSelected ? AppColors.primary : Colors.grey,
+      //                           BlendMode.srcIn,
+      //                         ),
+      //                       ),
+      //                       SizedBox(height: 4.h),
+      //                       Text(
+      //                         labels[index],
+      //                         style: TextStyle(
+      //                           color: isSelected
+      //                               ? AppColors.primary
+      //                               : Colors.grey,
+      //                           fontSize: 12.sp,
+      //                         ),
+      //                       ),
+      //                     ],
+      //                   );
+      //                 }),
+      //               ),
+      //             );
+      //           }),
+      //         ),
+      //       ),
+      //     ),
+      //   ],
+      // ),
+   

@@ -6,6 +6,8 @@ import '../modules/PdfViewer/bindings/pdf_viewer_binding.dart';
 import '../modules/PdfViewer/views/pdf_viewer_view.dart';
 import '../modules/about_app/bindings/about_app_binding.dart';
 import '../modules/about_app/views/about_app_view.dart';
+import '../modules/appointments/bindings/appointments_binding.dart';
+import '../modules/appointments/views/appointments_view.dart';
 import '../modules/care_gevers/bindings/care_gevers_binding.dart';
 import '../modules/care_gevers/views/care_gevers_view.dart';
 import '../modules/contact/bindings/contact_binding.dart';
@@ -87,7 +89,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.OTP,
-      page: () =>  OtpView(),
+      page: () => OtpView(),
       binding: OtpBinding(),
     ),
     GetPage(
@@ -163,6 +165,11 @@ class AppPages {
       name: _Paths.LABS,
       page: () => const LabsView(),
       binding: LabsBinding(),
+    ),
+    GetPage(
+      name: _Paths.APPOINTMENTS,
+      page: () => AppointmentsView(),
+      binding: AppointmentsBinding(),
     ),
   ];
 }

@@ -223,8 +223,6 @@ class ProfileHealthInfo extends StatelessWidget {
 }
 
 class ProfilePersonalInfo extends GetView<PatientInfoController> {
-
-  
   TextEditingController firstName = TextEditingController();
   TextEditingController lastName = TextEditingController();
   TextEditingController phoneNumber = TextEditingController();
@@ -235,9 +233,6 @@ class ProfilePersonalInfo extends GetView<PatientInfoController> {
   TextEditingController Address_city = TextEditingController();
   TextEditingController Address_area = TextEditingController();
   TextEditingController Address_starets_name = TextEditingController();
-
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -250,7 +245,7 @@ class ProfilePersonalInfo extends GetView<PatientInfoController> {
             child: AppImagePickerBox(
               size: 120,
               borderRadius: 20,
-              onImageSelected: (image) {},
+              controller: TextEditingController(),
             ),
           ),
           SizedBox(height: 16.h),

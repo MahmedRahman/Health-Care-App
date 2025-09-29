@@ -44,12 +44,21 @@ class OtpController extends GetxController {
         colorText: Colors.white,
       );
     }
-
-  
   }
 
   void verifyCode(String code) async {
-    if (code.length == 4) {
+    if (code.length != 4) {
+      Get.snackbar(
+        "Error",
+        "Please enter a valid 4-digit code.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    try {
       Response response = await ApiRequest().verifyOTP(
         email: Get.arguments['email'],
         otp: code,
@@ -69,6 +78,14 @@ class OtpController extends GetxController {
           arguments: {'email': Get.arguments['email']},
         );
       }
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Failed to verify code. Please try again.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
     }
   }
 }

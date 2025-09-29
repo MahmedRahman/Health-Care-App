@@ -88,7 +88,7 @@ class MedicineAddView extends GetView<MedicineAddController> {
                   ),
                   SizedBox(height: 8.h),
                   AppImagePickerBox(
-                    onImageSelected: (image) {},
+                    controller: TextEditingController(),
                     validator: (value) {
                       if (value == null) {
                         return 'Please select image';

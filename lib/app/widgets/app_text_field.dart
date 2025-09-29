@@ -14,21 +14,22 @@ class AppTextField extends StatefulWidget {
   final String icon;
   final String? suffixText;
   final String? Function(String?)? validator;
+  final bool readOnly;
 
-  const AppTextField({
-    super.key,
-    required this.label,
-    required this.hintText,
-    this.controller,
-    this.isPassword = false,
-    this.showLabel = true,
-    this.keyboardType = TextInputType.text,
-    this.labelColor = Colors.white,
-    this.radius = 30,
-    this.icon = '',
-    this.suffixText,
-    this.validator,
-  });
+  const AppTextField(
+      {super.key,
+      required this.label,
+      required this.hintText,
+      this.controller,
+      this.isPassword = false,
+      this.showLabel = true,
+      this.keyboardType = TextInputType.text,
+      this.labelColor = Colors.white,
+      this.radius = 30,
+      this.icon = '',
+      this.suffixText,
+      this.validator,
+      this.readOnly = false});
 
   @override
   State<AppTextField> createState() => _AppTextFieldState();
@@ -105,6 +106,8 @@ class _AppTextFieldState extends State<AppTextField> {
           obscureText: widget.isPassword ? _obscureText : false,
           keyboardType: widget.keyboardType,
           validator: widget.validator,
+          readOnly: widget.readOnly, // 👈 هنا
+
           decoration: InputDecoration(
             hintText: widget.hintText,
             filled: true,
@@ -129,6 +132,15 @@ class _AppTextFieldState extends State<AppTextField> {
                 ? IconButton(
                     icon: Icon(
                       _obscureText ? Icons.visibility_off : Icons.visibility,
+                      color: Colors.grey,
+                    ),
+                    onPressed: _toggleVisibility,
+                  )
+                : null,
+            prefixIcon: widget.readOnly
+                ? IconButton(
+                    icon: Icon(
+                      Icons.lock,
                       color: Colors.grey,
                     ),
                     onPressed: _toggleVisibility,

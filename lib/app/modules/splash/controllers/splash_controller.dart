@@ -17,24 +17,28 @@ class SplashController extends GetxController {
       })
       ..setLooping(false);
 
-    videoController.addListener(() {
-      if (videoController.value.position == videoController.value.duration) {
-        if (Get.find<AuthService>().isLoggedIn) {
-          // await Get.putAsync<InitialDataService>(
-          //     () async => await InitialDataService().init());
-          if (Get.find<AuthService>().isFirstLogin) {
+    videoController.addListener(
+      () {
+        if (videoController.value.position == videoController.value.duration) {
+          if (Get.find<AuthService>().isLoggedIn) {
             Get.offAndToNamed(Routes.HOME);
             return;
-          } else {
-            Get.offAllNamed('/onboarding');
+          }
+
+          if (Get.find<AuthService>().isFirstLogin) {
+            Get.offAndToNamed(Routes.ONBOARDING);
             return;
           }
-        } else {
-          Get.offAndToNamed(Routes.SIGN_IN);
-          return;
+
+          if (Get.find<AuthService>().isFirstLogin != true) {
+            Get.offAndToNamed(Routes.SIGN_IN);
+            return;
+          }
+
+          Get.offAndToNamed(Routes.ONBOARDING);
         }
-      }
-    });
+      },
+    );
   }
 
   @override

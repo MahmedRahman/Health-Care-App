@@ -168,7 +168,36 @@ class MedicationsView extends GetView<MedicationsController> {
               ],
             ),
           );
-        }),
+        },
+            onLoading: const Center(
+              child: CircularProgressIndicator(),
+            ),
+            onEmpty: Center(
+              child: Padding(
+                padding: const EdgeInsets.all(32.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      'No medications found.',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.black,
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    AppPrimaryButton(
+                      text: "Add Medication",
+                      backgroundColor: AppColorsMedications.primary,
+                      borderRadius: 20,
+                      onPressed: () {
+                        Get.toNamed(Routes.MEDICINE_ADD);
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            )),
       ),
     );
   }

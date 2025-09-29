@@ -10,8 +10,6 @@ class SplashView extends GetView<SplashController> {
 
   @override
   Widget build(BuildContext context) {
-    //   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-
     return GetBuilder<SplashController>(
       init: SplashController(),
       builder: (controller) {

@@ -77,10 +77,7 @@ class NewPasswordView extends GetView<NewPasswordController> {
                     text: "Done",
                     onPressed: () {
                       if (controller.formKey.currentState!.validate()) {
-                        Get.offAllNamed(Routes.HOME);
-                        SnackbarHelper.showSuccess(
-                          "Password updated successfully",
-                        );
+                        controller.changePassword();
                       } else {
                         controller.autoValidateMode =
                             AutovalidateMode.onUserInteraction;

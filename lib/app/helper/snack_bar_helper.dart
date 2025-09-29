@@ -30,3 +30,41 @@ class SnackbarHelper {
     );
   }
 }
+
+class DialogHelper {
+  static void showSuccess(String message, {String title = 'Success'}) {
+    Get.defaultDialog(
+      title: title,
+      titleStyle: const TextStyle(
+        color: Colors.green,
+        fontWeight: FontWeight.bold,
+      ),
+      middleText: message,
+      middleTextStyle: const TextStyle(fontSize: 16),
+      backgroundColor: Colors.white,
+      radius: 12,
+      textConfirm: "OK",
+      confirmTextColor: Colors.white,
+      buttonColor: Colors.green,
+      onConfirm: () => Get.back(),
+    );
+  }
+
+  static void showError(String message, {String title = 'Error'}) {
+    Get.defaultDialog(
+      title: title,
+      titleStyle: const TextStyle(
+        color: Colors.red,
+        fontWeight: FontWeight.bold,
+      ),
+      middleText: message,
+      middleTextStyle: const TextStyle(fontSize: 16),
+      backgroundColor: Colors.white,
+      radius: 12,
+      textConfirm: "OK",
+      confirmTextColor: Colors.white,
+      buttonColor: Colors.red,
+      onConfirm: () => Get.back(),
+    );
+  }
+}

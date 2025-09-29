@@ -7,7 +7,7 @@ class MedicationsController extends GetxController
   @override
   void onInit() {
     super.onInit();
-    change(medicines, status: RxStatus.success());
+
     featchMedications();
   }
 
@@ -17,11 +17,12 @@ class MedicationsController extends GetxController
     if (response.statusCode == 200) {
       List<dynamic> data = response.body;
 
-      change(data, status: RxStatus.success());
-
       if (data.isEmpty) {
         change(null, status: RxStatus.empty());
+        return;
       }
+
+      change(data, status: RxStatus.success());
     } else {
       change(null, status: RxStatus.error('Failed to fetch medications'));
     }
