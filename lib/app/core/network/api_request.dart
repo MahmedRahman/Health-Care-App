@@ -61,7 +61,7 @@ class ApiRequest {
         "lastName": "$lastName",
         "emailAddress": "$email",
         "hospitalId": "$hospitalId",
-        "phoneNumber": "$phone",
+        "telephoneNumber": "$phone",
         "password": "$password",
       },
     );

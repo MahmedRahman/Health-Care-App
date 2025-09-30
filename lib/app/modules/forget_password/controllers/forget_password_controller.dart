@@ -16,37 +16,42 @@ class ForgetPasswordController extends GetxController with StateMixin {
   }
 
   void sendVerificationCode() async {
-    if (formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate() == false) {
+      Get.snackbar(
+        "Error",
+        "Failed to send verification code. Please try again.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+      return;
+    }
+
+    try {
       Response response =
           await ApiRequest().sendOTP(email: emailController.text);
 
-      if (response.statusCode == 200) {
-        Get.snackbar(
-          "Success",
-          "Verification code sent to your email.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
-        );
+      Get.snackbar(
+        "Success",
+        "Verification code sent to your email.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.green,
+        colorText: Colors.white,
+      );
 
-        Get.toNamed(Routes.OTP, arguments: {
-          "email": emailController.text,
-        });
-      
-      } else {
-        Get.snackbar(
-          "Error",
-          "Failed to send verification code. Please try again.",
-          snackPosition: SnackPosition.BOTTOM,
-          backgroundColor: Colors.red,
-          colorText: Colors.white,
-        );
-      }
-
-      // change(null, status: RxStatus.success());
+      Get.toNamed(Routes.OTP, arguments: {
+        "email": emailController.text,
+      });
+    } catch (e) {
+      Get.snackbar(
+        "Error",
+        "Failed to send verification code. Please try again.",
+        snackPosition: SnackPosition.BOTTOM,
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    } finally {
+      change(null, status: RxStatus.success());
     }
   }
-
-
-
 }

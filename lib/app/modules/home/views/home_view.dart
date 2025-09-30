@@ -9,6 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
 import 'package:health_care_app/app/core/auth_service.dart';
+import 'package:health_care_app/app/modules/home/component/dashboard_item_horizontal.dart';
 import 'package:health_care_app/app/modules/home/component/profile_Info.dart';
 import 'package:health_care_app/app/modules/home/component/quick_links.dart';
 import 'package:health_care_app/app/modules/home/component/vital_signs_bottom_sheet.dart';
@@ -37,60 +38,83 @@ class HomeView extends GetView<HomeController> {
   HomeController controller = Get.put(HomeController());
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: Color(0xFFF2F2F2),
-      body: SafeArea(
-        child: Container(
-          // color: Color(0xFFF9FBFD),
-          child: SingleChildScrollView(
-            scrollDirection: Axis.vertical,
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+    final double top =
+        MediaQuery.of(context).padding.top; // ارتفاع الاستاتس بار
+
+    final diagnoses =
+        Get.find<AuthService>().currentUser.value?['diagnosesPrimary'];
+
+// نتأكد إن القيمة موجودة وقائمة مش فاضية
+    final healthStatus =
+        (diagnoses != null && diagnoses is List && diagnoses.isNotEmpty)
+            ? diagnoses.first['name'].toString()
+            : "Health";
+
+    return Container(
+      color: Color(0xffF2F2F2),
+      height: Get.height,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.vertical,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              height: top,
+              color: AppColors.primary, // استخدم لونك الأزرق
+            ),
+
+            Stack(
+              clipBehavior: Clip.hardEdge,
               children: [
-                Stack(
-                  clipBehavior: Clip.none,
-                  children: [
-                    ProfileInfo(
-                      userName: Get.find<AuthService>()
-                              .currentUser
-                              .value?['firstName']
-                              .toString() ??
-                          "User",
-                      userAge:
-                          Get.find<AuthService>().currentUser.value?['age'] ??
-                              "Age",
-                      userGender: Get.find<AuthService>()
-                              .currentUser
-                              .value?['gender'] ??
+                ProfileInfo(
+                  userName: Get.find<AuthService>()
+                          .currentUser
+                          .value?['firstName']
+                          .toString() ??
+                      "User",
+                  userAge: Get.find<AuthService>().currentUser.value?['age'] ??
+                      "Age",
+                  userGender:
+                      Get.find<AuthService>().currentUser.value?['gender'] ??
                           "Gender",
-                      userId: Get.find<AuthService>()
-                              .currentUser
-                              .value?['hospitalId']
-                              .toString() ??
-                          "ID",
-                      base64String: Get.find<AuthService>()
-                              .currentUser
-                              .value?['profImg']
-                              .toString() ??
-                          "ID",
-                      onTap: () {
-                        Get.bottomSheet(
-                          UpdateBackgroundScreen(),
-                          isScrollControlled: false,
-                          backgroundColor: Colors.transparent,
-                        );
-                      },
-                    ),
-                  ],
+                  userId: Get.find<AuthService>()
+                          .currentUser
+                          .value?['hospitalId']
+                          .toString() ??
+                      "ID",
+                  base64String: Get.find<AuthService>()
+                          .currentUser
+                          .value?['profImg']
+                          .toString() ??
+                      "ID",
+                  userHealthStatus: healthStatus,
+                  onTap: () {
+                    Get.bottomSheet(
+                      UpdateBackgroundScreen(),
+                      isScrollControlled: false,
+                      backgroundColor: Colors.transparent,
+                    );
+                  },
                 ),
-                SizedBox(height: 12.h),
                 VitalSigns(),
-                SizedBox(height: 12.h),
-                QuickLinks(),
-                SizedBox(height: 20.h),
               ],
             ),
-          ),
+            //SizedBox(height: 12.h),
+
+            SizedBox(height: 12.h),
+            QuickLinks(),
+            SizedBox(height: 12.h),
+
+            DashboardItemHorizontal(
+              title: "Medications",
+              svgPath: "assets/svg/Medications.svg",
+              iconColor: Colors.blue,
+              onTap: () {
+                Get.toNamed(Routes.MEDICATIONS);
+              },
+            ),
+            SizedBox(height: 12.h),
+          ],
         ),
       ),
     );
@@ -105,7 +129,7 @@ class VitalSigns extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20),
+      padding: const EdgeInsets.only(left: 20, top: 155),
       child: Container(
         // height: 290,
         width: Get.width - 40,
@@ -115,7 +139,7 @@ class VitalSigns extends StatelessWidget {
           color: Colors.white,
         ),
         child: Padding(
-          padding: const EdgeInsets.all(8.0),
+          padding: const EdgeInsets.all(20.0),
           child: Column(
             //crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -162,7 +186,7 @@ class VitalSigns extends StatelessWidget {
                     title: "Oxygen Saturation",
                     imagePath: "assets/images/oxygen_saturation.png",
                     value: "95%",
-                    color: Color(0xffDEBC36),
+                    color: Color(0xffDFD925),
                     textColor: Colors.black,
                     onTap: () {
                       Get.bottomSheet(

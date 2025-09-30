@@ -77,7 +77,7 @@ class MoreView extends GetView<MoreController> {
                 controller.logout();
               },
             ),
-            SizedBox(height: 80.h),
+            SizedBox(height: 20.h),
           ],
         ),
       ),

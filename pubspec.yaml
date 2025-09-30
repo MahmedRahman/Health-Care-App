@@ -37,6 +37,7 @@ flutter:
     - assets/svg/
     - assets/videos/Comp_1_5.mp4
     - assets/pdfs/terms.pdf
+    - assets/videos/Comp_1_6.mp4
 
   fonts:
     - family: Poppins

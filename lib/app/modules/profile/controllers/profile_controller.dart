@@ -134,36 +134,15 @@ class ProfileController extends GetxController with StateMixin {
   void onInit() async {
     // TODO: implement onInit
     super.onInit();
-
-    await getDiagnosePrimary();
-    await getDiagnoseSecondary();
-    await getDiagnoseTertiary();
-
-    await getPresonalTeam();
-    await getNurse();
     change(null, status: RxStatus.success());
   }
 
-  RxList<String> DiagnosePrimaryListNames = RxList.empty();
   List<String> selectDiagnosePrimaryListNames = (Get.find<AuthService>()
               .currentUser
               .value?['diagnosesPrimary'] as List<dynamic>? ??
           [])
       .map((item) => item['name']?.toString() ?? '')
       .toList();
-
-  Future getDiagnosePrimary() async {
-    try {
-      if (DiagnosePrimaryListNames.value.isEmpty) {
-        Response response = await ApiRequest().getDiagnosePrimary();
-        DiagnosePrimaryListNames.value = extractNames(response.body);
-      }
-    } catch (e) {
-      DiagnosePrimaryListNames.value = [];
-    }
-  }
-
-  RxList<String> DiagnoseSecondaryListNames = RxList.empty();
 
   List<String> SelectDiagnoseSecondaryListNames = (Get.find<AuthService>()
               .currentUser
@@ -172,60 +151,12 @@ class ProfileController extends GetxController with StateMixin {
       .map((item) => item['name']?.toString() ?? '')
       .toList();
 
-  Future getDiagnoseSecondary() async {
-    try {
-      if (DiagnoseSecondaryListNames.value.isEmpty) {
-        Response response = await ApiRequest().getDiagnoseSecondary();
-        DiagnoseSecondaryListNames.value = extractNames(response.body);
-      }
-    } catch (e) {
-      DiagnoseSecondaryListNames.value = [];
-    }
-  }
-
-  RxList<String> DiagnoseTertiaryListNames = RxList.empty();
-
   List<String> SelectDiagnoseTertiaryListNames = (Get.find<AuthService>()
               .currentUser
               .value?['teritiaryList'] as List<dynamic>? ??
           [])
       .map((item) => item['name']?.toString() ?? '')
       .toList();
-
-  Future getDiagnoseTertiary() async {
-    try {
-      if (DiagnoseTertiaryListNames.value.isEmpty) {
-        Response response = await ApiRequest().getDiagnoseSecondary();
-        DiagnoseTertiaryListNames.value = extractNames(response.body);
-      }
-    } catch (e) {
-      DiagnoseTertiaryListNames.value = [];
-    }
-  }
-
-  RxList<String> PresonalTeamListNames = RxList.empty();
-  Future getPresonalTeam() async {
-    try {
-      if (PresonalTeamListNames.value.isEmpty) {
-        Response response = await ApiRequest().getTeamList();
-        PresonalTeamListNames.value = extractNames(response.body);
-      }
-    } catch (e) {
-      PresonalTeamListNames.value = [];
-    }
-  }
-
-  RxList<String> NurseListNames = RxList.empty();
-  Future getNurse() async {
-    try {
-      if (NurseListNames.value.isEmpty) {
-        Response response = await ApiRequest().getNurseNamesList();
-        NurseListNames.value = extractNames(response.body);
-      }
-    } catch (e) {
-      NurseListNames.value = [];
-    }
-  }
 
   Future updateProfile() async {
     change(null, status: RxStatus.loading());
@@ -273,13 +204,6 @@ class ProfileController extends GetxController with StateMixin {
     } finally {
       change(null, status: RxStatus.success());
     }
-  }
-
-  List<String> extractNames(List<dynamic> data) {
-    return data
-        .map<String>((item) => item['name']?.toString() ?? '')
-        .where((name) => name.isNotEmpty) // يتأكد إنها مش فاضية
-        .toList();
   }
 
   double calculateBMI(double weightKg, double heightCm) {

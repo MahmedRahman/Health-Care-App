@@ -1,6 +1,7 @@
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/core/auth_service.dart';
+import 'package:health_care_app/app/core/service/lookup_service.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
 import 'package:video_player/video_player.dart';
 
@@ -21,6 +22,7 @@ class SplashController extends GetxController {
       () {
         if (videoController.value.position == videoController.value.duration) {
           if (Get.find<AuthService>().isLoggedIn) {
+            Get.find<LookupService>().init();
             Get.offAndToNamed(Routes.HOME);
             return;
           }

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/core/network/api_request.dart';
+import 'package:health_care_app/app/core/network/web_services/api_exceptions.dart';
+import 'package:health_care_app/app/helper/app_notifier.dart';
+import 'package:health_care_app/app/modules/sign_in/controllers/sign_in_controller.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
 import 'package:health_care_app/app/widgets/app_success_dialog.dart';
 
@@ -39,30 +42,39 @@ class SignUpController extends GetxController with StateMixin {
   }
 
   void signUp() async {
-    Response response = await ApiRequest().register(
-      firstName: firstNameController.text.trim(),
-      lastName: lastNameController.text.trim(),
-      email: emailController.text.trim(),
-      phone: "$selectedCode${phoneController.text.trim()}",
-      hospitalId: hospitalId.text.trim(),
-      password: passwordController.text.trim(),
-    );
+    change(null, status: RxStatus.loading());
 
-    if (response.statusCode == 400) {
-      var errorMessage = response.body['message'] ?? 'Registration failed';
-      Get.snackbar('Error', errorMessage,
-          backgroundColor: Colors.red, colorText: Colors.white);
-    }
+    try {
+      Response response = await ApiRequest().register(
+        firstName: firstNameController.text.trim(),
+        lastName: lastNameController.text.trim(),
+        email: emailController.text.trim(),
+        phone: "$selectedCode${phoneController.text.trim()}",
+        hospitalId: hospitalId.text.trim(),
+        password: passwordController.text.trim(),
+      );
 
-    if (response.statusCode == 200) {
       showSuccessDialog(
         Get.context!,
         userId: "123654",
         onAddInfo: () {
-          Get.offAllNamed(Routes.HOME);
+          if (Get.isRegistered<SignInController>()) {
+            Get.find<SignInController>().rememberMe = true;
+            Get.find<SignInController>().emailController.text =
+                emailController.text;
+            Get.find<SignInController>().passwordController.text =
+                passwordController.text;
+          }
+          Get.toNamed(Routes.SIGN_IN);
         },
       );
-      return;
+    } catch (e) {
+      Notifier.of.error(
+        'Registration failed. user already exists.',
+        title: 'Sign Up Failed',
+      );
+    } finally {
+      change(null, status: RxStatus.success());
     }
   }
 

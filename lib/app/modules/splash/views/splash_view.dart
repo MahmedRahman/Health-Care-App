@@ -14,7 +14,7 @@ class SplashView extends GetView<SplashController> {
       init: SplashController(),
       builder: (controller) {
         return Scaffold(
-          backgroundColor: Colors.black,
+          backgroundColor: Color(0xff2445CE),
           body: Center(
             child: controller.videoController.value.isInitialized
                 ? AspectRatio(

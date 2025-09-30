@@ -4,6 +4,7 @@ import 'package:get_storage/get_storage.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:health_care_app/app/core/network/api_request.dart';
+import 'package:health_care_app/app/core/service/lookup_service.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
 
 class AuthService extends GetxService {

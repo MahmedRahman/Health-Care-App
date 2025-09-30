@@ -12,6 +12,7 @@ class ProfileInfo extends StatelessWidget {
   String userGender = ""; // Example
   String userId = ""; // Example ID
   String base64String = "";
+  String userHealthStatus = "";
   ProfileInfo({
     super.key,
     this.onTap,
@@ -19,6 +20,7 @@ class ProfileInfo extends StatelessWidget {
     this.userAge = "",
     this.userGender = "",
     this.userId = "",
+    this.userHealthStatus = "",
     this.base64String = "",
   });
 
@@ -35,7 +37,7 @@ class ProfileInfo extends StatelessWidget {
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 24.0, left: 24.0, right: 24.0),
+          padding: const EdgeInsets.only(top: 0.0, left: 24.0, right: 24.0),
           child: Column(
             children: [
               Row(
@@ -128,7 +130,7 @@ class ProfileInfo extends StatelessWidget {
                   ),
                 ],
               ),
-              SizedBox(height: 24.h),
+              SizedBox(height: 4.h),
               Row(
                 children: [
                   Column(
@@ -136,19 +138,13 @@ class ProfileInfo extends StatelessWidget {
                     children: [
                       Row(
                         children: [
-                          // ClipOval(
-                          //   child: Image.asset(
-                          //     "assets/images/ix_user-profile-filled.png",
-                          //     height: 80.h,
-                          //     width: 80.w,
-                          //   ),
-                          // ),
-                          AppCircleImage(
-                            base64String: base64String,
-                            size: 80,
-                            placeholder:
-                                "assets/images/ix_user-profile-filled.png",
-                          ),
+                          if (base64String.isNotEmpty)
+                            AppCircleImage(
+                              base64String: base64String,
+                              size: 80,
+                              placeholder:
+                                  "assets/images/ix_user-profile-filled.png",
+                            ),
                           SizedBox(width: 8.w),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,7 +171,7 @@ class ProfileInfo extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                "Heart Attack",
+                                "$userHealthStatus",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.w400,

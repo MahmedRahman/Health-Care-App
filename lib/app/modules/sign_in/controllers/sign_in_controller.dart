@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/core/auth_service.dart';
 import 'package:health_care_app/app/core/network/api_request.dart';
+import 'package:health_care_app/app/core/service/lookup_service.dart';
 import 'package:health_care_app/app/helper/app_notifier.dart';
 import 'package:health_care_app/app/helper/snack_bar_helper.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
@@ -37,6 +38,7 @@ class SignInController extends GetxController with StateMixin {
       );
       var token = response.body['token'];
       await AuthService.to.saveAuth(token);
+      await Get.find<LookupService>().init();
       Notifier.withMode(NotifierMode.snackbar, (notifier) {
         notifier.success(
           'Welcome back!',

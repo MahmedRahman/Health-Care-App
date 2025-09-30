@@ -32,9 +32,18 @@ class QuickLinks extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 DashboardItem(
+                  svgPath: "assets/svg/Vitals.svg",
+                  label: "Vitals",
+                  iconColor: Color(0xffDD4369),
+                  onTap: () {
+                    Get.toNamed(Routes.MEDICATIONS);
+                  },
+                ),
+                SizedBox(width: 8.w),
+                DashboardItem(
                   svgPath: "assets/svg/Medications.svg",
                   label: "Medications",
-                  iconColor: Colors.blue,
+                  iconColor: Color(0xff2445CE),
                   onTap: () {
                     Get.toNamed(Routes.MEDICATIONS);
                   },
@@ -43,7 +52,7 @@ class QuickLinks extends StatelessWidget {
                 DashboardItem(
                   svgPath: "assets/svg/Images.svg",
                   label: "Images",
-                  iconColor: Colors.green,
+                  iconColor: Color(0xffFE6F2B),
                   onTap: () {
                     Get.toNamed(Routes.MEDICAL_IMAGES);
                   },
@@ -52,14 +61,14 @@ class QuickLinks extends StatelessWidget {
                 DashboardItem(
                   svgPath: "assets/svg/Appointments.svg",
                   label: "Appointments",
-                  iconColor: Color(0xffCCBE7A),
+                  iconColor: Color(0xffC6A7D1),
                   onTap: () {},
                 ),
                 SizedBox(width: 8.w),
                 DashboardItem(
                   svgPath: "assets/svg/Labs.svg",
                   label: "Labs",
-                  // iconColor: Colors.blue,
+                  iconColor: Color(0xffDC61E0),
                   onTap: () {
                     Get.toNamed(Routes.LABS);
                   },
@@ -68,21 +77,12 @@ class QuickLinks extends StatelessWidget {
                 DashboardItem(
                   svgPath: "assets/svg/Reports.svg",
                   label: "Reports",
-                  // iconColor: Colors.green,
+                  iconColor: Color(0xff25C87F),
                   onTap: () {},
                 ),
               ],
             ),
           ),
-          SizedBox(height: 12.h),
-          DashboardItemHorizontal(
-            title: "Medications",
-            svgPath: "assets/svg/Medications.svg",
-            iconColor: Colors.blue,
-            onTap: () {
-              Get.toNamed(Routes.MEDICATIONS);
-            },
-          )
         ],
       ),
     );

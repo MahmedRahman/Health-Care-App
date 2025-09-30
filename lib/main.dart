@@ -5,6 +5,7 @@ import 'package:device_preview/device_preview.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:health_care_app/app/core/auth_service.dart';
+import 'package:health_care_app/app/core/service/lookup_service.dart';
 import 'package:health_care_app/app/helper/app_notifier.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/filter_controller.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/upload_controller.dart';
@@ -15,6 +16,9 @@ void main() async {
 
   await GetStorage.init();
   await Get.put(AuthService());
+
+  Get.lazyPut<LookupService>(() => LookupService());
+
   Notifier.use(NotifierMode.awesome);
 
   runApp(

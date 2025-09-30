@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/core/service/lookup_service.dart';
 import 'package:health_care_app/app/modules/PatientInfo/views/patient_info_view.dart';
 import 'package:health_care_app/app/widgets/app_date_field.dart';
 import 'package:health_care_app/app/widgets/app_drop_down_field.dart';
@@ -19,89 +20,150 @@ class ProfileView extends GetView<ProfileController> {
   ProfileView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.textLight.withOpacity(0.1),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        title:
-            const Text('Profile', style: TextStyle(color: AppColors.primary)),
-        centerTitle: false,
-      ),
-      body: controller.obx(
-        (snapshot) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            child: Column(
-              children: [
-                SizedBox(height: 8.h),
-                Obx(() {
-                  return Row(
-                    children: [
-                      Expanded(
-                        child: AppPrimaryButton(
-                          onPressed: () {
-                            isPersonalInfo.value = true;
-                          },
-                          text: "Personal Info",
-                          borderRadius: 12,
-                          backgroundColor: isPersonalInfo.value
-                              ? AppColors.primary
-                              : Colors.white,
-                          textColor: isPersonalInfo.value
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                      const SizedBox(width: 16),
-                      Expanded(
-                        child: AppPrimaryButton(
-                          onPressed: () {
-                            isPersonalInfo.value = false;
-                          },
-                          text: "Health Info",
-                          borderRadius: 12,
-                          backgroundColor: !isPersonalInfo.value
-                              ? AppColors.primary
-                              : Colors.white,
-                          textColor: !isPersonalInfo.value
-                              ? Colors.white
-                              : Colors.black,
-                        ),
-                      ),
-                    ],
-                  );
-                }),
-                SizedBox(height: 8.h),
-                Form(
-                  key: controller.formKey,
-                  autovalidateMode: AutovalidateMode.onUserInteraction,
-                  child: Expanded(
-                    child: Obx(() {
-                      return Visibility(
-                        visible: isPersonalInfo.value,
-                        child: PresonalInfo(),
-                        replacement: healthInfo(),
-                      );
-                    }),
+    return GestureDetector(
+      onTap: () => FocusScope.of(context).unfocus(),
+      child: Scaffold(
+        backgroundColor: AppColors.textLight.withOpacity(0.1),
+        body: controller.obx(
+          (snapshot) {
+            return Scaffold(
+              backgroundColor: AppColors.textLight.withOpacity(0.1),
+              appBar: AppBar(
+                backgroundColor: Colors.transparent,
+                title: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: const Text(
+                    'Profile',
+                    style: TextStyle(color: Colors.black),
                   ),
                 ),
-                const SizedBox(height: 16),
-                AppPrimaryButton(
-                  onPressed: () {
-                    if (controller.formKey.currentState!.validate()) {
-                      controller.updateProfile();
-                    }
-                  },
-                  text: "Save",
+                centerTitle: false,
+              ),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                child: Column(
+                  children: [
+                    SizedBox(height: 8.h),
+                    Obx(() {
+                      return Row(
+                        children: [
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                isPersonalInfo.value = true;
+                              },
+                              child: Container(
+                                width: 150.w,
+                                height: 40.h,
+                                decoration: isPersonalInfo.value
+                                    ? BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Color(0xff2445CE),
+                                            width: 2.0, // تقدر تغيّر السمك
+                                          ),
+                                        ),
+                                      )
+                                    : BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 2.0, // تقدر تغيّر السمك
+                                          ),
+                                        ),
+                                      ),
+                                child: Center(
+                                  child: Text(
+                                    "Personal Info",
+                                    style: TextStyle(
+                                      color: isPersonalInfo.value == true
+                                          ? Color(0xff2445CE)
+                                          : Color(0xff808080),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: InkWell(
+                              onTap: () {
+                                isPersonalInfo.value = false;
+                              },
+                              child: Container(
+                                width: 150.w,
+                                height: 40.h,
+                                decoration: isPersonalInfo.value
+                                    ? BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Colors.transparent,
+                                            width: 2.0, // تقدر تغيّر السمك
+                                          ),
+                                        ),
+                                      )
+                                    : BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: Color(0xff2445CE),
+                                            width: 2.0, // تقدر تغيّر السمك
+                                          ),
+                                        ),
+                                      ),
+                                child: Center(
+                                  child: Text(
+                                    "Health Info",
+                                    style: TextStyle(
+                                      color: isPersonalInfo.value == false
+                                          ? Color(0xff2445CE)
+                                          : Color(0xff808080),
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      );
+                    }),
+                    SizedBox(height: 8.h),
+                    Form(
+                      key: controller.formKey,
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
+                      child: Expanded(
+                        child: Obx(() {
+                          return Visibility(
+                            visible: isPersonalInfo.value,
+                            child: PresonalInfo(),
+                            replacement: healthInfo(),
+                          );
+                        }),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    AppPrimaryButton(
+                      onPressed: () {
+                        if (controller.formKey.currentState!.validate()) {
+                          controller.updateProfile();
+                        }
+                      },
+                      text: "Save",
+                    ),
+                    const SizedBox(height: 16),
+                  ],
                 ),
-                const SizedBox(height: 16),
-              ],
+              ),
+            );
+          },
+          onLoading: Center(
+            child: CircularProgressIndicator(
+              color: Colors.blueGrey,
             ),
-          );
-        },
-        onLoading: Center(
-          child: CircularProgressIndicator(
-            color: Colors.blueGrey,
           ),
         ),
       ),
@@ -127,7 +189,7 @@ class ProfileView extends GetView<ProfileController> {
           Obx(() {
             return AppBottomSheetMultiSelectField(
               label: "Primary",
-              items: controller.DiagnosePrimaryListNames.value,
+              items: Get.find<LookupService>().DiagnosePrimaryListNames.value,
               value: controller.selectDiagnosePrimaryListNames,
               onChanged: (newValue) {
                 if (newValue != null) {
@@ -142,7 +204,7 @@ class ProfileView extends GetView<ProfileController> {
           Obx(() {
             return AppBottomSheetMultiSelectField(
               label: "Secondary",
-              items: controller.DiagnoseSecondaryListNames.value,
+              items: Get.find<LookupService>().DiagnoseSecondaryListNames.value,
               value: controller.SelectDiagnoseSecondaryListNames,
               onChanged: (newValue) {
                 if (newValue != null) {
@@ -159,7 +221,8 @@ class ProfileView extends GetView<ProfileController> {
               builder: (context, snapshot) {
                 return AppBottomSheetMultiSelectField(
                   label: "Tertiary",
-                  items: controller.DiagnoseTertiaryListNames.value,
+                  items:
+                      Get.find<LookupService>().DiagnoseTertiaryListNames.value,
                   value: controller.SelectDiagnoseTertiaryListNames,
                   onChanged: (newValue) {
                     if (newValue != null) {
@@ -195,7 +258,7 @@ class ProfileView extends GetView<ProfileController> {
             () {
               return AppBottomSheetSelectField(
                 label: "Physician/Team Name",
-                items: controller.PresonalTeamListNames.value,
+                items: Get.find<LookupService>().PresonalTeamListNames.value,
                 value: controller.physicianTeam.text,
                 onChanged: (newValue) {
                   if (newValue != null) {
@@ -213,7 +276,7 @@ class ProfileView extends GetView<ProfileController> {
             () {
               return AppBottomSheetSelectField(
                 label: "Nurse Name",
-                items: controller.NurseListNames.value,
+                items: Get.find<LookupService>().NurseListNames.value,
                 value: controller.nurseNames.text,
                 onChanged: (newValue) {
                   if (newValue != null) {

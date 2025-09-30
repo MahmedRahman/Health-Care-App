@@ -44,10 +44,13 @@ class VitalSignsCard extends GetView {
                 SizedBox(height: 4.h),
                 Text(
                   title,
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
                   style: TextStyle(
                     fontSize: 14.sp,
                     fontWeight: FontWeight.w500,
                     color: textColor,
+                    overflow: TextOverflow.ellipsis,
                   ),
                 ),
                 Text(
