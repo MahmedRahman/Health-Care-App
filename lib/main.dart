@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:device_preview/device_preview.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:health_care_app/app/core/auth_service.dart';
@@ -17,10 +16,11 @@ void main() async {
   await Get.put(AuthService());
 
   runApp(
-    DevicePreview(
-      enabled: false,
-      builder: (context) => const HeartCareApp(),
-    ),
+    // DevicePreview(
+    //   enabled: false,
+    //   builder: (context) => 
+    const HeartCareApp(),
+    // ),
   );
 
 }

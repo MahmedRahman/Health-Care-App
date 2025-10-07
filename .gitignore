@@ -67,3 +67,6 @@ coverage/
 
 # Other
 .env
+
+# FVM Version Cache
+.fvm/

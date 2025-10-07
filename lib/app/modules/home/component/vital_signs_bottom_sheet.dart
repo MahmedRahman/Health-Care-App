@@ -1,12 +1,10 @@
 import 'dart:math';
-
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
-import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
+import 'package:fl_chart/fl_chart.dart';
+
+
 
 final List<Map<String, dynamic>> chartData = List.generate(365, (index) {
   final date = DateTime(2025, 1, 1).add(Duration(days: index));
@@ -22,7 +20,7 @@ final List<Map<String, dynamic>> chartData = List.generate(365, (index) {
 
 final List<Map<String, dynamic>> line2ChartData = List.generate(365, (index) {
   final date = DateTime(2025, 1, 1).add(Duration(days: index));
-  final yValue = 60 + Random().nextInt(60); // مثلاً من 60 لـ 120 bpm
+  final yValue = 60 + Random().nextInt(60);
 
   return {
     "x": index.toDouble(),
@@ -246,49 +244,32 @@ class VitalSignsBottomSheet extends GetView {
                               right: false,
                             ),
                             titlesData: FlTitlesData(
-                              bottomTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  interval: 1,
-                                  reservedSize: 40, // جرّب 32-40 حسب الخط
-                                  getTitlesWidget: (value, meta) {
-                                    final matchedPoint = chartData.firstWhere(
-                                      (item) =>
-                                          (item['x'] as num).toDouble() ==
-                                          value,
-                                      orElse: () => {"label": ""},
-                                    );
-                                    final label =
-                                        (matchedPoint['label'] ?? '') as String;
-
-                                    return SideTitleWidget(
-                                      axisSide: meta.axisSide,
-                                      space: 6, // مسافة بين الرسم والعنوان
-                                      child: Text(
-                                        label,
-                                        style: const TextStyle(
-                                            fontSize: 10, color: Colors.grey),
-                                      ),
-                                    );
-                                  },
-                                ),
+                              bottomTitles: SideTitles(
+                                showTitles: true,
+                                interval: 1,
+                                reservedSize: 40, // جرّب 32-40 حسب الخط
+                                getTitles: (value) {
+                                  final matchedPoint = chartData.firstWhere(
+                                    (item) =>
+                                        (item['x'] as num).toDouble() ==
+                                        value,
+                                    orElse: () => {"label": ""},
+                                  );
+                                  final label =
+                                      (matchedPoint['label'] ?? '') as String;
+                                  return label;
+                                },
                               ),
-                              leftTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  reservedSize: 42,
-                                ),
+                              leftTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 42,
                               ),
-                              topTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: false,
-                                ),
+                              topTitles: SideTitles(
+                                showTitles: false,
                               ),
-                              rightTitles: AxisTitles(
-                                sideTitles: SideTitles(
-                                  showTitles: true,
-                                  reservedSize: 20,
-                                ),
+                              rightTitles: SideTitles(
+                                showTitles: true,
+                                reservedSize: 20,
                               ),
                             ),
                             borderData: FlBorderData(show: false),
@@ -299,7 +280,7 @@ class VitalSignsBottomSheet extends GetView {
                             lineBarsData: [
                               LineChartBarData(
                                 isCurved: true,
-                                color: Colors.green,
+                                colors: [Colors.green],
                                 barWidth: 2,
                                 belowBarData: BarAreaData(show: false),
                                 dotData: FlDotData(
@@ -317,7 +298,7 @@ class VitalSignsBottomSheet extends GetView {
                               ),
                               LineChartBarData(
                                 isCurved: true,
-                                color: Colors.red,
+                                colors: [Colors.red],
                                 barWidth: 2,
                                 belowBarData: BarAreaData(show: false),
                                 dotData: FlDotData(
