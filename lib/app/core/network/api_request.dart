@@ -67,14 +67,6 @@ class ApiRequest {
     );
   }
 
-  Future<Response> getMedicines() async {
-    return await webServices.execute(
-      endpoint: "$baseUrl/get/medicine/list",
-      method: HttpMethod.GET,
-      requiresAuth: true,
-    );
-  }
-
   Future<Response> getPatientInfo() async {
     return await webServices.execute(
       endpoint: "$baseUrl/get/user/profile",
@@ -253,6 +245,218 @@ class ApiRequest {
         "bloodSugarRandom": [],
         "fluidBalance": []
       },
+    );
+  }
+
+// Medicine
+  Future<Response> getMedicineNamesList() async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/get/medicine/saved",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> addMedicine({
+    required String medicineName,
+    required String medicineImage,
+    required String dose,
+    required String doseForm,
+    required String doseRoute,
+    required String doseFrequency,
+    required String doseDuration,
+    required String doseDurationList,
+    required List<String> doseTimeList,
+    required String specialInstructions,
+    required String description,
+    required String doctorName,
+    required String startFrom,
+    required String renewalDate,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/add/medicine",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+      body: {
+        "medicineName": "$medicineName",
+        "medicineImage": "$medicineImage",
+        "dose": "$dose",
+        "doseForm": "$doseForm",
+        "doseRoute": "$doseRoute",
+        "doseFrequency": "$doseFrequency", //weekly/monthly/daily
+        "doseDuration": "$doseDuration",
+        "doseDurationList": "$doseDurationList", // days/weeks/months
+        "doseTimeList": doseTimeList,
+        "specialInstructions": "$specialInstructions",
+        "description": "$description",
+        "doctorName": "$doctorName",
+        "startFrom": "$startFrom",
+        "renewalDate": "$renewalDate",
+
+        // "leftDosesCount": 115,
+        // "leftDosesDaysCouns": 161,
+        // "countOfDose": 0.0,
+        // "totalDoses": 115.0,
+        // "totalDuration": 161,
+        // "doseCompliance": "0 %"
+      },
+    );
+  }
+
+  Future<Response> getMedicines() async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/get/medicine/list",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> getMedicinesDetailes(id) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/medicine/details/${id}",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> checkDone({
+    required String medicineId,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/check/done/$medicineId",
+      method: HttpMethod.PUT,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> renewMedicine({
+    required String medicineId,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/renew/medicine/$medicineId",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> deleteMedicine({
+    required String medicineId,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/remove/medicine/$medicineId",
+      method: HttpMethod.DELETE,
+      requiresAuth: true,
+    );
+  }
+
+// Images
+
+  Future<Response> getImages() async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/get/images",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> addImage({
+    required List<String> images,
+    required String folderName,
+  }) async {
+    return await webServices.execute(
+        endpoint: "$baseUrl/add/images",
+        method: HttpMethod.POST,
+        requiresAuth: true,
+        body: {
+          "images": images,
+          "folderName": folderName,
+        });
+  }
+
+// curl --location '159.198.36.67:8080/labs/reports' \
+// --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTBAZ21haWwuY29tIiwiaWF0IjoxNzYwMzU2ODkxLCJleHAiOjE4NjgzNTY4OTF9.C3ORT3P87Mc2vgC4J8XM8JsBEow28rbqZarDnoY4AT0'
+  Future<Response> getLabs() async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/labs/reports",
+      method: HttpMethod.GET,
+      requiresAuth: true,
+    );
+  }
+
+  Future<Response> deleteImage({
+    required String imageId,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/delete/image/$imageId",
+      method: HttpMethod.DELETE,
+      requiresAuth: true,
+    );
+  }
+
+  //filterImages
+  Future<Response> filterImages({
+    required String? dateFrom,
+    required String? dateTo,
+    required String? xrayType,
+    required String? ordering,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/filter/images",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+      body: {
+        "dateFrom": dateFrom, //format in mm-DD-yyyy
+        "dateTo": dateTo,
+        "xrayType": "test",
+        // "ordering": ordering,
+      },
+    );
+  }
+
+//   curl --location --request GET '159.198.36.67:8080/filter/images' \
+// --header 'Content-Type: application/json' \
+// --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTBAZ21haWwuY29tIiwiaWF0IjoxNzYwNDYzMjEzLCJleHAiOjE4Njg0NjMyMTN9.1ylv1mWncPn-m9v2ovM8PCz269g9wJfT5LAHAlubaiE' \
+// --data '{
+//     "dateFrom": "13-10-2025",
+//     "dateTo": "13-10-2025",
+//     "xrayType": "test",
+//     "ordering": "Oldest First"
+// }'
+
+//   curl --location '159.198.36.67:8080/add/lab/report' \
+// --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTBAZ21haWwuY29tIiwiaWF0IjoxNzYwMzU2ODkxLCJleHAiOjE4NjgzNTY4OTF9.C3ORT3P87Mc2vgC4J8XM8JsBEow28rbqZarDnoY4AT0' \
+// --header 'Content-Type: application/json' \
+// --data '{
+// "labName": "Al Mokhtabar Lab",
+// "reportName": "Report-1",
+// "date": "2022-08-01"
+// }
+
+  Future<Response> addLabReport({
+    required String labName,
+    required List<String> images,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/add/lab/report",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+      body: {
+        "labType": labName,
+        "report": images,
+      },
+    );
+  }
+
+// curl --location --request DELETE '159.198.36.67:8080/delete/lab/report/4' \
+// --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTBAZ21haWwuY29tIiwiaWF0IjoxNzYwMzU2ODkxLCJleHAiOjE4NjgzNTY4OTF9.C3ORT3P87Mc2vgC4J8XM8JsBEow28rbqZarDnoY4AT0'
+
+  Future<Response> deleteLabReport({
+    required String labId,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/delete/lab/report/$labId",
+      method: HttpMethod.DELETE,
+      requiresAuth: true,
     );
   }
 }

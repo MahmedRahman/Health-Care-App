@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -12,73 +13,72 @@ class MoreView extends GetView<MoreController> {
   const MoreView({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            SizedBox(height: 24.h),
-            userProfile(),
-            SizedBox(
-              height: 24.h,
-            ),
-            MoreItem(
-              title: "Contact Us",
-              icon: "assets/svg/more_call_us.svg",
-              color: Color(0xff1BDDFF),
-              onTap: () {
-                Get.toNamed(Routes.CONTACT_US);
-              },
-            ),
-            SizedBox(height: 12.h),
-            MoreItem(
-              title: "About App",
-              icon: "assets/svg/more_info.svg",
-              color: Color(0xff6A6565),
-              onTap: () {
-                Get.toNamed(Routes.ABOUT_APP);
-              },
-            ),
-            SizedBox(height: 12.h),
-            MoreItem(
-              title: "Patient Info",
-              icon: "assets/svg/more_info.svg",
-              color: Color(0xff6A6565),
-              onTap: () {
-                Get.toNamed(Routes.PATIENT_INFO);
-              },
-            ),
-            SizedBox(height: 12.h),
-            MoreItem(
-              title: "Delete Account",
-              icon: "assets/svg/more_delete_icon.svg",
-              color: Color(0xffF34F4F),
-              onTap: () {
-                Get.defaultDialog(
-                  title: "Delete Account",
-                  middleText:
-                      "Are you sure you want to delete your account? This action cannot be undone.",
-                  textCancel: "Cancel",
-                  textConfirm: "Delete",
-                  confirmTextColor: Colors.white,
-                  buttonColor: Colors.red,
-                  cancelTextColor: Colors.black,
-                  onConfirm: () {
-                    Get.back(); // يغلق الـ dialog
-                    // ينفذ الإجراء اللي تبعته من فوق
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: const SystemUiOverlayStyle(
+        statusBarColor: Colors.transparent, // لون الهيدر
+        statusBarIconBrightness: Brightness.light, // لون الأيقونات أبيض
+      ),
+      child: SafeArea(
+        child: Scaffold(
+          backgroundColor: AppColors.background,
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 32.0),
+            child: Column(
+              children: [
+                SizedBox(height: 24.h),
+                userProfile(),
+                SizedBox(
+                  height: 24.h,
+                ),
+                MoreItem(
+                  title: "Contact Us",
+                  icon: "assets/svg/more_call_us.svg",
+                  color: Color(0xff1BDDFF),
+                  onTap: () {
+                    Get.toNamed(Routes.CONTACT_US);
                   },
-                );
-              },
+                ),
+                SizedBox(height: 12.h),
+                MoreItem(
+                  title: "About App",
+                  icon: "assets/svg/more_info.svg",
+                  color: Color(0xff6A6565),
+                  onTap: () {
+                    Get.toNamed(Routes.ABOUT_APP);
+                  },
+                ),
+                SizedBox(height: 12.h),
+                MoreItem(
+                  title: "Delete Account",
+                  icon: "assets/svg/more_delete_icon.svg",
+                  color: Color(0xffF34F4F),
+                  onTap: () {
+                    Get.defaultDialog(
+                      title: "Delete Account",
+                      middleText:
+                          "Are you sure you want to delete your account? This action cannot be undone.",
+                      textCancel: "Cancel",
+                      textConfirm: "Delete",
+                      confirmTextColor: Colors.white,
+                      buttonColor: Colors.red,
+                      cancelTextColor: Colors.black,
+                      onConfirm: () {
+                        Get.back(); // يغلق الـ dialog
+                        // ينفذ الإجراء اللي تبعته من فوق
+                      },
+                    );
+                  },
+                ),
+                Spacer(),
+                LogoutButton(
+                  onPressed: () async {
+                    controller.logout();
+                  },
+                ),
+                SizedBox(height: 20.h),
+              ],
             ),
-            Spacer(),
-            LogoutButton(
-              onPressed: () async {
-                controller.logout();
-              },
-            ),
-            SizedBox(height: 20.h),
-          ],
+          ),
         ),
       ),
     );
@@ -165,8 +165,8 @@ class MoreItem extends StatelessWidget {
           ),
           Spacer(),
           Container(
-            width: 50.w,
-            height: 50.h,
+            width: 40.w,
+            height: 40.h,
             decoration: BoxDecoration(
               borderRadius: BorderRadius.circular(8.r),
               color: Color(0xff01052A).withOpacity(.1),
@@ -188,7 +188,10 @@ class MoreItem extends StatelessWidget {
 class LogoutButton extends StatelessWidget {
   final VoidCallback onPressed;
 
-  const LogoutButton({super.key, required this.onPressed});
+  const LogoutButton({
+    super.key,
+    required this.onPressed,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -197,7 +200,7 @@ class LogoutButton extends StatelessWidget {
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(
-          side: const BorderSide(color: Color(0xFF0C1543), width: 1.5),
+          side: const BorderSide(color: Color(0xFF0D268D), width: 1.5),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
@@ -207,7 +210,7 @@ class LogoutButton extends StatelessWidget {
         child: const Text(
           'Log Out',
           style: TextStyle(
-            color: Color(0xFF0C1543),
+            color: Color(0xFF0D268D),
             fontSize: 18,
           ),
         ),

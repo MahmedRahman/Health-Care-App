@@ -12,10 +12,10 @@ class SignInController extends GetxController with StateMixin {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
   //TODO: Implement SignInController
   final TextEditingController emailController = TextEditingController(
-    text: kDebugMode ? "atpfreelancer@gmail.com" : "",
+    text: kDebugMode ? "test10@gmail.com" : "",
   );
   final TextEditingController passwordController = TextEditingController(
-    text: kDebugMode ? "123456789" : "",
+    text: kDebugMode ? "123456" : "",
   );
 //formKey
 

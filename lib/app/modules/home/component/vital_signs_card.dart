@@ -29,7 +29,9 @@ class VitalSignsCard extends GetView {
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(8.r),
-            border: Border.all(color: Color(0xffB9B7B7)),
+            border: Border.all(
+              color: Color(0xffE2DFDF),
+            ),
           ),
           child: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
@@ -40,6 +42,7 @@ class VitalSignsCard extends GetView {
                   imagePath,
                   width: 18.w,
                   height: 18.h,
+                  color: Colors.black,
                 ),
                 SizedBox(height: 4.h),
                 Text(

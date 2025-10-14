@@ -16,6 +16,7 @@ class LookupService extends GetxService {
       getDiagnoseTertiary(),
       getPresonalTeam(),
       getNurse(),
+      getMedicine(),
     ]);
   }
 
@@ -77,6 +78,18 @@ class LookupService extends GetxService {
       }
     } catch (e) {
       NurseListNames.value = [];
+    }
+  }
+
+  RxList<String> MedicineListNames = RxList.empty();
+  Future getMedicine() async {
+    try {
+      if (MedicineListNames.value.isEmpty) {
+        Response response = await ApiRequest().getMedicineNamesList();
+        MedicineListNames.value = extractNames(response.body);
+      }
+    } catch (e) {
+      MedicineListNames.value = [];
     }
   }
 

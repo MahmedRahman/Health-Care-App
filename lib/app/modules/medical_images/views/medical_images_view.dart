@@ -3,14 +3,12 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/helper/bottom_sheet_helper.dart';
 import 'package:health_care_app/app/modules/medical_images/controllers/medical_images_controller.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/filter_bottom_sheet.dart';
-import 'package:health_care_app/app/modules/medical_images/widgets/filter_chips.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/filter_controller.dart';
-import 'package:health_care_app/app/modules/medical_images/widgets/medical_image_card.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/record_card.dart';
+import 'package:health_care_app/app/widgets/image_viewer.dart';
 
 class MedicalImagesView extends GetView<MedicalImagesController> {
   const MedicalImagesView({Key? key}) : super(key: key);
@@ -22,161 +20,196 @@ class MedicalImagesView extends GetView<MedicalImagesController> {
         statusBarColor: Colors.yellow, // لون الهيدر
         statusBarIconBrightness: Brightness.light, // لون الأيقونات أبيض
       ),
-      child: Scaffold(
-        backgroundColor: Colors.grey[100],
-        appBar: AppBar(
+      child: RefreshIndicator(
+        onRefresh: () async {
+          controller.initializeData();
+        },
+        child: Scaffold(
           backgroundColor: Colors.grey[100],
-          elevation: 0,
-          leading: IconButton(
-            icon: const Icon(
-              Icons.arrow_back,
-              color: AppColors.primary,
+          appBar: AppBar(
+            backgroundColor: Colors.grey[100],
+            elevation: 0,
+            leading: IconButton(
+              icon: const Icon(
+                Icons.arrow_back,
+                color: Colors.black,
+              ),
+              onPressed: () => Get.back(),
             ),
-            onPressed: () => Get.back(),
-          ),
-          title: Text(
-            'Images',
-            style: TextStyle(
-              color: AppColors.primary,
-              fontSize: 18.sp,
-              fontWeight: FontWeight.w600,
+            title: Text(
+              'Images',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 18.sp,
+                fontWeight: FontWeight.w600,
+              ),
             ),
-          ),
-          centerTitle: false,
-          actions: [
-            IconButton(
-              icon: SvgPicture.asset(
-                'assets/svg/filter-list.svg',
-                width: 24.w,
-                height: 24.h,
-                colorFilter: const ColorFilter.mode(
-                  AppColors.primary,
-                  BlendMode.srcIn,
+            centerTitle: false,
+            actions: [
+              IconButton(
+                icon: SvgPicture.asset(
+                  'assets/svg/filter-list.svg',
+                  width: 24.w,
+                  height: 24.h,
+                  colorFilter: const ColorFilter.mode(
+                    Colors.black,
+                    BlendMode.srcIn,
+                  ),
                 ),
-              ),
-              onPressed: () async {
-                final res = await Get.bottomSheet<FilterResult>(
-                  const FilterBottomSheet(),
-                  isScrollControlled: true,
-                  enableDrag: true,
-                  backgroundColor: Colors.transparent,
-                  shape: const RoundedRectangleBorder(
-                    borderRadius:
-                        BorderRadius.vertical(top: Radius.circular(28)),
-                  ),
-                );
-
-                if (res != null) {
-                  // TODO: apply your filtering to list/API using res
-                  Get.snackbar(
-                    'Applied',
-                    'from=${res.from} to=${res.to} sort=${res.sort}',
-                    snackPosition: SnackPosition.BOTTOM,
+                onPressed: () async {
+                  final res = await Get.bottomSheet<FilterResult>(
+                    const FilterBottomSheet(),
+                    isScrollControlled: true,
+                    enableDrag: true,
+                    backgroundColor: Colors.transparent,
+                    shape: const RoundedRectangleBorder(
+                      borderRadius: BorderRadius.vertical(
+                        top: Radius.circular(28),
+                      ),
+                    ),
                   );
-                }
-              },
-            ),
-            IconButton(
-              icon: Icon(
-                Icons.add,
-                color: AppColors.primary,
-                size: 24.sp,
-              ),
-              onPressed: controller.addNewImage,
-            ),
-          ],
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 8),
-          child: controller.obx(
-            (snapshot) {
-              final filteredImages = controller.filteredImages;
 
-              return Column(
-                children: [
-                  Row(
-                    children: [
-                      clipText(),
-                      clipText(),
-                    ],
-                  ),
-                  const SizedBox(height: 8),
-                  Row(
-                    children: [
-                      RecordCard(
-                        thumbnail:
-                            'assets/images/3d175c41acec1d81f48dee00ac2623283483af50.png',
-                        date: DateTime(2022, 8, 1),
-                        name: 'X-rays',
-                        imageCount: 2,
-                        attachments: const [
-                          RecordAttachment(icon: Icons.picture_as_pdf),
-                          RecordAttachment(icon: Icons.picture_as_pdf),
-                        ],
-                      ),
-                      Spacer(),
-                      RecordCard(
-                        thumbnail:
-                            'assets/images/3d175c41acec1d81f48dee00ac2623283483af50.png',
-                        date: DateTime(2022, 8, 1),
-                        name: 'X-rays',
-                        imageCount: 2,
-                        attachments: const [
-                          RecordAttachment(icon: Icons.picture_as_pdf),
-                          RecordAttachment(icon: Icons.picture_as_pdf),
-                        ],
-                      ),
-                    ],
-                  ),
-                ],
-              );
-              ;
-            },
-            onEmpty: Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SvgPicture.asset(
-                    "assets/svg/empty_Inbox.svg",
-                    width: 200.w,
-                    height: 200.h,
-                  ),
-                  Text(
-                    'No Images yet',
-                    style: TextStyle(
-                      fontSize: 16.sp,
-                      color: Colors.grey[600],
-                    ),
-                  ),
-                  SizedBox(height: 40.h),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 16,
-                    ),
-                    child: SizedBox(
-                      width: double.infinity,
-                      height: 48.h,
-                      child: ElevatedButton(
-                        onPressed: () {
-                          controller.change(null, status: RxStatus.success());
+                  if (res != null) {
+                    controller.filteredImages(res);
+                  }
+                },
+              ),
+              IconButton(
+                icon: Icon(
+                  Icons.add,
+                  color: Colors.black,
+                  size: 24.sp,
+                ),
+                onPressed: controller.addNewImage,
+              ),
+            ],
+          ),
+          body: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 16.w),
+            child: controller.obx(
+              (snapshot) {
+                return Column(
+                  children: [
+                    // Responsive filter chips
+                    SizedBox(
+                      height: 35.h,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: controller.categoriesList
+                            .length, // Example: All, X-rays, CT Scans
+                        itemBuilder: (context, index) {
+                          return Padding(
+                            padding: EdgeInsets.only(right: 8.w),
+                            child: _buildFilterChip(
+                              label:
+                                  controller.categoriesList[index].toString(),
+                              count: 0,
+                              isSelected: index ==
+                                  controller.selectedCategoryIndex.value,
+                              onTap: () => controller.selectCategory(index),
+                            ),
+                          );
                         },
-                        child: Text(
-                          "Add Image",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.w400,
-                          ),
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    // 2 Column Grid Layout
+                    Expanded(
+                      child: GridView.builder(
+                        padding: EdgeInsets.only(bottom: 20.h),
+                        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                          crossAxisCount: 2,
+                          childAspectRatio: 0.8,
+                          crossAxisSpacing: 12.w,
+                          mainAxisSpacing: 12.h,
                         ),
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Color(0xffFE6F2B),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10.r),
+                        itemCount: snapshot?.length ?? 0, // Example data
+                        itemBuilder: (context, index) {
+                          final item = snapshot?[index];
+                          final imgs = item?["imgs"] as List<dynamic>?;
+                          final thumbnail = (imgs != null && imgs.isNotEmpty)
+                              ? imgs[0]["imgs"].toString()
+                              : null;
+
+                          return RecordCard(
+                            thumbnail: thumbnail,
+                            date: item?["date"] ?? DateTime.now(),
+                            name: item?["folderName"] ?? '',
+                            imageCount: imgs?.length ?? 0,
+                            onTap: () {
+                              // Show image viewer with navigation
+                              if (imgs != null && imgs.isNotEmpty) {
+                                Get.bottomSheet(
+                                  ImageViewer(
+                                    images: imgs,
+                                    initialIndex: 0,
+                                  ),
+                                  backgroundColor: Colors.transparent,
+                                  isScrollControlled: true,
+                                  enableDrag: false,
+                                );
+                              }
+                            },
+                            onDeletePressed: () {
+                              controller.deleteImage(item);
+                              // TODO: Implement delete
+                            },
+                            attachments: [
+                              RecordAttachment(icon: Icons.picture_as_pdf)
+                            ],
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                );
+              },
+              onEmpty: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SvgPicture.asset(
+                      "assets/svg/empty_Inbox.svg",
+                      width: 200.w,
+                      height: 200.h,
+                    ),
+                    Text(
+                      'No Images yet',
+                      style: TextStyle(
+                        fontSize: 16.sp,
+                        color: Colors.grey[600],
+                      ),
+                    ),
+                    SizedBox(height: 20.h),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 16,
+                      ),
+                      child: SizedBox(
+                        width: double.infinity,
+                        height: 48.h,
+                        child: ElevatedButton(
+                          onPressed: controller.addNewImage
+                          // TODO: Add image functionality
+                          ,
+                          child: Text(
+                            "Add Image",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400,
+                            ),
+                          ),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Color(0xffFE6F2B),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.r),
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
@@ -185,52 +218,62 @@ class MedicalImagesView extends GetView<MedicalImagesController> {
     );
   }
 
-  Padding clipText() {
-    return Padding(
-      padding: const EdgeInsets.all(8.0),
+  Widget _buildFilterChip({
+    required String label,
+    required int count,
+    required bool isSelected,
+    required VoidCallback onTap,
+  }) {
+    return GestureDetector(
+      onTap: onTap,
       child: Container(
-        width: 80.w,
-        height: 40.h,
+        height: 30.h,
+        padding: EdgeInsets.symmetric(horizontal: 8.w, vertical: 0.h),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isSelected ? const Color(0xffFE6F2B) : Colors.white,
           borderRadius: BorderRadius.circular(20.r),
           border: Border.all(
-            color: Colors.black,
-            width: 2,
+            color: isSelected ? const Color(0xffFE6F2B) : Colors.grey[300]!,
+            width: 1.5,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.3),
-
+              color: Colors.grey.withOpacity(0.2),
               spreadRadius: 1,
-              blurRadius: 5,
-              offset: const Offset(0, 3), // changes position of shadow
+              blurRadius: 4,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Text(
-              "All",
+              label,
               style: TextStyle(
-                fontSize: 16.sp,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
+                color: isSelected ? Colors.white : Colors.black87,
               ),
             ),
-            const SizedBox(width: 8),
-            Container(
-              height: 24.h,
-              decoration: BoxDecoration(
-                color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(12.r),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                child: Text("5"),
-              ),
-            ),
+            SizedBox(width: 2.w),
+            // Container(
+            //   height: 12.h,
+            //   padding: EdgeInsets.symmetric(horizontal: 6.w, vertical: 2.h),
+            //   decoration: BoxDecoration(
+            //     color:
+            //         isSelected ? Colors.white.withOpacity(0.3) : Colors.grey[200],
+            //     borderRadius: BorderRadius.circular(10.r),
+            //   ),
+            //   child: Text(
+            //     count.toString(),
+            //     style: TextStyle(
+            //       fontSize: 12.sp,
+            //       fontWeight: FontWeight.w600,
+            //       color: isSelected ? Colors.white : Colors.black54,
+            //     ),
+            //   ),
+            // ),
           ],
         ),
       ),

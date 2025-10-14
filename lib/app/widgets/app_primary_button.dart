@@ -2,17 +2,17 @@ import 'package:flutter/material.dart';
 
 class AppPrimaryButton extends StatelessWidget {
   final String text;
-   VoidCallback? onPressed;
+  VoidCallback? onPressed;
   final Color backgroundColor;
   final Color textColor;
   final double borderRadius;
   final Color borderColor;
 
-   AppPrimaryButton({
+  AppPrimaryButton({
     super.key,
     required this.text,
-     this.onPressed,
-    this.backgroundColor = const Color(0xfff2445CE), // example purple
+    this.onPressed,
+    this.backgroundColor = const Color(0xfff0D268D), // example purple
     this.borderColor = Colors.white,
     this.textColor = Colors.white,
     this.borderRadius = 32, // default radius

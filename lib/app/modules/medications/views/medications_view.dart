@@ -7,6 +7,7 @@ import 'package:health_care_app/app/constants/colors.dart';
 import 'package:health_care_app/app/modules/medications/component/filter_item.dart';
 import 'package:health_care_app/app/modules/medications/component/medicine_card.dart';
 import 'package:health_care_app/app/routes/app_pages.dart';
+import 'package:health_care_app/app/services/schedule_builder.dart';
 import 'package:health_care_app/app/widgets/app_button.dart';
 import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
 import 'package:health_care_app/app/widgets/app_primary_button.dart';
@@ -23,181 +24,159 @@ class MedicationsView extends GetView<MedicationsController> {
         statusBarIconBrightness: Brightness.light, // لون الأيقونات (أندرويد)
         statusBarBrightness: Brightness.dark, // لون الأيقونات في iOS (عكسي)
       ),
-      child: Scaffold(
-        backgroundColor: AppColorsMedications.grey,
-        appBar: AppBar(
-          backgroundColor: AppColorsMedications.primary, // الأزرق المتدرج
-          elevation: 0,
-          automaticallyImplyLeading: false,
-          systemOverlayStyle:
-              SystemUiOverlayStyle.light, // أيقونات بيضاء بالـ Status Bar
+      child: RefreshIndicator(
+        onRefresh: () async {
+          controller.featchMedications();
+        },
+        child: Scaffold(
+          backgroundColor: AppColorsMedications.grey,
+          appBar: AppBar(
+            backgroundColor: AppColorsMedications.primary, // الأزرق المتدرج
+            elevation: 0,
+            automaticallyImplyLeading: false,
+            systemOverlayStyle:
+                SystemUiOverlayStyle.light, // أيقونات بيضاء بالـ Status Bar
 
-          title: Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
-                onPressed: () => Get.back(),
-              ),
-              const SizedBox(width: 4),
-              const Text(
-                'Medications',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.w500,
-                  fontSize: 18,
+            title: Row(
+              children: [
+                IconButton(
+                  icon: const Icon(Icons.arrow_back_ios, color: Colors.white),
+                  onPressed: () => Get.back(),
+                ),
+                const SizedBox(width: 4),
+                const Text(
+                  'Medications',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w500,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              // زر الإضافة
+              CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 18,
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(Icons.add, size: 20, color: Colors.black),
+                  onPressed: () {
+                    Get.toNamed(Routes.MEDICINE_ADD);
+                  },
                 ),
               ),
+              SizedBox(width: 8.w),
+              // زر الإشعارات مع مؤشر أحمر
+              CircleAvatar(
+                backgroundColor: Colors.white,
+                radius: 18,
+                child: IconButton(
+                  padding: EdgeInsets.zero,
+                  icon: const Icon(
+                    Icons.notifications_none_outlined,
+                    size: 20,
+                    color: Colors.black,
+                  ),
+                  onPressed: () {
+                    final scheduleAll = buildSchedulesForAllMedicines(
+                      controller.meds.value.cast<Map<String, dynamic>>(),
+                    );
+
+                    print('Schedule data: $scheduleAll');
+                    print('Schedule data length: ${scheduleAll.length}');
+
+                    // إرسال البيانات إلى صفحة الجرعات
+                    Get.toNamed(
+                      Routes.DOSES_SCHEDULE,
+                      arguments: scheduleAll,
+                    );
+                  },
+                ),
+              ),
+              SizedBox(width: 8.w),
             ],
           ),
-          actions: [
-            // زر الإضافة
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 18,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: const Icon(Icons.add, size: 20, color: Colors.black),
-                onPressed: () {
-                  Get.toNamed(Routes.MEDICINE_ADD);
-                },
-              ),
-            ),
-            SizedBox(width: 8.w),
-            // زر الإشعارات مع مؤشر أحمر
-            CircleAvatar(
-              backgroundColor: Colors.white,
-              radius: 18,
-              child: IconButton(
-                padding: EdgeInsets.zero,
-                icon: const Icon(
-                  Icons.notifications_none_outlined,
-                  size: 20,
-                  color: Colors.black,
-                ),
-                onPressed: () {
-                  Get.dialog(
-                    popItems(),
-                    barrierDismissible: true,
+          body: controller.obx((data) {
+            return Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: ListView.separated(
+                padding: EdgeInsets.only(top: 16.h, bottom: 16.h),
+                itemCount: data!.length,
+                separatorBuilder: (_, __) => SizedBox(height: 8.h),
+                itemBuilder: (context, index) {
+                  final item = data![index];
+
+                  final medicineName = item['medicineName'] ?? '';
+                  final dose = item['dose']?.toString() ?? '';
+                  final route = item['doseRoute'] ?? '';
+                  final description = item['description'] ?? '';
+                  final timings = item['doseTimeList'];
+                  final tablets = item['doseForm'] ?? '';
+                  final progress =
+                      controller.percentToFraction(item['doseCompliance']);
+                  final daysLeft =
+                      int.parse(item['leftDosesDaysCouns']?.toString() ?? '0');
+                  final imagePath = item['medicineImage'] ?? '';
+                  final id = item['id']?.toString() ?? '';
+
+                  return MedicineCard(
+                    medicineName: medicineName,
+                    dose: dose,
+                    route: route,
+                    description: description,
+                    timings: timings, // now always List<String>
+                    tablets: tablets,
+                    progress: progress, // 0.0..1.0
+                    daysLeft: daysLeft,
+                    imagePath: imagePath,
+                    totalDoses: item['totalDoses']?.toString() ?? '',
+                    countOfDose: item['countOfDose']?.toString() ?? '',
+                    onTap: () {
+                      Get.toNamed(
+                        Routes.MEDICINE_DETAILS,
+                        arguments: item,
+                      );
+                    },
+                    onCheckDoneTap: () {
+                      controller.checkDone(id);
+                    },
                   );
                 },
               ),
-            ),
-            SizedBox(width: 8.w),
-          ],
-        ),
-        body: controller.obx((data) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                SizedBox(height: 16.h),
-                SingleChildScrollView(
-                  scrollDirection: Axis.horizontal,
-                  child: Row(
+            );
+          },
+              onLoading: const Center(
+                child: CircularProgressIndicator(),
+              ),
+              onEmpty: Center(
+                child: Padding(
+                  padding: const EdgeInsets.all(32.0),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const SizedBox(height: 16),
-                      FilterItem(
-                        title: "All",
-                        count: 5,
-                        isSelected: true,
-                        onTap: () {},
+                      Text(
+                        'No medications found.',
+                        style: TextStyle(
+                          fontSize: 16.sp,
+                          color: Colors.black,
+                        ),
                       ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      FilterItem(
-                        title: "Morning",
-                        count: 2,
-                        isSelected: false,
-                        onTap: () {},
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      FilterItem(
-                        title: "Evening",
-                        count: 3,
-                        isSelected: false,
-                        onTap: () {},
-                      ),
-                      SizedBox(
-                        width: 8.w,
-                      ),
-                      FilterItem(
-                        title: "Night",
-                        count: 2,
-                        isSelected: false,
-                        onTap: () {},
+                      SizedBox(height: 16.h),
+                      AppPrimaryButton(
+                        text: "Add Medication",
+                        backgroundColor: AppColorsMedications.primary,
+                        borderRadius: 20,
+                        onPressed: () {
+                          Get.toNamed(Routes.MEDICINE_ADD);
+                        },
                       ),
                     ],
                   ),
                 ),
-                SizedBox(height: 16.h),
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: List.generate(data!.length, (index) {
-                        return Padding(
-                          padding: EdgeInsets.symmetric(
-                            vertical: 8.h,
-                          ),
-                          child: MedicineCard(
-                            medicineName: data[index].name,
-                            dose: data[index].dose,
-                            route: data[index].route,
-                            description: data[index].description,
-                            timings: data[index].timings,
-                            tablets: data[index].tablets,
-                            progress: data[index].progress,
-                            daysLeft: data[index].daysLeft,
-                            imagePath: data[index].imagePath,
-                            onTap: () {
-                              Get.toNamed(
-                                Routes.MEDICINE_DETAILS,
-                                arguments: data[index],
-                              );
-                            },
-                          ),
-                        );
-                      }),
-                    ),
-                  ),
-                )
-              ],
-            ),
-          );
-        },
-            onLoading: const Center(
-              child: CircularProgressIndicator(),
-            ),
-            onEmpty: Center(
-              child: Padding(
-                padding: const EdgeInsets.all(32.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Text(
-                      'No medications found.',
-                      style: TextStyle(
-                        fontSize: 16.sp,
-                        color: Colors.black,
-                      ),
-                    ),
-                    SizedBox(height: 16.h),
-                    AppPrimaryButton(
-                      text: "Add Medication",
-                      backgroundColor: AppColorsMedications.primary,
-                      borderRadius: 20,
-                      onPressed: () {
-                        Get.toNamed(Routes.MEDICINE_ADD);
-                      },
-                    ),
-                  ],
-                ),
-              ),
-            )),
+              )),
+        ),
       ),
     );
   }
@@ -328,3 +307,50 @@ class popItems extends StatelessWidget {
     );
   }
 }
+
+
+
+
+
+ //SizedBox(height: 16.h),
+                  // SingleChildScrollView(
+                  //   scrollDirection: Axis.horizontal,
+                  //   child: Row(
+                  //     children: [
+                  //       const SizedBox(height: 16),
+                  //       FilterItem(
+                  //         title: "All",
+                  //         count: 5,
+                  //         isSelected: true,
+                  //         onTap: () {},
+                  //       ),
+                  //       SizedBox(
+                  //         width: 8.w,
+                  //       ),
+                  //       FilterItem(
+                  //         title: "Morning",
+                  //         count: 2,
+                  //         isSelected: false,
+                  //         onTap: () {},
+                  //       ),
+                  //       SizedBox(
+                  //         width: 8.w,
+                  //       ),
+                  //       FilterItem(
+                  //         title: "Evening",
+                  //         count: 3,
+                  //         isSelected: false,
+                  //         onTap: () {},
+                  //       ),
+                  //       SizedBox(
+                  //         width: 8.w,
+                  //       ),
+                  //       FilterItem(
+                  //         title: "Night",
+                  //         count: 2,
+                  //         isSelected: false,
+                  //         onTap: () {},
+                  //       ),
+                  //     ],
+                  //   ),
+                  // ),

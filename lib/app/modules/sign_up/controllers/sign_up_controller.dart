@@ -70,7 +70,7 @@ class SignUpController extends GetxController with StateMixin {
       );
     } catch (e) {
       Notifier.of.error(
-        'Registration failed. user already exists.',
+        '${e.toString()}',
         title: 'Sign Up Failed',
       );
     } finally {

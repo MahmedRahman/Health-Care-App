@@ -59,7 +59,7 @@ class ProfileView extends GetView<ProfileController> {
                                     ? BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: Color(0xff2445CE),
+                                            color: Color(0xff0D268D),
                                             width: 2.0, // تقدر تغيّر السمك
                                           ),
                                         ),
@@ -77,7 +77,7 @@ class ProfileView extends GetView<ProfileController> {
                                     "Personal Info",
                                     style: TextStyle(
                                       color: isPersonalInfo.value == true
-                                          ? Color(0xff2445CE)
+                                          ? Color(0xff0D268D)
                                           : Color(0xff808080),
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,
@@ -108,7 +108,7 @@ class ProfileView extends GetView<ProfileController> {
                                     : BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: Color(0xff2445CE),
+                                            color: Color(0xff0D268D),
                                             width: 2.0, // تقدر تغيّر السمك
                                           ),
                                         ),
@@ -118,7 +118,7 @@ class ProfileView extends GetView<ProfileController> {
                                     "Health Info",
                                     style: TextStyle(
                                       color: isPersonalInfo.value == false
-                                          ? Color(0xff2445CE)
+                                          ? Color(0xff0D268D)
                                           : Color(0xff808080),
                                       fontSize: 16,
                                       fontWeight: FontWeight.bold,

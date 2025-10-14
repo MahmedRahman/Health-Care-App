@@ -91,7 +91,7 @@ class HomeView extends GetView<HomeController> {
                   onTap: () {
                     Get.bottomSheet(
                       UpdateBackgroundScreen(),
-                      isScrollControlled: false,
+                      isScrollControlled: true,
                       backgroundColor: Colors.transparent,
                     );
                   },
@@ -150,8 +150,6 @@ class VitalSigns extends StatelessWidget {
                     title: "Blood Pressure",
                     imagePath: "assets/images/blood_pressure.png",
                     value: "120/80",
-                    color: Color(0xffD04244),
-                    textColor: Colors.white,
                     onTap: () {
                       Get.bottomSheet(
                         VitalSignsBottomSheetKey(
@@ -186,8 +184,6 @@ class VitalSigns extends StatelessWidget {
                     title: "Oxygen Saturation",
                     imagePath: "assets/images/oxygen_saturation.png",
                     value: "95%",
-                    color: Color(0xffDFD925),
-                    textColor: Colors.black,
                     onTap: () {
                       Get.bottomSheet(
                         VitalSignsBottomSheetKey(

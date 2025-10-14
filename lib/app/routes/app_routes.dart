@@ -23,6 +23,7 @@ abstract class Routes {
   static const MEDICATIONS = _Paths.MEDICATIONS;
   static const MEDICINE_DETAILS = _Paths.MEDICINE_DETAILS;
   static const MEDICINE_ADD = _Paths.MEDICINE_ADD;
+  static const DOSES_SCHEDULE = _Paths.DOSES_SCHEDULE;
   static const MEDICAL_IMAGES = _Paths.MEDICAL_IMAGES;
   static const LABS = _Paths.LABS;
   static const APPOINTMENTS = _Paths.APPOINTMENTS;
@@ -50,6 +51,7 @@ abstract class _Paths {
   static const MEDICATIONS = '/medications';
   static const MEDICINE_DETAILS = '/medicine-details';
   static const MEDICINE_ADD = '/medicine-add';
+  static const DOSES_SCHEDULE = '/doses-schedule';
   static const MEDICAL_IMAGES = '/medical-images';
   static const LABS = '/labs';
   static const APPOINTMENTS = '/appointments';

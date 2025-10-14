@@ -17,7 +17,7 @@ class ProgressStatusBar extends StatelessWidget {
       height: 16.h, // عدلت الحجم ليتماشى مع الصورة
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(30),
-        color: Colors.white,
+        color: Colors.grey.shade200,
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.05),
@@ -36,8 +36,8 @@ class ProgressStatusBar extends StatelessWidget {
                 borderRadius: BorderRadius.circular(30),
                 gradient: const LinearGradient(
                   colors: [
-                    Color(0xFFFF7E5F),
-                    Color(0xFFFFB88C)
+                    Color(0xFF63A6F7),
+                    Color(0xFF63A6F7)
                   ], // تدرج برتقالي
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
@@ -56,7 +56,7 @@ class ProgressStatusBar extends StatelessWidget {
                     child: Text(
                       '${(percentage * 100).toInt()}%',
                       style: const TextStyle(
-                        color: Colors.white,
+                        color: Colors.black,
                         fontWeight: FontWeight.w600,
                       ),
                     ),

@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:health_care_app/app/core/network/api_request.dart';
 import 'package:health_care_app/app/data/medical_image.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/upload_bottom_sheet.dart';
+import 'package:health_care_app/app/modules/medical_images/widgets/upload_controller.dart';
+import 'package:health_care_app/app/modules/medical_images/widgets/filter_controller.dart';
 
 class MedicalImagesController extends GetxController with StateMixin {
   // قائمة الصور الطبية
-  var medicalImages = <MedicalImage>[].obs;
+  var medicalImages = [].obs;
 
   // فئات التصفية
   var categories = <ImageCategory>[].obs;
@@ -17,83 +20,192 @@ class MedicalImagesController extends GetxController with StateMixin {
   var isLoading = false.obs;
 
   @override
-  void onInit() {
+  void onInit() async {
     super.onInit();
-    _initializeData();
-    change(null, status: RxStatus.empty());
+    await initializeData();
   }
 
-  void _initializeData() {
-    // تحميل البيانات التجريبية
-    medicalImages.value = MedicalImage.getSampleData();
+  Future<void> initializeData() async {
+    change(null, status: RxStatus.loading());
+    final response = await ApiRequest().getImages();
+    medicalImages.assignAll(response.body);
 
-    // إنشاء فئات التصفية
-    _createCategories();
-  }
-
-  void _createCategories() {
-    // حساب عدد الصور لكل فئة
-    Map<String, int> categoryCounts = {};
-    for (var image in medicalImages) {
-      categoryCounts[image.category] =
-          (categoryCounts[image.category] ?? 0) + 1;
+    if (medicalImages.isEmpty) {
+      change(null, status: RxStatus.empty());
+      return;
     }
 
-    // إضافة فئة "All"
-    categories.add(ImageCategory(
-      name: 'All',
-      count: medicalImages.length,
-      isSelected: true,
-    ));
+    _createCategories(medicalImages);
 
-    // إضافة الفئات الأخرى
-    categoryCounts.forEach((category, count) {
-      categories.add(ImageCategory(
-        name: category,
-        count: count,
-        isSelected: false,
-      ));
-    });
+    change(medicalImages, status: RxStatus.success());
+  }
+
+  RxList<dynamic> categoriesList = ["All"].obs;
+
+  void _createCategories(List<dynamic> medicalImages) {
+    categoriesList.clear();
+    categoriesList.add("All");
+    for (var image in medicalImages) {
+      categoriesList.add(image["folderName"]); // no duplicates
+      categoriesList.assignAll(categoriesList.toSet().toList());
+    }
+
+    update();
   }
 
   // تغيير الفئة المحددة
   void selectCategory(int index) {
-    // إلغاء تحديد جميع الفئات
-    for (int i = 0; i < categories.length; i++) {
-      categories[i] = ImageCategory(
-        name: categories[i].name,
-        count: categories[i].count,
-        isSelected: i == index,
-      );
+    List<dynamic> ResetMedicalImages;
+    selectedCategoryIndex.value = index;
+    if (index == 0) {
+      ResetMedicalImages = medicalImages;
+    } else {
+      ResetMedicalImages = medicalImages
+          .where((image) => image["folderName"] == categoriesList[index])
+          .toList();
     }
 
-    selectedCategoryIndex.value = index;
-    categories.refresh();
+    change(ResetMedicalImages, status: RxStatus.success());
   }
 
   // الحصول على الصور المفلترة
-  List<MedicalImage> get filteredImages {
-    return [];
-    // if (selectedCategoryIndex.value == 0) {
-    //   return medicalImages; // عرض جميع الصور
-    // } else {
-    //   String selectedCategory = categories[selectedCategoryIndex.value].name;
-    //   return medicalImages.where((image) => image.category == selectedCategory).toList();
-    // }
+  void filteredImages(res) async {
+    change(null, status: RxStatus.loading());
+    RxList<dynamic> filteredImagesList = [].obs;
+
+    try {
+      // تحويل التواريخ إلى تنسيق API
+      String? dateFrom;
+      String? dateTo;
+      String? ordering;
+
+      if (res.from != null) {
+        dateFrom =
+            "${res.from.day.toString().padLeft(2, '0')}-${res.from.month.toString().padLeft(2, '0')}-${res.from.year}";
+      }
+
+      if (res.to != null) {
+        dateTo =
+            "${res.to.day.toString().padLeft(2, '0')}-${res.to.month.toString().padLeft(2, '0')}-${res.to.year}";
+      }
+
+      if (res.sort != null) {
+        ordering =
+            res.sort == SortOrder.newestFirst ? "Newest First" : "Oldest First";
+      }
+
+      var response = await ApiRequest().filterImages(
+        dateFrom: dateFrom,
+        dateTo: dateTo,
+        xrayType: "test",
+        ordering: ordering,
+      );
+
+      if (response.statusCode == 200) {
+        filteredImagesList.assignAll(response.body);
+        change(filteredImagesList, status: RxStatus.success());
+      } else {
+        // في حالة فشل API، استخدم الفلترة المحلية
+        _applyLocalFilter(res);
+      }
+    } catch (e) {
+      // في حالة الخطأ، استخدم الفلترة المحلية
+      _applyLocalFilter(res);
+    }
+  }
+
+  // فلترة محلية للبيانات
+  void _applyLocalFilter(res) {
+    List<dynamic> filtered = List.from(medicalImages);
+
+    // فلترة حسب التاريخ
+    if (res.from != null) {
+      filtered = filtered.where((image) {
+        if (image["date"] != null) {
+          DateTime imageDate = DateTime.parse(image["date"]);
+          return imageDate.isAfter(res.from) ||
+              imageDate.isAtSameMomentAs(res.from);
+        }
+        return false;
+      }).toList();
+    }
+
+    if (res.to != null) {
+      filtered = filtered.where((image) {
+        if (image["date"] != null) {
+          DateTime imageDate = DateTime.parse(image["date"]);
+          return imageDate.isBefore(res.to.add(const Duration(days: 1))) ||
+              imageDate.isAtSameMomentAs(res.to);
+        }
+        return false;
+      }).toList();
+    }
+
+    // ترتيب البيانات
+    if (res.sort != null) {
+      filtered.sort((a, b) {
+        if (a["date"] == null || b["date"] == null) return 0;
+
+        DateTime dateA = DateTime.parse(a["date"]);
+        DateTime dateB = DateTime.parse(b["date"]);
+
+        if (res.sort == SortOrder.newestFirst) {
+          return dateB.compareTo(dateA);
+        } else {
+          return dateA.compareTo(dateB);
+        }
+      });
+    }
+
+    change(filtered, status: RxStatus.success());
   }
 
   // إضافة صورة جديدة
   void addNewImage() {
+    // مسح الصور المحددة عند فتح الـ upload sheet
+    try {
+      final uploadController = Get.find<UploadController>();
+      uploadController.removeFile();
+    } catch (e) {
+      // الـ controller غير موجود، لا مشكلة
+    }
+
     Get.bottomSheet(
       const UploadBottomSheet(),
       isScrollControlled: true,
       enableDrag: true,
+      isDismissible: true,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
       ),
       backgroundColor: Colors.transparent, // we style inside
     );
     // TODO: تنفيذ إضافة صورة جديدة
+  }
+
+  Future<void> uploadImage(
+    String folderName,
+    List<String> images,
+  ) async {
+    change(null, status: RxStatus.loading());
+    try {
+      final res = await ApiRequest().addImage(
+        folderName: folderName,
+        images: images,
+      );
+
+      if (res.statusCode == 200) {
+        await initializeData();
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Error',
+        'Failed to upload image: $e',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+        duration: const Duration(seconds: 3),
+      );
+    }
   }
 
   // عرض خيارات الصورة
@@ -130,10 +242,10 @@ class MedicalImagesController extends GetxController with StateMixin {
             ),
             ListTile(
               leading: const Icon(Icons.delete, color: Colors.red),
-              title: const Text('حذف', style: TextStyle(color: Colors.red)),
+              title: const Text('Delete', style: TextStyle(color: Colors.red)),
               onTap: () {
                 Get.back();
-                _deleteImage(image);
+                deleteImage(image);
               },
             ),
           ],
@@ -147,23 +259,36 @@ class MedicalImagesController extends GetxController with StateMixin {
   }
 
   // حذف صورة
-  void _deleteImage(MedicalImage image) {
+  void deleteImage(image) {
     Get.dialog(
       AlertDialog(
-        title: const Text('تأكيد الحذف'),
-        content: const Text('هل أنت متأكد من حذف هذه الصورة؟'),
+        title: const Text('Delete Image'),
+        content: const Text('Are you sure you want to delete this image?'),
         actions: [
           TextButton(
             onPressed: () => Get.back(),
-            child: const Text('إلغاء'),
+            child: const Text('Cancel'),
           ),
           TextButton(
-            onPressed: () {
-              medicalImages.remove(image);
-              _createCategories(); // إعادة إنشاء الفئات
+            onPressed: () async {
+              //close dialog
               Get.back();
+              //change status to loading
+              change(null, status: RxStatus.loading());
+              try {
+                await ApiRequest().deleteImage(
+                  imageId: image["id"].toString(),
+                );
+              } catch (e) {
+                Get.snackbar("Erro", e.toString());
+              } finally {
+                await initializeData();
+              }
             },
-            child: const Text('حذف', style: TextStyle(color: Colors.red)),
+            child: const Text(
+              'Delete',
+              style: TextStyle(color: Colors.red),
+            ),
           ),
         ],
       ),

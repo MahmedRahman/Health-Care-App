@@ -43,7 +43,7 @@ class QuickLinks extends StatelessWidget {
                 DashboardItem(
                   svgPath: "assets/svg/Medications.svg",
                   label: "Medications",
-                  iconColor: Color(0xff2445CE),
+                  iconColor: Color(0xff0D268D),
                   onTap: () {
                     Get.toNamed(Routes.MEDICATIONS);
                   },
@@ -57,13 +57,13 @@ class QuickLinks extends StatelessWidget {
                     Get.toNamed(Routes.MEDICAL_IMAGES);
                   },
                 ),
-                SizedBox(width: 8.w),
-                DashboardItem(
-                  svgPath: "assets/svg/Appointments.svg",
-                  label: "Appointments",
-                  iconColor: Color(0xffC6A7D1),
-                  onTap: () {},
-                ),
+                // SizedBox(width: 8.w),
+                // DashboardItem(
+                //   svgPath: "assets/svg/Appointments.svg",
+                //   label: "Appointments",
+                //   iconColor: Color(0xffC6A7D1),
+                //   onTap: () {},
+                // ),
                 SizedBox(width: 8.w),
                 DashboardItem(
                   svgPath: "assets/svg/Labs.svg",

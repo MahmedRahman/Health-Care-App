@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
 import 'package:health_care_app/app/modules/home/component/app_circle_image.dart';
@@ -29,15 +30,20 @@ class ProfileInfo extends StatelessWidget {
     return InkWell(
       onTap: onTap,
       child: Container(
+        // height: 228.h,
         decoration: BoxDecoration(
-          color: Color(0xff2445CE),
+          color: Color(0xff0D268D),
           borderRadius: BorderRadius.only(
             bottomLeft: Radius.circular(40.r),
             bottomRight: Radius.circular(40.r),
           ),
         ),
         child: Padding(
-          padding: const EdgeInsets.only(top: 0.0, left: 24.0, right: 24.0),
+          padding: const EdgeInsets.only(
+            top: 12.0,
+            left: 24.0,
+            right: 24.0,
+          ),
           child: Column(
             children: [
               Row(
@@ -57,77 +63,80 @@ class ProfileInfo extends StatelessWidget {
                     width: 30.w,
                   ),
                   const Spacer(),
-                  AppIconButtonSvg(
-                    assetPath: 'assets/svg/notifications.svg',
-                    iconSize: 40.w,
-                    onPressed: () {
-                      Get.dialog(
-                        Center(
-                          child: Container(
-                            width: 300,
-                            padding: EdgeInsets.all(20),
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Material(
-                              child: Stack(
-                                children: [
-                                  Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      SizedBox(height: 16.h),
-                                      // Icon
-                                      Image.asset(
-                                        'assets/images/medication_icon.png', // بدلها بمسار الصورة بتاعتك
-                                        width: 64,
-                                        height: 64,
-                                      ),
-                                      SizedBox(height: 16.h),
+                  SvgPicture.asset(
+                    'assets/svg/notifications.svg',
+                  )
+                  // AppIconButtonSvg(
+                  //   assetPath: 'assets/svg/notifications.svg',
+                  //   iconSize: 40.w,
+                  //   onPressed: () {
+                  //     Get.dialog(
+                  //       Center(
+                  //         child: Container(
+                  //           width: 300,
+                  //           padding: EdgeInsets.all(20),
+                  //           decoration: BoxDecoration(
+                  //             color: Colors.white,
+                  //             borderRadius: BorderRadius.circular(20),
+                  //           ),
+                  //           child: Material(
+                  //             child: Stack(
+                  //               children: [
+                  //                 Column(
+                  //                   mainAxisSize: MainAxisSize.min,
+                  //                   children: [
+                  //                     SizedBox(height: 16.h),
+                  //                     // Icon
+                  //                     Image.asset(
+                  //                       'assets/images/medication_icon.png', // بدلها بمسار الصورة بتاعتك
+                  //                       width: 64,
+                  //                       height: 64,
+                  //                     ),
+                  //                     SizedBox(height: 16.h),
 
-                                      // Title
-                                      Text(
-                                        'Medication Alert',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.redAccent,
-                                        ),
-                                      ),
-                                      SizedBox(height: 12.h),
+                  //                     // Title
+                  //                     Text(
+                  //                       'Medication Alert',
+                  //                       style: TextStyle(
+                  //                         fontSize: 18,
+                  //                         fontWeight: FontWeight.bold,
+                  //                         color: Colors.redAccent,
+                  //                       ),
+                  //                     ),
+                  //                     SizedBox(height: 12.h),
 
-                                      // Message
-                                      Text(
-                                        "It seems you’re not taking your medication regularly. Please follow your prescribed schedule to stay healthy.",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.grey[700],
-                                        ),
-                                      ),
-                                    ],
-                                  ),
+                  //                     // Message
+                  //                     Text(
+                  //                       "It seems you’re not taking your medication regularly. Please follow your prescribed schedule to stay healthy.",
+                  //                       textAlign: TextAlign.center,
+                  //                       style: TextStyle(
+                  //                         fontSize: 14,
+                  //                         color: Colors.grey[700],
+                  //                       ),
+                  //                     ),
+                  //                   ],
+                  //                 ),
 
-                                  // Close button
-                                  Positioned(
-                                    top: 0,
-                                    right: 0,
-                                    child: GestureDetector(
-                                      onTap: () => Get.back(),
-                                      child: Icon(
-                                        Icons.close,
-                                        color: Colors.grey[600],
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
+                  //                 // Close button
+                  //                 Positioned(
+                  //                   top: 0,
+                  //                   right: 0,
+                  //                   child: GestureDetector(
+                  //                     onTap: () => Get.back(),
+                  //                     child: Icon(
+                  //                       Icons.close,
+                  //                       color: Colors.grey[600],
+                  //                     ),
+                  //                   ),
+                  //                 ),
+                  //               ],
+                  //             ),
+                  //           ),
+                  //         ),
+                  //       ),
+                  //     );
+                  //   },
+                  // ),
                 ],
               ),
               SizedBox(height: 4.h),

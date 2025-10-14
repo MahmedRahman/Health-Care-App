@@ -1,3 +1,4 @@
+import 'package:awesome_notifications/awesome_notifications.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -9,6 +10,8 @@ import 'package:health_care_app/app/core/service/lookup_service.dart';
 import 'package:health_care_app/app/helper/app_notifier.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/filter_controller.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/upload_controller.dart';
+import 'package:health_care_app/app/services/notification_channel_service.dart';
+import 'package:health_care_app/app/services/notification_service.dart';
 import 'app/routes/app_pages.dart';
 
 void main() async {
@@ -20,6 +23,20 @@ void main() async {
   Get.lazyPut<LookupService>(() => LookupService());
 
   Notifier.use(NotifierMode.awesome);
+
+  // تهيئة خدمة الإشعارات
+  final notificationService = NotificationService();
+  await notificationService.initialize(
+    channels: NotificationChannelService.defaultChannels,
+    debug: true,
+  );
+
+  // إعداد listener للإشعارات
+  notificationService.setNotificationListener(
+    onActionReceived: (ReceivedAction action) async {
+      debugPrint('Received action: ${action.payload}');
+    },
+  );
 
   runApp(
     DevicePreview(
@@ -57,7 +74,7 @@ class HeartCareApp extends StatelessWidget {
             scaffoldBackgroundColor: Colors.white,
             appBarTheme: const AppBarTheme(
               backgroundColor: Color(0xFF06283D),
-              foregroundColor: Colors.black,
+              foregroundColor: Colors.white,
               elevation: 0,
             ),
           ),

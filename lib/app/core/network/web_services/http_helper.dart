@@ -47,7 +47,7 @@ class HttpHelper {
         return await httpClient.delete(endpoint, headers: headers);
       case HttpMethod.GET:
       default:
-        return await httpClient.get(endpoint, headers: headers);
+        return await httpClient.get(endpoint, headers: headers, query: body);
     }
   }
 }

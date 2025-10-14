@@ -4,14 +4,11 @@ import 'package:get/get_core/src/get_main.dart';
 
 class UpdateBackgroundScreen extends StatelessWidget {
   final List<Color> colorOptions = [
-    Color(0xFF3B6DF6),
-    Color(0xFFB03C8A),
-    Color(0xFF8E44AD),
-    Color(0xFFAEDC2A),
-    Color(0xFFE67E22),
-    Color(0xFF1ABC9C),
-    Color(0xFF3498DB),
-    Color(0xFF34495E),
+    Color(0xFF0D268D),
+    Color(0xFFB3D538),
+    Color(0xFF0D268D),
+    Color(0xFFD56F38),
+    Color(0xFF38D59B),
   ];
 
   @override
@@ -28,6 +25,7 @@ class UpdateBackgroundScreen extends StatelessWidget {
         padding: const EdgeInsets.all(24.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
             Center(
               child: Container(
@@ -39,7 +37,7 @@ class UpdateBackgroundScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: 12),
             Text(
               'Update Background',
               style: TextStyle(
@@ -48,7 +46,7 @@ class UpdateBackgroundScreen extends StatelessWidget {
                 color: Color(0xFF102437),
               ),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: 12),
             Text(
               'Choose Image',
               style: TextStyle(
@@ -64,7 +62,7 @@ class UpdateBackgroundScreen extends StatelessWidget {
               },
               child: Container(
                 width: double.infinity,
-                height: 160,
+                height: 140,
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.grey[300]!),
                   borderRadius: BorderRadius.circular(16),
@@ -90,7 +88,7 @@ class UpdateBackgroundScreen extends StatelessWidget {
                 ),
               ),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: 12),
             Text(
               'Choose Color',
               style: TextStyle(
@@ -122,7 +120,8 @@ class UpdateBackgroundScreen extends StatelessWidget {
                     .toList(),
               ),
             ),
-            Spacer(),
+            // Spacer(),
+            SizedBox(height: 12),
             SizedBox(
               width: double.infinity,
               child: ElevatedButton(
@@ -131,8 +130,8 @@ class UpdateBackgroundScreen extends StatelessWidget {
                   Get.back();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Color(0xFF102437),
-                  padding: EdgeInsets.symmetric(horizontal: 80, vertical: 16),
+                  backgroundColor: Color(0xFF0D268D),
+                  //padding: EdgeInsets.symmetric(horizontal: 80, vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),

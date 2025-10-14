@@ -1,18 +1,19 @@
 // filter_controller.dart
 import 'package:get/get.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 // filter_result.dart
 enum SortOrder { newestFirst, oldestFirst }
 
 class FilterResult {
-  final DateTime? from;
-  final DateTime? to;
+  final String? from;
+  final String? to;
   final SortOrder? sort;
 
   const FilterResult({this.from, this.to, this.sort});
 
-  FilterResult copyWith({DateTime? from, DateTime? to, SortOrder? sort}) =>
+  FilterResult copyWith({String? from, String? to, SortOrder? sort}) =>
       FilterResult(
           from: from ?? this.from, to: to ?? this.to, sort: sort ?? this.sort);
 
@@ -68,8 +69,15 @@ class FilterController extends GetxController {
   }
 
   void apply() {
+    final dateFormat = DateFormat('MM-dd-yyyy');
     Get.back(
-      result: FilterResult(from: from.value, to: to.value, sort: sort.value),
+      result: FilterResult(
+        from:
+            from.value != null ? dateFormat.format(from.value!).toString() : "",
+        to: to.value != null ? dateFormat.format(to.value!).toString() : "",
+        //format in mm-DD-yyyy
+        sort: sort.value,
+      ),
     );
   }
 }

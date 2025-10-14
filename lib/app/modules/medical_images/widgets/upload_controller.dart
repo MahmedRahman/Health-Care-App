@@ -7,10 +7,10 @@ class UploadController extends GetxController {
   // Form
   final folderName = ''.obs;
 
-  // File
-  final pickedFile = Rxn<File>();
-  final pickedFileName = ''.obs;
-  final pickedFileSize = ''.obs;
+  // Files
+  final pickedFiles = <File>[].obs;
+  final pickedFileNames = <String>[].obs;
+  final pickedFileSizes = <String>[].obs;
 
   // Progress
   final progress = 0.0.obs; // 0..1
@@ -22,43 +22,59 @@ class UploadController extends GetxController {
 
   Future<void> pickFile() async {
     final res = await FilePicker.platform.pickFiles(
-      allowMultiple: false,
+      allowMultiple: true,
       type: FileType.custom,
       allowedExtensions: allowedExts,
       withData: true,
     );
     if (res == null || res.files.isEmpty) return;
 
-    final f = res.files.single;
-    if ((f.size) > maxSizeBytes) {
-      Get.snackbar('File too large', 'Max file size is 5 MB');
-      return;
+    // إضافة الملفات الجديدة إلى القائمة
+    for (final f in res.files) {
+      if ((f.size) > maxSizeBytes) {
+        Get.snackbar('File too large', '${f.name} is larger than 5 MB');
+        continue;
+      }
+
+      final path = f.path;
+      if (path == null) {
+        Get.snackbar('Error', 'Could not read file path for ${f.name}');
+        continue;
+      }
+
+      final file = File(path);
+      // التحقق من عدم وجود الملف مسبقاً
+      if (!pickedFiles.any((existingFile) => existingFile.path == file.path)) {
+        pickedFiles.add(file);
+        pickedFileNames.add(f.name);
+        pickedFileSizes.add(_formatSize(f.size));
+      }
     }
 
-    final path = f.path;
-    if (path == null) {
-      Get.snackbar('Error', 'Could not read file path');
-      return;
-    }
-
-    pickedFile.value = File(path);
-    pickedFileName.value = f.name;
-    pickedFileSize.value = _formatSize(f.size);
     progress.value = 0;
     isUploading.value = false;
   }
 
   void removeFile() {
-    pickedFile.value = null;
-    pickedFileName.value = '';
-    pickedFileSize.value = '';
+    pickedFiles.clear();
+    pickedFileNames.clear();
+    pickedFileSizes.clear();
     progress.value = 0;
     isUploading.value = false;
+    folderName.value = '';
+  }
+
+  void removeFileAt(int index) {
+    if (index >= 0 && index < pickedFiles.length) {
+      pickedFiles.removeAt(index);
+      pickedFileNames.removeAt(index);
+      pickedFileSizes.removeAt(index);
+    }
   }
 
   Future<void> startUpload() async {
-    if (pickedFile.value == null) {
-      Get.snackbar('Select a file', 'Please choose a JPG/PNG first.');
+    if (pickedFiles.isEmpty) {
+      Get.snackbar('Select files', 'Please choose JPG/PNG files first.');
       return;
     }
     if ((folderName.value).trim().isEmpty) {
@@ -77,7 +93,7 @@ class UploadController extends GetxController {
         isUploading.value = false;
         t.cancel();
         Get.back(); // close sheet on success
-        Get.snackbar('Uploaded', 'Your file has been uploaded.');
+        Get.snackbar('Uploaded', 'Your files have been uploaded.');
       } else {
         progress.value = next;
       }

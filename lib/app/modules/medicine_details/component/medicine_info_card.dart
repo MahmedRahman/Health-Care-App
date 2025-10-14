@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:health_care_app/app/widgets/base_image_card.dart';
 
 class MedicineInfoCard extends StatelessWidget {
   final String imagePath;
@@ -26,20 +27,24 @@ class MedicineInfoCard extends StatelessWidget {
           children: [
             // Capsule Image
 
-            Container(
-              width: 161,
-              // هذا الحاوي الآن سيتمدد بكامل ارتفاع الـ Row
-              child: Container(
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.grey.shade300),
-                  image: DecorationImage(
-                    image: AssetImage(imagePath),
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
+            Base64ImageCard(
+              base64String: imagePath,
             ),
+
+            // Container(
+            //   width: 161,
+            //   // هذا الحاوي الآن سيتمدد بكامل ارتفاع الـ Row
+            //   child: Container(
+            //     decoration: BoxDecoration(
+            //       borderRadius: BorderRadius.circular(16),
+            //       border: Border.all(color: Colors.grey.shade300),
+            //       image: DecorationImage(
+            //         image: AssetImage(imagePath),
+            //         fit: BoxFit.cover,
+            //       ),
+            //     ),
+            //   ),
+            // ),
 
             // Image.asset(
             //   imagePath,
@@ -52,7 +57,10 @@ class MedicineInfoCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text("Name", style: TextStyle(color: Colors.grey)),
+                const Text(
+                  "Name",
+                  style: TextStyle(color: Colors.grey),
+                ),
                 Text(
                   medicineName,
                   style: const TextStyle(
@@ -62,7 +70,10 @@ class MedicineInfoCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text("Dose", style: TextStyle(color: Colors.grey)),
+                const Text(
+                  "Dose",
+                  style: TextStyle(color: Colors.grey),
+                ),
                 Text(
                   dose,
                   style: const TextStyle(
@@ -72,7 +83,10 @@ class MedicineInfoCard extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                const Text("Compliance", style: TextStyle(color: Colors.grey)),
+                const Text(
+                  "Compliance",
+                  style: TextStyle(color: Colors.grey),
+                ),
                 Text(
                   compliance,
                   style: const TextStyle(

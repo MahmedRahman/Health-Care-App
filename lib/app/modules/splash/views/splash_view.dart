@@ -14,12 +14,13 @@ class SplashView extends GetView<SplashController> {
       init: SplashController(),
       builder: (controller) {
         return Scaffold(
-          backgroundColor: Color(0xff2445CE),
+          backgroundColor: Color(0xff0D268D),
           body: Center(
-            child: controller.videoController.value.isInitialized
+            child: controller.videoController != null &&
+                    controller.videoController!.value.isInitialized
                 ? AspectRatio(
-                    aspectRatio: controller.videoController.value.aspectRatio,
-                    child: VideoPlayer(controller.videoController),
+                    aspectRatio: controller.videoController!.value.aspectRatio,
+                    child: VideoPlayer(controller.videoController!),
                   )
                 : const CircularProgressIndicator(),
           ),

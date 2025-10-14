@@ -17,6 +17,7 @@ dependencies:
     sdk: flutter
   image_picker: ^1.0.8
   path_provider: ^2.1.2
+  awesome_notifications: ^0.8.2
 
   intl: ^0.18.1
   file_picker: ^8.0.0 

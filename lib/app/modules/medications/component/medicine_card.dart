@@ -2,18 +2,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:health_care_app/app/modules/medications/component/progress_status_bar.dart';
+import 'package:health_care_app/app/widgets/base_image_card.dart';
 
 class MedicineCard extends StatelessWidget {
   final String medicineName;
   final String dose;
   final String route;
   final String description;
-  final List<String> timings;
-  final int tablets;
+  final List<dynamic> timings;
+  final String tablets;
   final double progress; // value between 0.0 and 1.0
   final int daysLeft;
   final String imagePath;
+  final String totalDoses;
+  final String countOfDose;
   final void Function()? onTap;
+  final void Function()? onCheckDoneTap;
 
   const MedicineCard({
     super.key,
@@ -27,6 +31,9 @@ class MedicineCard extends StatelessWidget {
     required this.daysLeft,
     required this.imagePath,
     required this.onTap,
+    required this.onCheckDoneTap,
+    required this.totalDoses,
+    required this.countOfDose,
   });
 
   @override
@@ -43,22 +50,15 @@ class MedicineCard extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             // Top Row (image + info)
+
+            Base64ImageCard(
+              base64String: imagePath,
+            ),
+            const SizedBox(height: 12),
             IntrinsicHeight(
               child: Row(
                 children: [
                   // Image
-                  Container(
-                    width: 100.w,
-                    //  height: 80,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: Colors.grey.shade300),
-                      image: DecorationImage(
-                        image: AssetImage(imagePath),
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                  ),
                   const SizedBox(width: 12),
                   // Info
                   Expanded(
@@ -79,7 +79,7 @@ class MedicineCard extends StatelessWidget {
                               const TextSpan(text: 'Timing: '),
                               for (int i = 0; i < timings.length; i++) ...[
                                 TextSpan(
-                                  text: timings[i],
+                                  text: timings[i]['doseTime'],
                                   style: TextStyle(
                                     color: i == 0 ? Colors.blue : Colors.black,
                                   ),
@@ -90,9 +90,11 @@ class MedicineCard extends StatelessWidget {
                             ],
                           ),
                         ),
-                        Text('Dose: $tablets tablet'),
+                        Text('Dose: $dose $tablets '),
                         Text('Route: $route'),
                         Text('Description: $description'),
+                        Text('totalDoses: $totalDoses'),
+                        Text('countOfDose: $countOfDose'),
                       ],
                     ),
                   ),
@@ -100,52 +102,38 @@ class MedicineCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(height: 20),
+            const SizedBox(height: 12),
 
             // Done Button Style
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 12),
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: const Color(0xFFF0F5FF),
-                borderRadius: BorderRadius.circular(16),
-              ),
-              child: const Center(
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(Icons.check_circle_outline_outlined,
-                        color: Colors.black87),
-                    SizedBox(width: 8),
-                    Text(
-                      'Check Done',
-                      style: TextStyle(fontSize: 16),
-                    ),
-                  ],
+            InkWell(
+              onTap: onCheckDoneTap,
+              child: Container(
+                padding: const EdgeInsets.symmetric(vertical: 12),
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: const Color(0xFFF0F5FF),
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: const Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.check_circle_outline_outlined,
+                        color: Colors.black87,
+                      ),
+                      SizedBox(width: 8),
+                      Text(
+                        'Check Done',
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ),
 
             const SizedBox(height: 12),
-
-            // Progress Bar
-            // Row(
-            //   children: [
-            //     Expanded(
-            //       child: ClipRRect(
-            //         borderRadius: BorderRadius.circular(16),
-            //         child: LinearProgressIndicator(
-            //           value: progress,
-            //           minHeight: 14,
-            //           backgroundColor: Colors.grey.shade200,
-            //           color: Colors.blue,
-            //         ),
-            //       ),
-            //     ),
-            //     const SizedBox(width: 10),
-            //     Text('$daysLeft Days left'),
-            //   ],
-            // ),
 
             ProgressStatusBar(
               percentage: progress,

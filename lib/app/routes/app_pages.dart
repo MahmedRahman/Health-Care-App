@@ -24,6 +24,7 @@ import '../modules/medical_images/bindings/medical_images_binding.dart';
 import '../modules/medical_images/views/medical_images_view.dart';
 import '../modules/medications/bindings/medications_binding.dart';
 import '../modules/medications/views/medications_view.dart';
+import '../modules/medications/views/doses_schedule_view.dart';
 import '../modules/medicine_add/bindings/medicine_add_binding.dart';
 import '../modules/medicine_add/views/medicine_add_view.dart';
 import '../modules/medicine_details/bindings/medicine_details_binding.dart';
@@ -155,6 +156,10 @@ class AppPages {
       name: _Paths.MEDICINE_ADD,
       page: () => const MedicineAddView(),
       binding: MedicineAddBinding(),
+    ),
+    GetPage(
+      name: _Paths.DOSES_SCHEDULE,
+      page: () => DosesScheduleView(dosesData: []),
     ),
     GetPage(
       name: _Paths.MEDICAL_IMAGES,

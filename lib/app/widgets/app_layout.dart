@@ -63,22 +63,48 @@ class AppLayout extends StatelessWidget {
       bottomNavigationBar: Obx(() {
         final current = navController.selectedIndex.value;
 
-        return NavigationBar(
-          selectedIndex: current,
-          onDestinationSelected: navController.changeTab,
-          height: 60.h,
-          backgroundColor: Colors.white,
-          labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
-          indicatorColor: Colors.transparent,
-          destinations: List.generate(svgIcons.length, (index) {
-            return NavigationDestination(
-              icon: navIcon(svgIcons[index], false),
-              selectedIcon: navIcon(svgIcons[index], true),
-              label: labels[index],
+        return NavigationBarTheme(
+          data: NavigationBarThemeData(
+            labelTextStyle:
+                MaterialStateProperty.resolveWith<TextStyle>((states) {
+              if (states.contains(MaterialState.selected)) {
+                return const TextStyle(
+                  decoration: TextDecoration.underline,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.primary,
+                  fontSize: 12,
+                );
+              }
+              return const TextStyle(
+                decoration: TextDecoration.none,
+                color: Color(0xff728098),
+                fontSize: 12,
+                fontWeight: FontWeight.w600,
+              );
+            }),
+          ),
+          child: NavigationBar(
+            selectedIndex: current,
+            onDestinationSelected: navController.changeTab,
+            height: 60.h,
+            backgroundColor: Colors.white,
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysShow,
+            indicatorColor: Colors.transparent,
+            indicatorShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100),
+            ),
+            destinations: List.generate(svgIcons.length, (index) {
+              return NavigationDestination(
+                icon: navIcon(svgIcons[index], false),
+                selectedIcon: navIcon(svgIcons[index], true),
+                // label: labels[index],
+                label: labels[index], // نخليها فاضية ونحط Text يدوي
+                tooltip: labels[index], // عشان الـ semantics
 
-              //iconColor: current == index ? AppColors.primary : Colors.grey,
-            );
-          }),
+                //iconColor: current == index ? AppColors.primary : Colors.grey,
+              );
+            }),
+          ),
         );
       }),
     );
@@ -91,7 +117,7 @@ Widget navIcon(String assetPath, bool isSelected) {
     width: 24.w,
     height: 24.h,
     colorFilter: ColorFilter.mode(
-      isSelected ? AppColors.primary : Colors.grey,
+      isSelected ? AppColors.primary : Color(0xff728098),
       BlendMode.srcIn,
     ),
   );
@@ -115,6 +141,16 @@ class LayoutMiddleware extends GetMiddleware {
       '/contact',
       '/more',
     ];
+
+    if (page?.name == '/more') {
+      return GetPage(
+        name: page!.name,
+        page: () => child,
+        transition: Transition.rightToLeft,
+        transitionDuration: const Duration(milliseconds: 300),
+        binding: page.binding,
+      );
+    }
 
     if (routesWithLayout.contains(page?.name)) {
       return GetPage(
