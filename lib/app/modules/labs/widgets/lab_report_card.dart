@@ -116,38 +116,41 @@ class LabReportCard extends StatelessWidget {
             Expanded(
               flex: 2,
               child: Padding(
-                padding: EdgeInsets.all(12.w),
+                padding: EdgeInsets.all(8.w),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
                   children: [
                     // Lab name
                     Row(
                       children: [
-                        Text(
-                          labName,
-                          style: TextStyle(
-                            fontSize: 14.sp,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
+                        Expanded(
+                          child: Text(
+                            labName,
+                            style: TextStyle(
+                              fontSize: 14.sp,
+                              fontWeight: FontWeight.w600,
+                              color: Colors.black87,
+                            ),
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
                           ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
                         ),
-                        Spacer(),
+                        SizedBox(width: 8.w),
                         InkWell(
                           onTap: onDeletePressed,
-                          borderRadius: BorderRadius.circular(4.r),
+                          borderRadius: BorderRadius.circular(3.r),
                           child: Container(
                             decoration: BoxDecoration(
                               color: const Color(0xFFFFE5E5),
-                              borderRadius: BorderRadius.circular(4.r),
+                              borderRadius: BorderRadius.circular(3.r),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.all(8.0),
+                              padding: const EdgeInsets.all(4.0),
                               child: Icon(
                                 Icons.delete_outline,
-                                size: 20.sp,
+                                size: 14.sp,
                                 color: const Color(0xFFE53E3E),
                               ),
                             ),
@@ -156,6 +159,8 @@ class LabReportCard extends StatelessWidget {
                       ],
                     ),
 
+                    SizedBox(height: 4.h),
+
                     // Report info
                     Row(
                       children: [
@@ -163,7 +168,7 @@ class LabReportCard extends StatelessWidget {
                           child: Text(
                             "Report-1",
                             style: TextStyle(
-                              fontSize: 11.sp,
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w400,
                               color: Colors.grey[600],
                             ),
@@ -171,11 +176,11 @@ class LabReportCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                           ),
                         ),
-                        SizedBox(width: 8.w),
+                        SizedBox(width: 4.w),
                         Text(
                           date,
                           style: TextStyle(
-                            fontSize: 11.sp,
+                            fontSize: 10.sp,
                             fontWeight: FontWeight.w400,
                             color: Colors.grey[600],
                           ),
@@ -185,10 +190,12 @@ class LabReportCard extends StatelessWidget {
                       ],
                     ),
 
+                    SizedBox(height: 4.h),
+
                     // Attachments row (pdf icons)
                     if (attachments.isNotEmpty)
                       SizedBox(
-                        height: 16.h,
+                        height: 20.h,
                         child: ListView.separated(
                           scrollDirection: Axis.horizontal,
                           itemCount: attachments.length,
@@ -221,44 +228,44 @@ class _AttachmentPill extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: onTap,
-      borderRadius: BorderRadius.circular(12.r),
+      borderRadius: BorderRadius.circular(8.r),
       child: Container(
-        width: 26.w,
-        height: 26.h,
+        width: 20.w,
+        height: 20.h,
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12.r),
+          borderRadius: BorderRadius.circular(6.r),
           boxShadow: const [
             BoxShadow(
               color: Color(0x0D000000),
-              blurRadius: 8,
-              offset: Offset(0, 4),
+              blurRadius: 4,
+              offset: Offset(0, 1),
             ),
           ],
         ),
         child: Stack(
           children: [
             Center(
-                child: Icon(icon, size: 14.sp, color: const Color(0xFF6B7C93))),
+                child: Icon(icon, size: 10.sp, color: const Color(0xFF6B7C93))),
             // small "PDF" badge
             Positioned(
-              left: 2.w,
-              bottom: 2.h,
+              right: 0.5.w,
+              bottom: 0.5.h,
               child: Container(
                 padding:
-                    EdgeInsets.symmetric(horizontal: 1.5.w, vertical: 0.5.h),
+                    EdgeInsets.symmetric(horizontal: 0.5.w, vertical: 0.3.h),
                 decoration: BoxDecoration(
                   color: const Color(0xffDC61E0),
-                  borderRadius: BorderRadius.circular(1.5.r),
+                  borderRadius: BorderRadius.circular(0.5.r),
                 ),
                 child: Text(
                   'PDF',
                   style: TextStyle(
-                    fontSize: 5.sp,
+                    fontSize: 3.sp,
                     height: 1,
                     color: Colors.white,
                     fontWeight: FontWeight.w800,
-                    letterSpacing: .2,
+                    letterSpacing: 0,
                   ),
                 ),
               ),

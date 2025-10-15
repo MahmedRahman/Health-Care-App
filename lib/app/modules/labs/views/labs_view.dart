@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
-import 'package:health_care_app/app/widgets/image_viewer.dart';
+import 'package:health_care_app/app/widgets/simple_pdf_viewer.dart';
 
 import '../controllers/labs_controller.dart';
 import '../widgets/lab_report_card.dart';
@@ -115,25 +115,28 @@ class LabsView extends GetView<LabsController> {
                       );
                     },
                     onTap: () {
-                      // Show image viewer with navigation
+                      // Show PDF viewer for lab reports
                       if (imgs != null && imgs.isNotEmpty) {
-                        Get.bottomSheet(
-                          ImageViewer(
-                            images: imgs,
-                            initialIndex: 0,
-                          ),
-                          backgroundColor: Colors.transparent,
-                          isScrollControlled: true,
-                          enableDrag: false,
-                        );
+                        // If there are multiple images, show the first one as PDF
+                        final firstImage = imgs[0];
+                        if (firstImage["imgs"] != null) {
+                          Get.bottomSheet(
+                            SimplePDFViewer(
+                              base64String: firstImage["imgs"],
+                              fileName:
+                                  '${item?["labType"] ?? "Lab Report"}.pdf',
+                            ),
+                            backgroundColor: Colors.transparent,
+                            isScrollControlled: true,
+                            enableDrag: false,
+                          );
+                        }
                       } else if (item?["report"] != null) {
-                        // Show single image
+                        // Show single PDF report
                         Get.bottomSheet(
-                          ImageViewer(
-                            images: [
-                              {"imgs": item?["report"]}
-                            ],
-                            initialIndex: 0,
+                          SimplePDFViewer(
+                            base64String: item?["report"],
+                            fileName: '${item?["labType"] ?? "Lab Report"}.pdf',
                           ),
                           backgroundColor: Colors.transparent,
                           isScrollControlled: true,
@@ -141,7 +144,40 @@ class LabsView extends GetView<LabsController> {
                         );
                       }
                     },
-                    attachments: [],
+                    attachments: [
+                      LabReportAttachment(
+                        icon: Icons.picture_as_pdf,
+                        onTap: () {
+                          // Open PDF when attachment is tapped
+                          if (imgs != null && imgs.isNotEmpty) {
+                            final firstImage = imgs[0];
+                            if (firstImage["imgs"] != null) {
+                              Get.bottomSheet(
+                                SimplePDFViewer(
+                                  base64String: firstImage["imgs"],
+                                  fileName:
+                                      '${item?["labType"] ?? "Lab Report"}.pdf',
+                                ),
+                                backgroundColor: Colors.transparent,
+                                isScrollControlled: true,
+                                enableDrag: false,
+                              );
+                            }
+                          } else if (item?["report"] != null) {
+                            Get.bottomSheet(
+                              SimplePDFViewer(
+                                base64String: item?["report"],
+                                fileName:
+                                    '${item?["labType"] ?? "Lab Report"}.pdf',
+                              ),
+                              backgroundColor: Colors.transparent,
+                              isScrollControlled: true,
+                              enableDrag: false,
+                            );
+                          }
+                        },
+                      ),
+                    ],
                   );
                 },
               ),
