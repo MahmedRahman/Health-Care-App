@@ -7,7 +7,9 @@ import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:health_care_app/app/core/auth_service.dart';
 import 'package:health_care_app/app/core/service/lookup_service.dart';
+import 'package:health_care_app/app/core/service/ver.dart';
 import 'package:health_care_app/app/helper/app_notifier.dart';
+import 'package:health_care_app/app/modules/home/controllers/home_controller.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/filter_controller.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/upload_controller.dart';
 import 'package:health_care_app/app/services/notification_channel_service.dart';
@@ -21,6 +23,8 @@ void main() async {
   await Get.put(AuthService());
 
   Get.lazyPut<LookupService>(() => LookupService());
+  Get.lazyPut<HomeController>(() => HomeController(), fenix: true);
+  Get.lazyPut<VersionService>(() => VersionService(), fenix: true);
 
   Notifier.use(NotifierMode.awesome);
 

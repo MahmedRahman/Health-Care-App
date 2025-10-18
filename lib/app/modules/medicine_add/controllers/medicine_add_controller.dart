@@ -150,7 +150,13 @@ class MedicineAddController extends GetxController with StateMixin<dynamic> {
     required int amount, // 1,2,3…
     required String unit, // daily, weekly, monthly, yearly
   }) {
-    final start = _fmt.parse(startDateStr);
+    DateTime start;
+    try {
+      start = _fmt.parse(startDateStr);
+    } catch (e) {
+      // If parsing fails, use current date as fallback
+      start = DateTime.now();
+    }
     final u = unit.trim().toLowerCase();
 
     DateTime renewal;

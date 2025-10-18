@@ -15,6 +15,10 @@ List<DateTime> buildScheduleFromMap(Map<String, dynamic> data,
       DateFormat('dd/MM/yyyy'),
       DateFormat('MM/dd/yyyy'),
       DateFormat('yyyy-MM-dd'),
+      DateFormat('dd-MM-yyyy'),
+      DateFormat('MM-dd-yyyy'),
+      DateFormat('dd/MM/yy'),
+      DateFormat('MM/dd/yy'),
     ];
     for (final f in candidates) {
       try {

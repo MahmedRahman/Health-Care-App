@@ -27,10 +27,18 @@ class AppDateField extends FormField<String> {
             }
 
             Future<void> _selectDate(BuildContext context) async {
+              DateTime initialDate;
+              try {
+                initialDate =
+                    DateFormat('dd/MM/yyyy').parse(state.value ?? "05/05/1995");
+              } catch (e) {
+                // If parsing fails, use current date as fallback
+                initialDate = DateTime.now();
+              }
+
               DateTime? picked = await showDatePicker(
                 context: context,
-                initialDate:
-                    DateFormat('dd/MM/yyyy').parse(state.value ?? "05/05/1995"),
+                initialDate: initialDate,
                 firstDate: DateTime(1900),
                 lastDate: DateTime(2100),
               );

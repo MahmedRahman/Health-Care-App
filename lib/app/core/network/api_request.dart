@@ -1,5 +1,6 @@
 import 'package:get/get.dart';
 import 'package:health_care_app/app/core/network/web_services/web_services.dart';
+import 'package:intl/intl.dart';
 
 import 'web_services/http_helper.dart';
 
@@ -292,13 +293,6 @@ class ApiRequest {
         "doctorName": "$doctorName",
         "startFrom": "$startFrom",
         "renewalDate": "$renewalDate",
-
-        // "leftDosesCount": 115,
-        // "leftDosesDaysCouns": 161,
-        // "countOfDose": 0.0,
-        // "totalDoses": 115.0,
-        // "totalDuration": 161,
-        // "doseCompliance": "0 %"
       },
     );
   }
@@ -373,8 +367,6 @@ class ApiRequest {
         });
   }
 
-// curl --location '159.198.36.67:8080/labs/reports' \
-// --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTBAZ21haWwuY29tIiwiaWF0IjoxNzYwMzU2ODkxLCJleHAiOjE4NjgzNTY4OTF9.C3ORT3P87Mc2vgC4J8XM8JsBEow28rbqZarDnoY4AT0'
   Future<Response> getLabs() async {
     return await webServices.execute(
       endpoint: "$baseUrl/labs/reports",
@@ -413,25 +405,6 @@ class ApiRequest {
     );
   }
 
-//   curl --location --request GET '159.198.36.67:8080/filter/images' \
-// --header 'Content-Type: application/json' \
-// --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTBAZ21haWwuY29tIiwiaWF0IjoxNzYwNDYzMjEzLCJleHAiOjE4Njg0NjMyMTN9.1ylv1mWncPn-m9v2ovM8PCz269g9wJfT5LAHAlubaiE' \
-// --data '{
-//     "dateFrom": "13-10-2025",
-//     "dateTo": "13-10-2025",
-//     "xrayType": "test",
-//     "ordering": "Oldest First"
-// }'
-
-//   curl --location '159.198.36.67:8080/add/lab/report' \
-// --header 'Authorization: Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MTBAZ21haWwuY29tIiwiaWF0IjoxNzYwMzU2ODkxLCJleHAiOjE4NjgzNTY4OTF9.C3ORT3P87Mc2vgC4J8XM8JsBEow28rbqZarDnoY4AT0' \
-// --header 'Content-Type: application/json' \
-// --data '{
-// "labName": "Al Mokhtabar Lab",
-// "reportName": "Report-1",
-// "date": "2022-08-01"
-// }
-
   Future<Response> addLabReport({
     required String labName,
     required List<String> images,
@@ -457,6 +430,137 @@ class ApiRequest {
       endpoint: "$baseUrl/delete/lab/report/$labId",
       method: HttpMethod.DELETE,
       requiresAuth: true,
+    );
+  }
+
+  Future<Response> addBloodPressure({
+    required double sbp,
+    required double dbp,
+    required double heartRate,
+    required String symptoms,
+    required double meanBloodPressure,
+    required String date,
+    required String time,
+  }) async {
+    final formattedDate = "${date}T${time}";
+
+    return await webServices.execute(
+      endpoint: "$baseUrl/add/blood/pressure",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+      body: {
+        "sbp": sbp,
+        "dbp": dbp,
+        "heartRate": heartRate,
+        "symtopms": symptoms, // Fixed typo: symtopms -> symptoms
+        "meanBloodPressure": meanBloodPressure, // Added missing field
+        "date": formattedDate,
+        "time": formattedDate,
+      },
+    );
+  }
+
+  Future<Response> addBloodRate({
+    required String heartRate,
+    required String symptoms,
+    required String date,
+    required String time,
+  }) async {
+    final formattedDate = "${date}T${time}";
+    return await webServices.execute(
+      endpoint: "$baseUrl/add/blood/rate",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+      body: {
+        "heartRate": heartRate,
+        "symtopms": symptoms,
+        "date": formattedDate,
+        "time": formattedDate,
+      },
+    );
+  }
+
+  Future<Response> addOxygenSaturation({
+    required double oxygenSaturation,
+    required String oxygenDeliveryMethod,
+    required String symptoms,
+    required String date,
+    required String time,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/add/oxygen/saturation",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+      body: {
+        "oxygenSaturation": oxygenSaturation,
+        "oxygenDeliveryMethod": oxygenDeliveryMethod,
+        "symtopms": symptoms,
+        "date": date,
+        "time": time,
+      },
+    );
+  }
+
+  Future<Response> addWeight({
+    required double weight,
+    required String symptoms,
+    required String date,
+    required String time,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/add/weight",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+      body: {
+        "weight": weight,
+        "symtopms": symptoms,
+        "date": date,
+        "time": time,
+      },
+    );
+  }
+
+  Future<Response> addRandomBloodSugar({
+    required String insulineDose,
+    required String bloodSugarRandom,
+    required String symptoms,
+    required String date,
+    required String time,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/add/random/blood-sugar",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+      body: {
+        "insulineDose": insulineDose,
+        "bloodSugarRandom": bloodSugarRandom,
+        "symtopms": symptoms,
+        "date": date,
+        "time": time,
+      },
+    );
+  }
+
+  Future<Response> addFluidBalance({
+    required double fluidIn,
+    required double fluidOut,
+    required double netBalance,
+    required String symptoms,
+    required String date,
+    required String time,
+  }) async {
+    return await webServices.execute(
+      endpoint: "$baseUrl/add/fluid/balance",
+      method: HttpMethod.POST,
+      requiresAuth: true,
+      body: {
+        "fluidIn": fluidIn,
+        "fluidOut": fluidOut,
+        "netBalance": netBalance,
+        "symtopms": symptoms,
+        "date": date,
+        "time": time,
+      },
     );
   }
 }
