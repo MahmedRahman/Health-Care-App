@@ -36,6 +36,9 @@ class AddOxygenSaturationController extends GetxController {
         symptoms: symptomsController.text,
       );
       Get.find<HomeController>().getOxygenSaturation();
+      oxygenSaturationController.text = '';
+      deliveryMethodController.text = '';
+      symptomsController.text = '';
       // TODO: Add oxygen saturation to service
       Get.back();
     }
@@ -49,7 +52,7 @@ class AddOxygenSaturation extends GetView<AddOxygenSaturationController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height,
+      // height: Get.height,
       decoration: BoxDecoration(
         color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.only(

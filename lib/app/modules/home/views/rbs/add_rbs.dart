@@ -36,6 +36,9 @@ class AddRBSController extends GetxController {
         symptoms: symptomsController.text,
       );
       Get.find<HomeController>().getBloodSugar();
+      rbsController.text = '';
+      insulinDoseController.text = '';
+      symptomsController.text = '';
       // TODO: Add RBS to service
       Get.back();
     }
@@ -48,7 +51,7 @@ class AddRBS extends GetView<AddRBSController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height,
+      //    height: Get.height,
       decoration: BoxDecoration(
         color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.only(

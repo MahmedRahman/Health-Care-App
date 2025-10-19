@@ -6,6 +6,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:get/get_core/src/get_main.dart';
+import 'package:health_care_app/app/modules/home/views/blood_pressure/add_blood_pressure.dart';
 import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
 import 'package:intl/intl.dart';
 import 'dart:math';
@@ -470,9 +471,9 @@ class VitalSignsBottomSheet extends GetView<dynamic> {
   String _labelForX(double x) {
     final matched = chartData.firstWhere(
       (item) => ((item['x'] as num).toDouble() == x),
-      orElse: () => const {"label": ""},
+      orElse: () => const {"date": ""},
     );
-    final label = matched['label'];
+    final label = matched['date'];
     return label is String ? label : '';
   }
 
@@ -492,7 +493,50 @@ class VitalSignsBottomSheet extends GetView<dynamic> {
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
       children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 0),
+              child: Row(
+                children: [
+                  Text(
+                    value,
+                    style: TextStyle(
+                      fontSize: 20,
+                      fontWeight: FontWeight.w600,
+                      color: keyColor ?? Colors.black,
+                    ),
+                  ),
+                  const SizedBox(width: 6),
+                  Text(
+                    unit,
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500,
+                      color: keyColor ?? Colors.black54,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Spacer(),
+            AppIconButtonSvg(
+              assetPath: 'assets/svg/filter.svg',
+              iconSize: 24.w,
+              onPressed: onFilterPressed,
+            ),
+            SizedBox(width: 4.w),
+            AppIconButtonSvg(
+              assetPath: 'assets/svg/plus.svg',
+              iconSize: 24.w,
+              onPressed: onAddPressed,
+            ),
+          ],
+        ),
+
         // البطاقة الرئيسية
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -505,49 +549,29 @@ class VitalSignsBottomSheet extends GetView<dynamic> {
             child: Column(
               children: [
                 // السطر اللي فيه القيمة والوحدة
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
-                  child: Row(
-                    children: [
-                      Text(
-                        value,
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w600,
-                          color: keyColor ?? Colors.black,
-                        ),
-                      ),
-                      const SizedBox(width: 6),
-                      Text(
-                        unit,
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w500,
-                          color: keyColor ?? Colors.black54,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
 
                 // الـ Chart
                 Padding(
                   padding: const EdgeInsets.only(
-                      left: 8.0, right: 24.0, bottom: 12.0),
+                    left: 0,
+                    right: 0,
+                    bottom: 0,
+                  ),
                   child: SizedBox(
-                    height: 230,
+                    height: 250,
                     child: noData
                         ? const Center(child: Text('No data'))
                         : SingleChildScrollView(
                             scrollDirection: Axis.horizontal,
                             child: SizedBox(
+                              //   height: 100,
                               width: chartWidth,
                               child: LineChart(
                                 LineChartData(
                                   showingTooltipIndicators: const [],
                                   gridData: FlGridData(show: true),
                                   clipData: FlClipData(
-                                    top: false,
+                                    top: true,
                                     bottom: false,
                                     left: false,
                                     right: false,
@@ -561,7 +585,7 @@ class VitalSignsBottomSheet extends GetView<dynamic> {
                                         getTitlesWidget: (value, meta) =>
                                             SideTitleWidget(
                                           axisSide: meta.axisSide,
-                                          space: 6,
+                                          space: 12,
                                           child: Text(
                                             _labelForX(value),
                                             style: const TextStyle(
@@ -574,15 +598,18 @@ class VitalSignsBottomSheet extends GetView<dynamic> {
                                     leftTitles: AxisTitles(
                                       sideTitles: SideTitles(
                                         showTitles: true,
-                                        reservedSize: 42,
+                                        reservedSize: 50,
                                       ),
                                     ),
                                     topTitles: AxisTitles(
-                                      sideTitles: SideTitles(showTitles: false),
+                                      sideTitles: SideTitles(
+                                        showTitles: true,
+                                        reservedSize: 55,
+                                      ),
                                     ),
                                     rightTitles: AxisTitles(
                                       sideTitles: SideTitles(
-                                        showTitles: true,
+                                        showTitles: false,
                                         reservedSize: 24,
                                       ),
                                     ),
@@ -590,10 +617,11 @@ class VitalSignsBottomSheet extends GetView<dynamic> {
                                   borderData: FlBorderData(show: false),
 
                                   // الحدود المحسوبة تلقائيًا
-                                  minX: bounds.minX,
-                                  maxX: bounds.maxX,
-                                  minY: bounds.minY,
-                                  maxY: bounds.maxY,
+                                  minX: bounds.minX - 1,
+                                  maxX: bounds.maxX + 1,
+
+                                  minY: bounds.minY - 1,
+                                  maxY: bounds.maxY + 1,
 
                                   lineBarsData: [
                                     if (chartSpots.isNotEmpty)

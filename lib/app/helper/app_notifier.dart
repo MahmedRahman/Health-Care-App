@@ -19,6 +19,9 @@ class NotifierTheme {
 abstract class AppNotifier {
   void success(String message, {String title = 'Success'});
   void error(String message, {String title = 'Error'});
+
+  void successWithDuration(String message,
+      {String title = 'Success', String action = 'OK'});
 }
 
 /// 3) Snackbar implementation
@@ -51,6 +54,12 @@ class SnackbarNotifier implements AppNotifier {
       duration: NotifierTheme.duration,
       icon: const Icon(Icons.error, color: Colors.white),
     );
+  }
+
+  @override
+  void successWithDuration(String message,
+      {String title = 'Success', String action = 'OK'}) {
+    // TODO: implement successWithDuration
   }
 }
 
@@ -128,6 +137,27 @@ class DialogNotifier implements AppNotifier {
       barrierDismissible: true,
     );
   }
+
+  @override
+  void successWithDuration(String message,
+      {String title = 'Success', String action = 'OK'}) {
+    AwesomeDialog(
+      context: Get.context!,
+      dialogType: DialogType.success,
+      btnOkOnPress: () {},
+      btnOkColor: Colors.green,
+      dismissOnTouchOutside: true,
+      dismissOnBackKeyPress: true,
+      autoHide: Duration(seconds: 2),
+      animType: AnimType.scale,
+      headerAnimationLoop: false,
+      title: title,
+      desc: message,
+      btnCancelText: action,
+      btnOkText: action,
+    ).show();
+    // TODO: implement successWithDuration
+  }
 }
 
 class AwesomeDialogNotifier implements AppNotifier {
@@ -188,6 +218,27 @@ class AwesomeDialogNotifier implements AppNotifier {
         borderSide: BorderSide(color: NotifierTheme.errorColor, width: 1),
       ).show();
     }, title, message, NotifierTheme.errorColor);
+  }
+
+  @override
+  void successWithDuration(String message,
+      {String title = 'Success', String action = 'OK'}) {
+    AwesomeDialog(
+      context: Get.context!,
+      dialogType: DialogType.success,
+      btnOkOnPress: () {},
+      btnOkColor: Colors.green,
+      dismissOnTouchOutside: true,
+      dismissOnBackKeyPress: true,
+      autoHide: Duration(seconds: 2),
+      animType: AnimType.scale,
+      headerAnimationLoop: false,
+      title: title,
+      desc: message,
+      btnCancelText: action,
+      btnOkText: action,
+    ).show();
+    // TODO: implement successWithDuration
   }
 }
 

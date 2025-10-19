@@ -139,16 +139,13 @@ class HomeView extends GetView<HomeController> {
                                         return;
                                       }
 
-                                      var result = Get.bottomSheet(
+                                      Get.bottomSheet(
                                         VitalSignsBottomSheetKey(
                                           index: 0.obs,
                                         ),
                                         isScrollControlled: true,
                                         backgroundColor: Colors.transparent,
                                       );
-                                      if (result != null) {
-                                        // Get.find<VersionService>().BloodPressure;
-                                      }
                                     },
                                   );
                                 },
@@ -189,6 +186,7 @@ class HomeView extends GetView<HomeController> {
                                   title: "Oxygen Saturation",
                                   imagePath:
                                       "assets/images/oxygen_saturation.png",
+                                  color: controller.oxygenSaturationColor.value,
                                   value:
                                       "${controller.avgOxygenSaturation.value}%",
                                   onTap: () {
@@ -218,6 +216,7 @@ class HomeView extends GetView<HomeController> {
                                   title: "Weight",
                                   imagePath: "assets/images/weight.png",
                                   value: "${controller.avgWeight.value} BMI",
+                                  color: controller.weightColor.value,
                                   onTap: () {
                                     if (controller.weight.length == 0) {
                                       Get.bottomSheet(
@@ -246,6 +245,7 @@ class HomeView extends GetView<HomeController> {
                                 return VitalSignsCard(
                                   title: "R.B.S",
                                   imagePath: "assets/images/rbs.png",
+                                  color: controller.bloodSugarColor.value,
                                   value:
                                       "${controller.avgBloodSugar.value} mg/dl",
                                   onTap: () {
@@ -272,6 +272,7 @@ class HomeView extends GetView<HomeController> {
                                 return VitalSignsCard(
                                   title: "Fluid Balance",
                                   imagePath: "assets/images/fluid_balance.png",
+                                  color: controller.fluidBalanceColor.value,
                                   value:
                                       "${controller.avgFluidBalance.value} ml",
                                   onTap: () {

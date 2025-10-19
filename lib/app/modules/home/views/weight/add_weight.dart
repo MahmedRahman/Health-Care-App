@@ -35,6 +35,8 @@ class AddWeightController extends GetxController {
       );
 
       Get.find<HomeController>().getWeight();
+      weightController.text = '';
+      symptomsController.text = '';
       // TODO: Add weight to service
       Get.back();
     }
@@ -47,7 +49,7 @@ class AddWeight extends GetView<AddWeightController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height,
+      //height: Get.height,
       decoration: BoxDecoration(
         color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.only(

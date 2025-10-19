@@ -4,17 +4,13 @@ import 'package:get/get.dart';
 import 'package:health_care_app/app/modules/home/component/vital_signs_bottom_sheet.dart';
 import 'package:health_care_app/app/modules/home/controllers/home_controller.dart';
 import 'package:health_care_app/app/modules/home/views/blood_pressure/add_blood_pressure.dart';
+import 'package:health_care_app/app/modules/home/views/blood_pressure/filter_blood_pressure.dart';
 import 'package:health_care_app/app/modules/home/views/fluid_balance/add_fluid_balance.dart';
-import 'package:health_care_app/app/modules/home/views/fluid_balance/filter_fluid_balance.dart';
 import 'package:health_care_app/app/modules/home/views/heart_rate/add_heart_rate.dart';
 import 'package:health_care_app/app/modules/home/views/heart_rate/filter_heart_rate.dart';
 import 'package:health_care_app/app/modules/home/views/oxygen_saturation/add_oxygen_saturation.dart';
-import 'package:health_care_app/app/modules/home/views/oxygen_saturation/filter_oxygen_saturation.dart';
 import 'package:health_care_app/app/modules/home/views/rbs/add_rbs.dart';
-import 'package:health_care_app/app/modules/home/views/rbs/filter_rbs.dart';
 import 'package:health_care_app/app/modules/home/views/weight/add_weight.dart';
-import 'package:health_care_app/app/modules/home/views/weight/filter_weight.dart';
-import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
 
 class VitalSignsBottomSheetKey extends GetView<HomeController> {
   final HomeController controller = Get.put(HomeController());
@@ -48,38 +44,22 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
             },
             children: <ExpansionPanel>[
               ExpansionPanel(
+                // backgroundColor: Colors.red,
                 isExpanded: index.value == 0,
+                canTapOnHeader: true,
                 headerBuilder: (context, isExpanded) {
-                  return ListTile(
-                    title: Text(
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8.h,
+                      horizontal: 8.w,
+                    ),
+                    child: Text(
                       'Blood Pressure',
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
                       ),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/filter.svg',
-                          iconSize: 32.w,
-                          onPressed: () {},
-                        ),
-                        SizedBox(width: 4.w),
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/plus.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              AddBloodPressure(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.white,
-                            );
-                          },
-                        ),
-                      ],
                     ),
                   );
                 },
@@ -94,51 +74,40 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
                       line2ChartData: toDailyData(controller.dbpChartSpots),
                       line3ChartData:
                           toDailyData(controller.meanBloodPressureChartSpots),
-                      onFilterPressed: () {},
-                      onAddPressed: () {},
+                      onFilterPressed: () {
+                        // Get.bottomSheet(
+                        //   FilterBloodPressureBottomSheet(),
+                        //   isScrollControlled: true,
+                        //   backgroundColor: Colors.white,
+                        // );
+                      },
+                      onAddPressed: () {
+                        Get.bottomSheet(
+                          AddBloodPressure(),
+                          isScrollControlled: true,
+                          backgroundColor: Colors.white,
+                        );
+                      },
                     );
                   },
                 ),
               ),
               ExpansionPanel(
                 isExpanded: index.value == 1,
+                canTapOnHeader: true,
                 headerBuilder: (context, isExpanded) {
-                  return ListTile(
-                    title: Text(
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8.h,
+                      horizontal: 8.w,
+                    ),
+                    child: Text(
                       'Heart Rate',
                       style: TextStyle(
                         fontSize: 18.sp,
                         fontWeight: FontWeight.w500,
                         color: Colors.black,
                       ),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/filter.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              const FilterHeartRateBottomSheet(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                            );
-                          },
-                        ),
-                        SizedBox(width: 4.w),
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/plus.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              AddHeartRate(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.white,
-                            );
-                          },
-                        ),
-                      ],
                     ),
                   );
                 },
@@ -149,16 +118,33 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
                     unit: 'bpm',
                     keyColor: const Color(0xff18A86B),
                     chartData: toDailyData(controller.heartRateChartSpots),
-                    onFilterPressed: () {},
-                    onAddPressed: () {},
+                    onFilterPressed: () {
+                      // Get.bottomSheet(
+                      //   FilterHeartRateBottomSheet(),
+                      //   isScrollControlled: true,
+                      //   backgroundColor: Colors.white,
+                      // );
+                    },
+                    onAddPressed: () {
+                      Get.bottomSheet(
+                        AddHeartRate(),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.white,
+                      );
+                    },
                   );
                 }),
               ),
               ExpansionPanel(
                 isExpanded: index.value == 2,
+                canTapOnHeader: true,
                 headerBuilder: (context, isExpanded) {
-                  return ListTile(
-                    title: Text(
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8.h,
+                      horizontal: 8.w,
+                    ),
+                    child: Text(
                       'Oxygen Saturation',
                       style: TextStyle(
                         fontSize: 18.sp,
@@ -166,42 +152,14 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
                         color: Colors.black,
                       ),
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/filter.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              const FilterOxygenSaturationBottomSheet(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                            );
-                          },
-                        ),
-                        SizedBox(width: 4.w),
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/plus.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              AddOxygenSaturation(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.white,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
                   );
                 },
                 body: Obx(() {
                   return VitalSignsBottomSheet(
                     title: 'Oxygen Saturation',
-                    value: '${controller.avgOxygenSaturation.value}',
+                    value: controller.avgOxygenSaturation.value,
                     unit: '%',
-                    keyColor: const Color(0xffDEBC36),
+                    keyColor: const Color(0xff18A86B),
                     chartData:
                         toDailyData(controller.oxygenSaturationChartSpots),
                     onFilterPressed: () {},
@@ -217,9 +175,14 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
               ),
               ExpansionPanel(
                 isExpanded: index.value == 3,
+                canTapOnHeader: true,
                 headerBuilder: (context, isExpanded) {
-                  return ListTile(
-                    title: Text(
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8.h,
+                      horizontal: 8.w,
+                    ),
+                    child: Text(
                       'Weight',
                       style: TextStyle(
                         fontSize: 18.sp,
@@ -227,53 +190,21 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
                         color: Colors.black,
                       ),
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/filter.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              const FilterWeightBottomSheet(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                            );
-                          },
-                        ),
-                        SizedBox(width: 4.w),
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/plus.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              AddWeight(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.white,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
                   );
                 },
                 body: Obx(() {
                   return VitalSignsBottomSheet(
                     title: 'Weight',
-                    value: '${controller.avgWeight.value}',
-                    unit: 'BMI',
+                    value: controller.avgWeight.value,
+                    unit: 'kg',
                     keyColor: const Color(0xff18A86B),
-                    chartData: toDailyData(controller.weightChartSpots.value),
-                    onFilterPressed: () {
-                      Get.bottomSheet(
-                        const FilterWeightBottomSheet(),
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                      );
-                    },
+                    chartData: toDailyData(controller.weightChartSpots),
+                    onFilterPressed: () {},
                     onAddPressed: () {
                       Get.bottomSheet(
                         AddWeight(),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.white,
                       );
                     },
                   );
@@ -282,59 +213,37 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
               ExpansionPanel(
                 isExpanded: index.value == 4,
                 headerBuilder: (context, isExpanded) {
-                  return ListTile(
-                    title: Text(
-                      'R.B.S',
-                      style: TextStyle(
-                        fontSize: 18.sp,
-                        fontWeight: FontWeight.w500,
-                        color: Colors.black,
+                  return GestureDetector(
+                    onTap: () {
+                      if (isExpanded) {
+                        index.value = -1; // Close all panels
+                      } else {
+                        index.value = 4; // Open this panel
+                      }
+                    },
+                    child: Container(
+                      width: double.infinity,
+                      padding:
+                          EdgeInsets.symmetric(vertical: 8.h, horizontal: 8.w),
+                      child: Text(
+                        'R.B.S',
+                        style: TextStyle(
+                          fontSize: 18.sp,
+                          fontWeight: FontWeight.w500,
+                          color: Colors.black,
+                        ),
                       ),
-                    ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/filter.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              const FilterRBSBottomSheet(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                            );
-                          },
-                        ),
-                        SizedBox(width: 4.w),
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/plus.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              AddRBS(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.white,
-                            );
-                          },
-                        ),
-                      ],
                     ),
                   );
                 },
                 body: Obx(() {
                   return VitalSignsBottomSheet(
                     title: 'R.B.S',
-                    value: '${controller.avgBloodSugar.value}',
+                    value: controller.avgBloodSugar.value,
                     unit: 'mg/dl',
                     keyColor: const Color(0xff18A86B),
                     chartData: toDailyData(controller.bloodSugarChartSpots),
-                    onFilterPressed: () {
-                      Get.bottomSheet(
-                        const FilterRBSBottomSheet(),
-                        isScrollControlled: true,
-                        backgroundColor: Colors.transparent,
-                      );
-                    },
+                    onFilterPressed: () {},
                     onAddPressed: () {
                       Get.bottomSheet(
                         AddRBS(),
@@ -347,9 +256,14 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
               ),
               ExpansionPanel(
                 isExpanded: index.value == 5,
+                canTapOnHeader: true,
                 headerBuilder: (context, isExpanded) {
-                  return ListTile(
-                    title: Text(
+                  return Padding(
+                    padding: EdgeInsets.symmetric(
+                      vertical: 8.h,
+                      horizontal: 8.w,
+                    ),
+                    child: Text(
                       'Fluid Balance',
                       style: TextStyle(
                         fontSize: 18.sp,
@@ -357,42 +271,14 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
                         color: Colors.black,
                       ),
                     ),
-                    trailing: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/filter.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              const FilterFluidBalanceBottomSheet(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.transparent,
-                            );
-                          },
-                        ),
-                        SizedBox(width: 4.w),
-                        AppIconButtonSvg(
-                          assetPath: 'assets/svg/plus.svg',
-                          iconSize: 32.w,
-                          onPressed: () {
-                            Get.bottomSheet(
-                              AddFluidBalance(),
-                              isScrollControlled: true,
-                              backgroundColor: Colors.white,
-                            );
-                          },
-                        ),
-                      ],
-                    ),
                   );
                 },
                 body: Obx(() {
                   return VitalSignsBottomSheet(
                     title: 'Fluid Balance',
-                    value: '${controller.avgFluidBalance.value}',
+                    value: controller.avgFluidBalance.value,
                     unit: 'ml',
-                    keyColor: const Color(0xffD04244),
+                    keyColor: const Color(0xff18A86B),
                     chartData: toDailyData(controller.fluidBalanceChartSpots),
                     onFilterPressed: () {},
                     onAddPressed: () {
@@ -411,4 +297,14 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
       ),
     );
   }
+}
+
+List<Map<String, dynamic>> toDailyData(List<Map<String, dynamic>> chartSpots) {
+  return chartSpots
+      .map((spot) => {
+            'x': spot['x'],
+            'y': spot['y'],
+            'date': spot['date'],
+          })
+      .toList();
 }

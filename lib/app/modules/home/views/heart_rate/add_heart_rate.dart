@@ -35,6 +35,8 @@ class AddHeartRateController extends GetxController {
       );
 
       Get.find<HomeController>().getHeartRate();
+      heartRateController.text = '';
+      symptomsController.text = '';
       // TODO: Add heart rate to service
       Get.back();
     }
@@ -47,7 +49,7 @@ class AddHeartRate extends GetView<AddHeartRateController> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: Get.height,
+      //  height: Get.height,
       decoration: BoxDecoration(
         color: Color(0xffF2F2F2),
         borderRadius: BorderRadius.only(

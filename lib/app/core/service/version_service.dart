@@ -1,8 +1,10 @@
+import 'package:awesome_dialog/awesome_dialog.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_disposable.dart';
 import 'package:health_care_app/app/core/auth_service.dart';
 import 'package:health_care_app/app/core/network/api_request.dart';
+import 'package:health_care_app/app/helper/app_notifier.dart';
 import 'package:intl/intl.dart';
 
 class VersionService extends GetxService {
@@ -58,19 +60,14 @@ class VersionService extends GetxService {
         symptoms: symptoms,
       );
       if (response.statusCode == 200) {
-        Get.snackbar(
+        Notifier.of.successWithDuration(
           'Blood Pressure added successfully!',
-          'Blood Pressure Added',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+          action: 'OK',
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Failed to add blood pressure!',
-        'Blood Pressure Added ${e.toString()}',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+      Notifier.of.error(
+        'Failed to add blood pressure! ${e.toString()}',
       );
     }
   }
@@ -96,19 +93,14 @@ class VersionService extends GetxService {
         time: convertTime(time),
       );
       if (response.statusCode == 200) {
-        Get.snackbar(
+        Notifier.of.successWithDuration(
           'Heart Rate added successfully!',
-          'Heart Rate Added',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+          action: 'OK',
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Failed to add heart rate!',
-        'Heart Rate Added ${e.toString()}',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+      Notifier.of.error(
+        'Failed to add heart rate! ${e.toString()}',
       );
     }
   }
@@ -136,19 +128,14 @@ class VersionService extends GetxService {
         symptoms: symptoms,
       );
       if (response.statusCode == 200) {
-        Get.snackbar(
+        Notifier.of.successWithDuration(
           'Oxygen Saturation added successfully!',
-          'Oxygen Saturation Added',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+          action: 'OK',
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Failed to add oxygen saturation!',
-        'Oxygen Saturation Added ${e.toString()}',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+      Notifier.of.error(
+        'Failed to add oxygen saturation! ${e.toString()}',
       );
     }
   }
@@ -176,19 +163,14 @@ class VersionService extends GetxService {
         time: convertTime(time),
       );
       if (response.statusCode == 200) {
-        Get.snackbar(
+        Notifier.of.successWithDuration(
           'Weight added successfully!',
-          'Weight Added',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+          action: 'OK',
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Failed to add weight!',
-        'Weight Added ${e.toString()}',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+      Notifier.of.error(
+        'Failed to add weight! ${e.toString()}',
       );
     }
   }
@@ -216,19 +198,14 @@ class VersionService extends GetxService {
         time: convertTime(time),
       );
       if (response.statusCode == 200) {
-        Get.snackbar(
+        Notifier.of.successWithDuration(
           'Blood Sugar added successfully!',
-          'Blood Sugar Added',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+          action: 'OK',
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Failed to add blood sugar!',
-        'Blood Sugar Added ${e.toString()}',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+      Notifier.of.error(
+        'Failed to add blood sugar! ${e.toString()}',
       );
     }
   }
@@ -260,19 +237,14 @@ class VersionService extends GetxService {
       );
 
       if (response.statusCode == 200) {
-        Get.snackbar(
+        Notifier.of.successWithDuration(
           'Fluid Balance added successfully!',
-          'Fluid Balance Added',
-          backgroundColor: Colors.green,
-          colorText: Colors.white,
+          action: 'OK',
         );
       }
     } catch (e) {
-      Get.snackbar(
-        'Failed to add fluid balance!',
-        'Fluid Balance Added ${e.toString()}',
-        backgroundColor: Colors.red,
-        colorText: Colors.white,
+      Notifier.of.error(
+        'Failed to add fluid balance! ${e.toString()}',
       );
     }
   }
