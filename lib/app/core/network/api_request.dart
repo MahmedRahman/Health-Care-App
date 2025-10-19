@@ -487,6 +487,7 @@ class ApiRequest {
     required String date,
     required String time,
   }) async {
+    final formattedDate = "${date}T${time}";
     return await webServices.execute(
       endpoint: "$baseUrl/add/oxygen/saturation",
       method: HttpMethod.POST,
@@ -495,8 +496,8 @@ class ApiRequest {
         "oxygenSaturation": oxygenSaturation,
         "oxygenDeliveryMethod": oxygenDeliveryMethod,
         "symtopms": symptoms,
-        "date": date,
-        "time": time,
+        "date": formattedDate,
+        "time": formattedDate,
       },
     );
   }
@@ -507,6 +508,7 @@ class ApiRequest {
     required String date,
     required String time,
   }) async {
+    final formattedDate = "${date}T${time}";
     return await webServices.execute(
       endpoint: "$baseUrl/add/weight",
       method: HttpMethod.POST,
@@ -514,8 +516,8 @@ class ApiRequest {
       body: {
         "weight": weight,
         "symtopms": symptoms,
-        "date": date,
-        "time": time,
+        "date": formattedDate,
+        "time": formattedDate,
       },
     );
   }
@@ -527,6 +529,7 @@ class ApiRequest {
     required String date,
     required String time,
   }) async {
+    final formattedDate = "${date}T${time}";
     return await webServices.execute(
       endpoint: "$baseUrl/add/random/blood-sugar",
       method: HttpMethod.POST,
@@ -535,8 +538,8 @@ class ApiRequest {
         "insulineDose": insulineDose,
         "bloodSugarRandom": bloodSugarRandom,
         "symtopms": symptoms,
-        "date": date,
-        "time": time,
+        "date": formattedDate,
+        "time": formattedDate,
       },
     );
   }
@@ -549,6 +552,7 @@ class ApiRequest {
     required String date,
     required String time,
   }) async {
+    final formattedDate = "${date}T${time}";
     return await webServices.execute(
       endpoint: "$baseUrl/add/fluid/balance",
       method: HttpMethod.POST,
@@ -558,8 +562,8 @@ class ApiRequest {
         "fluidOut": fluidOut,
         "netBalance": netBalance,
         "symtopms": symptoms,
-        "date": date,
-        "time": time,
+        "date": formattedDate,
+        "time": formattedDate,
       },
     );
   }

@@ -9,7 +9,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
 import 'package:health_care_app/app/core/auth_service.dart';
-import 'package:health_care_app/app/core/service/ver.dart';
+import 'package:health_care_app/app/core/service/version_service.dart';
 import 'package:health_care_app/app/modules/home/component/dashboard_item_horizontal.dart';
 import 'package:health_care_app/app/modules/home/component/profile_Info.dart';
 import 'package:health_care_app/app/modules/home/component/quick_links.dart';
@@ -184,70 +184,117 @@ class HomeView extends GetView<HomeController> {
                           SizedBox(height: 8.h),
                           Row(
                             children: [
-                              VitalSignsCard(
-                                title: "Oxygen Saturation",
-                                imagePath:
-                                    "assets/images/oxygen_saturation.png",
-                                value: "95%",
-                                onTap: () {
-                                  Get.bottomSheet(
-                                    VitalSignsBottomSheetKey(
-                                      index: 2.obs,
-                                    ),
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                  );
-                                },
-                              ),
+                              Obx(() {
+                                return VitalSignsCard(
+                                  title: "Oxygen Saturation",
+                                  imagePath:
+                                      "assets/images/oxygen_saturation.png",
+                                  value:
+                                      "${controller.avgOxygenSaturation.value}%",
+                                  onTap: () {
+                                    if (controller
+                                            .oxygenSaturationListData.length ==
+                                        0) {
+                                      Get.bottomSheet(
+                                        AddOxygenSaturation(),
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.white,
+                                      );
+                                      return;
+                                    }
+                                    Get.bottomSheet(
+                                      VitalSignsBottomSheetKey(
+                                        index: 2.obs,
+                                      ),
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                    );
+                                  },
+                                );
+                              }),
                               SizedBox(width: 8.w),
-                              VitalSignsCard(
-                                title: "Weight",
-                                imagePath: "assets/images/weight.png",
-                                value: "70 kg",
-                                onTap: () {
-                                  Get.bottomSheet(
-                                    VitalSignsBottomSheetKey(
-                                      index: 3.obs,
-                                    ),
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                  );
-                                },
-                              ),
+                              Obx(() {
+                                return VitalSignsCard(
+                                  title: "Weight",
+                                  imagePath: "assets/images/weight.png",
+                                  value: "${controller.avgWeight.value} BMI",
+                                  onTap: () {
+                                    if (controller.weight.length == 0) {
+                                      Get.bottomSheet(
+                                        AddWeight(),
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.white,
+                                      );
+                                      return;
+                                    }
+                                    Get.bottomSheet(
+                                      VitalSignsBottomSheetKey(
+                                        index: 3.obs,
+                                      ),
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                    );
+                                  },
+                                );
+                              }),
                             ],
                           ),
                           SizedBox(height: 8.h),
                           Row(
                             children: [
-                              VitalSignsCard(
-                                title: "R.B.S",
-                                imagePath: "assets/images/rbs.png",
-                                value: "112 mg/dl",
-                                onTap: () {
-                                  Get.bottomSheet(
-                                    VitalSignsBottomSheetKey(
-                                      index: 4.obs,
-                                    ),
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                  );
-                                },
-                              ),
+                              Obx(() {
+                                return VitalSignsCard(
+                                  title: "R.B.S",
+                                  imagePath: "assets/images/rbs.png",
+                                  value:
+                                      "${controller.avgBloodSugar.value} mg/dl",
+                                  onTap: () {
+                                    if (controller.bloodSugar.length == 0) {
+                                      Get.bottomSheet(
+                                        AddRBS(),
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.white,
+                                      );
+                                      return;
+                                    }
+                                    Get.bottomSheet(
+                                      VitalSignsBottomSheetKey(
+                                        index: 4.obs,
+                                      ),
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                    );
+                                  },
+                                );
+                              }),
                               SizedBox(width: 8.w),
-                              VitalSignsCard(
-                                title: "Fluid Balance",
-                                imagePath: "assets/images/fluid_balance.png",
-                                value: "-200 ml",
-                                onTap: () {
-                                  Get.bottomSheet(
-                                    VitalSignsBottomSheetKey(
-                                      index: 5.obs,
-                                    ),
-                                    isScrollControlled: true,
-                                    backgroundColor: Colors.transparent,
-                                  );
-                                },
-                              ),
+                              Obx(() {
+                                return VitalSignsCard(
+                                  title: "Fluid Balance",
+                                  imagePath: "assets/images/fluid_balance.png",
+                                  value:
+                                      "${controller.avgFluidBalance.value} ml",
+                                  onTap: () {
+                                    if (controller
+                                            .fluidBalanceListData.length ==
+                                        0) {
+                                      Get.bottomSheet(
+                                        AddFluidBalance(),
+                                        isScrollControlled: true,
+                                        backgroundColor: Colors.white,
+                                      );
+                                      return;
+                                    }
+                                    Get.bottomSheet(
+                                      VitalSignsBottomSheetKey(
+                                        index: 5.obs,
+                                      ),
+                                      isScrollControlled: true,
+                                      backgroundColor: Colors.transparent,
+                                    );
+                                  },
+                                );
+                              }),
                             ],
                           ),
                         ],

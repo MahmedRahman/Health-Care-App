@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/core/service/version_service.dart';
+import 'package:health_care_app/app/modules/home/controllers/home_controller.dart';
 import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
 import 'package:health_care_app/app/widgets/app_date_field.dart';
 import 'package:health_care_app/app/widgets/app_primary_button.dart';
@@ -26,6 +28,14 @@ class AddOxygenSaturationController extends GetxController {
 
   void addOxygenSaturation() {
     if (formKey.currentState!.validate()) {
+      Get.find<VersionService>().addOxygenSaturationData(
+        date: startDateController.text,
+        time: timeController.text,
+        oxygenSaturation: oxygenSaturationController.text,
+        oxygenDeliveryMethod: deliveryMethodController.text,
+        symptoms: symptomsController.text,
+      );
+      Get.find<HomeController>().getOxygenSaturation();
       // TODO: Add oxygen saturation to service
       Get.back();
     }

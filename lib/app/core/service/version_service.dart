@@ -10,7 +10,7 @@ class VersionService extends GetxService {
   List<dynamic> bloodRate = [];
 
   List<dynamic> oxygenSaturationListData = [];
-  List<dynamic> Weight = [];
+  List<dynamic> WeightListData = [];
 
   List<dynamic> bloodSugar = [];
   List<dynamic> fluidBalance = [];
@@ -21,7 +21,8 @@ class VersionService extends GetxService {
     bloodRate = Get.find<AuthService>().currentUser.value?['bloodRate'] ?? [];
     oxygenSaturationListData =
         Get.find<AuthService>().currentUser.value?['oxygenSaturation'] ?? [];
-    Weight = Get.find<AuthService>().currentUser.value?['weight'] ?? [];
+    WeightListData =
+        Get.find<AuthService>().currentUser.value?['weightUser'] ?? [];
     bloodSugar =
         Get.find<AuthService>().currentUser.value?['bloodSugarRandom'] ?? [];
     fluidBalance =
@@ -94,6 +95,14 @@ class VersionService extends GetxService {
         date: convertDate(date),
         time: convertTime(time),
       );
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          'Heart Rate added successfully!',
+          'Heart Rate Added',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      }
     } catch (e) {
       Get.snackbar(
         'Failed to add heart rate!',
@@ -110,7 +119,7 @@ class VersionService extends GetxService {
     required String symptoms,
     required String date,
     required String time,
-  }) {
+  }) async {
     oxygenSaturationListData.add({
       "oxygenSaturation": oxygenSaturation,
       "oxygenDeliveryMethod": oxygenDeliveryMethod,
@@ -118,6 +127,30 @@ class VersionService extends GetxService {
       "date": date,
       "time": time,
     });
+    try {
+      var response = await ApiRequest().addOxygenSaturation(
+        date: convertDate(date),
+        time: convertTime(time),
+        oxygenSaturation: double.parse(oxygenSaturation),
+        oxygenDeliveryMethod: oxygenDeliveryMethod,
+        symptoms: symptoms,
+      );
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          'Oxygen Saturation added successfully!',
+          'Oxygen Saturation Added',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Failed to add oxygen saturation!',
+        'Oxygen Saturation Added ${e.toString()}',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
   void addWeightData({
@@ -125,8 +158,8 @@ class VersionService extends GetxService {
     required String symptoms,
     required String date,
     required String time,
-  }) {
-    Weight.add(
+  }) async {
+    WeightListData.add(
       {
         "weight": weightData,
         "symptoms": symptoms,
@@ -134,6 +167,30 @@ class VersionService extends GetxService {
         "time": time,
       },
     );
+
+    try {
+      var response = await ApiRequest().addWeight(
+        weight: weightData,
+        symptoms: symptoms,
+        date: convertDate(date),
+        time: convertTime(time),
+      );
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          'Weight added successfully!',
+          'Weight Added',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Failed to add weight!',
+        'Weight Added ${e.toString()}',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
   void addBloodSugarData({
@@ -142,7 +199,7 @@ class VersionService extends GetxService {
     required String symptoms,
     required String date,
     required String time,
-  }) {
+  }) async {
     bloodSugar.add({
       "insulineDose": insulineDose,
       "bloodSugarRandom": bloodSugarRandom,
@@ -150,6 +207,30 @@ class VersionService extends GetxService {
       "date": date,
       "time": time,
     });
+    try {
+      var response = await ApiRequest().addRandomBloodSugar(
+        insulineDose: insulineDose,
+        bloodSugarRandom: bloodSugarRandom,
+        symptoms: symptoms,
+        date: convertDate(date),
+        time: convertTime(time),
+      );
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          'Blood Sugar added successfully!',
+          'Blood Sugar Added',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Failed to add blood sugar!',
+        'Blood Sugar Added ${e.toString()}',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
   void addFluidBalanceData({
@@ -159,7 +240,7 @@ class VersionService extends GetxService {
     required String symptoms,
     required String date,
     required String time,
-  }) {
+  }) async {
     fluidBalance.add({
       "fluidIn": fluidIn,
       "fluidOut": fluidOut,
@@ -168,6 +249,32 @@ class VersionService extends GetxService {
       "date": date,
       "time": time,
     });
+    try {
+      var response = await ApiRequest().addFluidBalance(
+        fluidIn: fluidIn,
+        fluidOut: fluidOut,
+        netBalance: netBalance,
+        symptoms: symptoms,
+        date: convertDate(date),
+        time: convertTime(time),
+      );
+
+      if (response.statusCode == 200) {
+        Get.snackbar(
+          'Fluid Balance added successfully!',
+          'Fluid Balance Added',
+          backgroundColor: Colors.green,
+          colorText: Colors.white,
+        );
+      }
+    } catch (e) {
+      Get.snackbar(
+        'Failed to add fluid balance!',
+        'Fluid Balance Added ${e.toString()}',
+        backgroundColor: Colors.red,
+        colorText: Colors.white,
+      );
+    }
   }
 
   String convertDate(String inputDate) {

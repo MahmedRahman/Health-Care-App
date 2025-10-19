@@ -196,15 +196,24 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
                     ),
                   );
                 },
-                body: VitalSignsBottomSheet(
-                  title: 'Oxygen Saturation',
-                  value: '95',
-                  unit: '%',
-                  keyColor: const Color(0xffDEBC36),
-                  chartData: toDailyData(chartData),
-                  onFilterPressed: () {},
-                  onAddPressed: () {},
-                ),
+                body: Obx(() {
+                  return VitalSignsBottomSheet(
+                    title: 'Oxygen Saturation',
+                    value: '${controller.avgOxygenSaturation.value}',
+                    unit: '%',
+                    keyColor: const Color(0xffDEBC36),
+                    chartData:
+                        toDailyData(controller.oxygenSaturationChartSpots),
+                    onFilterPressed: () {},
+                    onAddPressed: () {
+                      Get.bottomSheet(
+                        AddOxygenSaturation(),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.white,
+                      );
+                    },
+                  );
+                }),
               ),
               ExpansionPanel(
                 isExpanded: index.value == 3,
@@ -248,15 +257,27 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
                     ),
                   );
                 },
-                body: VitalSignsBottomSheet(
-                  title: 'Weight',
-                  value: '70',
-                  unit: 'kg',
-                  keyColor: const Color(0xff18A86B),
-                  chartData: toDailyData(chartData),
-                  onFilterPressed: () {},
-                  onAddPressed: () {},
-                ),
+                body: Obx(() {
+                  return VitalSignsBottomSheet(
+                    title: 'Weight',
+                    value: '${controller.avgWeight.value}',
+                    unit: 'BMI',
+                    keyColor: const Color(0xff18A86B),
+                    chartData: toDailyData(controller.weightChartSpots.value),
+                    onFilterPressed: () {
+                      Get.bottomSheet(
+                        const FilterWeightBottomSheet(),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                    onAddPressed: () {
+                      Get.bottomSheet(
+                        AddWeight(),
+                      );
+                    },
+                  );
+                }),
               ),
               ExpansionPanel(
                 isExpanded: index.value == 4,
@@ -300,27 +321,29 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
                     ),
                   );
                 },
-                body: VitalSignsBottomSheet(
-                  title: 'R.B.S',
-                  value: '112',
-                  unit: 'mg/dl',
-                  keyColor: const Color(0xff18A86B),
-                  chartData: toDailyData(chartData),
-                  onFilterPressed: () {
-                    Get.bottomSheet(
-                      const FilterRBSBottomSheet(),
-                      isScrollControlled: true,
-                      backgroundColor: Colors.transparent,
-                    );
-                  },
-                  onAddPressed: () {
-                    Get.bottomSheet(
-                      AddRBS(),
-                      isScrollControlled: true,
-                      backgroundColor: Colors.white,
-                    );
-                  },
-                ),
+                body: Obx(() {
+                  return VitalSignsBottomSheet(
+                    title: 'R.B.S',
+                    value: '${controller.avgBloodSugar.value}',
+                    unit: 'mg/dl',
+                    keyColor: const Color(0xff18A86B),
+                    chartData: toDailyData(controller.bloodSugarChartSpots),
+                    onFilterPressed: () {
+                      Get.bottomSheet(
+                        const FilterRBSBottomSheet(),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.transparent,
+                      );
+                    },
+                    onAddPressed: () {
+                      Get.bottomSheet(
+                        AddRBS(),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.white,
+                      );
+                    },
+                  );
+                }),
               ),
               ExpansionPanel(
                 isExpanded: index.value == 5,
@@ -364,15 +387,23 @@ class VitalSignsBottomSheetKey extends GetView<HomeController> {
                     ),
                   );
                 },
-                body: VitalSignsBottomSheet(
-                  title: 'Fluid Balance',
-                  value: '1200',
-                  unit: 'ml',
-                  keyColor: const Color(0xffD04244),
-                  chartData: toDailyData(chartData),
-                  onFilterPressed: () {},
-                  onAddPressed: () {},
-                ),
+                body: Obx(() {
+                  return VitalSignsBottomSheet(
+                    title: 'Fluid Balance',
+                    value: '${controller.avgFluidBalance.value}',
+                    unit: 'ml',
+                    keyColor: const Color(0xffD04244),
+                    chartData: toDailyData(controller.fluidBalanceChartSpots),
+                    onFilterPressed: () {},
+                    onAddPressed: () {
+                      Get.bottomSheet(
+                        AddFluidBalance(),
+                        isScrollControlled: true,
+                        backgroundColor: Colors.white,
+                      );
+                    },
+                  );
+                }),
               ),
             ],
           );

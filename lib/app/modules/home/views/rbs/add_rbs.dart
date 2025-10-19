@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/constants/colors.dart';
+import 'package:health_care_app/app/core/service/version_service.dart';
+import 'package:health_care_app/app/modules/home/controllers/home_controller.dart';
 import 'package:health_care_app/app/widgets/app_icon_button_svg.dart';
 import 'package:health_care_app/app/widgets/app_date_field.dart';
 import 'package:health_care_app/app/widgets/app_primary_button.dart';
@@ -26,6 +28,14 @@ class AddRBSController extends GetxController {
 
   void addRBS() {
     if (formKey.currentState!.validate()) {
+      Get.find<VersionService>().addBloodSugarData(
+        date: startDateController.text,
+        time: timeController.text,
+        bloodSugarRandom: rbsController.text,
+        insulineDose: insulinDoseController.text,
+        symptoms: symptomsController.text,
+      );
+      Get.find<HomeController>().getBloodSugar();
       // TODO: Add RBS to service
       Get.back();
     }
