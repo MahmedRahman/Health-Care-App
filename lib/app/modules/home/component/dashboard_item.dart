@@ -24,7 +24,8 @@ class DashboardItem extends StatelessWidget {
         width: 106.w,
         height: 92.h,
         decoration: BoxDecoration(
-          color: Colors.white,
+          //  color: Colors.white,
+          color: iconColor,
           borderRadius: BorderRadius.circular(16),
           border: Border.all(color: Colors.black12),
           boxShadow: [
@@ -39,9 +40,9 @@ class DashboardItem extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SvgPicture.asset(
+            Image.asset(
               svgPath,
-              color: iconColor.withOpacity(0.5),
+              //  color: iconColor,
               width: 48,
               height: 48,
             ),
@@ -51,7 +52,7 @@ class DashboardItem extends StatelessWidget {
               maxLines: 1,
               style: TextStyle(
                 color: Color(0xff0D1B34),
-                fontWeight: FontWeight.w500,
+                fontWeight: FontWeight.w600,
                 fontSize: 12.sp,
               ),
             ),

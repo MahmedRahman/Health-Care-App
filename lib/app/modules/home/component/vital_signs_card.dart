@@ -38,7 +38,7 @@ class VitalSignsCard extends GetView {
             children: [
               Container(
                 width: double.infinity,
-                height: 5.h,
+                height: 12.h,
                 decoration: BoxDecoration(
                   color: color,
                   borderRadius: BorderRadius.only(
@@ -68,7 +68,7 @@ class VitalSignsCard extends GetView {
                       maxLines: 1,
                       style: TextStyle(
                         fontSize: 14.sp,
-                        fontWeight: FontWeight.w500,
+                        fontWeight: FontWeight.w600,
                         color: textColor,
                         overflow: TextOverflow.ellipsis,
                       ),

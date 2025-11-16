@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:health_care_app/app/core/network/api_request.dart';
 import 'package:health_care_app/app/data/medical_image.dart';
+import 'package:health_care_app/app/helper/app_notifier.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/upload_bottom_sheet.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/upload_controller.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/filter_controller.dart';
+import 'package:intl/intl.dart';
 
 class MedicalImagesController extends GetxController with StateMixin {
   // قائمة الصور الطبية
@@ -73,45 +75,66 @@ class MedicalImagesController extends GetxController with StateMixin {
     change(null, status: RxStatus.loading());
     RxList<dynamic> filteredImagesList = [].obs;
 
-    try {
-      // تحويل التواريخ إلى تنسيق API
-      String? dateFrom;
-      String? dateTo;
-      String? ordering;
+    //try {
+    // تحويل التواريخ إلى تنسيق API
+    String? dateFrom;
+    String? dateTo;
+    String? ordering;
 
-      if (res.from != null) {
+    if (res.from != null && res.from.toString().isNotEmpty) {
+      try {
+        // Parse the date string (format: MM-dd-yyyy) to DateTime
+        final dateFormat = DateFormat('MM-dd-yyyy');
+        final dateTime = dateFormat.parse(res.from.toString());
         dateFrom =
-            "${res.from.day.toString().padLeft(2, '0')}-${res.from.month.toString().padLeft(2, '0')}-${res.from.year}";
+            "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+      } catch (e) {
+        // If parsing fails, use the string as is (assuming it's already in the correct format)
+        dateFrom = res.from.toString();
       }
-
-      if (res.to != null) {
-        dateTo =
-            "${res.to.day.toString().padLeft(2, '0')}-${res.to.month.toString().padLeft(2, '0')}-${res.to.year}";
-      }
-
-      if (res.sort != null) {
-        ordering =
-            res.sort == SortOrder.newestFirst ? "Newest First" : "Oldest First";
-      }
-
-      var response = await ApiRequest().filterImages(
-        dateFrom: dateFrom,
-        dateTo: dateTo,
-        xrayType: "test",
-        ordering: ordering,
-      );
-
-      if (response.statusCode == 200) {
-        filteredImagesList.assignAll(response.body);
-        change(filteredImagesList, status: RxStatus.success());
-      } else {
-        // في حالة فشل API، استخدم الفلترة المحلية
-        _applyLocalFilter(res);
-      }
-    } catch (e) {
-      // في حالة الخطأ، استخدم الفلترة المحلية
-      _applyLocalFilter(res);
     }
+
+    if (res.to != null && res.to.toString().isNotEmpty) {
+      try {
+        final dateFormat = DateFormat('MM-dd-yyyy');
+        final dateTime = dateFormat.parse(res.to.toString());
+        dateTo =
+            "${dateTime.day.toString().padLeft(2, '0')}-${dateTime.month.toString().padLeft(2, '0')}-${dateTime.year}";
+      } catch (e) {
+        // If parsing fails, use the string as is (assuming it's already in the correct format)
+        dateTo = res.to.toString();
+      }
+    }
+
+    if (res.sort.toString() != "") {
+      ordering =
+          res.sort == SortOrder.newestFirst ? "Newest First" : "Oldest First";
+    }
+
+    var response = await ApiRequest().filterImages(
+      dateFrom: dateFrom,
+      dateTo: dateTo,
+      xrayType: null,
+      ordering: null,
+    );
+
+    if (response.statusCode == 200) {
+      print("response.body: ${response.body}");
+      if (response.body.isEmpty) {
+        Notifier.of.error("No images found", title: "No images found");
+        change(medicalImages, status: RxStatus.success());
+        return;
+      }
+      filteredImagesList.assignAll(response.body);
+      change(filteredImagesList, status: RxStatus.success());
+    } else {
+      Notifier.of.error("Failed to filter images");
+    }
+    // } catch (e) {
+    //   Notifier.of.error("Failed to filter images");
+    // } finally {
+    //   change(filteredImagesList, status: RxStatus.success());
+    // }
   }
 
   // فلترة محلية للبيانات

@@ -3,7 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 
 import 'package:get/get.dart';
+import 'package:health_care_app/app/modules/labs/widgets/filter_bottom_labs.dart';
 import 'package:health_care_app/app/widgets/simple_pdf_viewer.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../controllers/labs_controller.dart';
 import '../widgets/lab_report_card.dart';
@@ -48,7 +50,21 @@ class LabsView extends GetView<LabsController> {
                   BlendMode.srcIn,
                 ),
               ),
-              onPressed: () async {},
+              onPressed: () async {
+                final res = await Get.bottomSheet<FilterResult>(
+                  FilterBottomLabs(),
+                  isScrollControlled: true,
+                  enableDrag: true,
+                  backgroundColor: Colors.transparent,
+                  shape: const RoundedRectangleBorder(
+                    borderRadius: BorderRadius.vertical(
+                      top: Radius.circular(28),
+                    ),
+                  ),
+                );
+
+                if (res != null) {}
+              },
             ),
           ),
           CircleAvatar(
@@ -239,7 +255,43 @@ class LabsView extends GetView<LabsController> {
               ],
             ),
           ),
+          onLoading: _buildShimmerLoading(),
         ),
+      ),
+    );
+  }
+
+  Widget _buildShimmerLoading() {
+    return Padding(
+      padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 16.h),
+      child: GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          childAspectRatio: 0.8,
+          crossAxisSpacing: 12.w,
+          mainAxisSpacing: 12.h,
+        ),
+        itemCount: 6,
+        itemBuilder: (context, index) {
+          return Shimmer.fromColors(
+            baseColor: Colors.grey[300]!,
+            highlightColor: Colors.grey[100]!,
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(16.r),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.1),
+                    spreadRadius: 1,
+                    blurRadius: 8,
+                    offset: const Offset(0, 2),
+                  ),
+                ],
+              ),
+            ),
+          );
+        },
       ),
     );
   }

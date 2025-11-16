@@ -3,12 +3,13 @@ import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:get/get.dart';
-import 'package:health_care_app/app/helper/bottom_sheet_helper.dart';
+import 'package:health_care_app/app/helper/app_notifier.dart';
 import 'package:health_care_app/app/modules/medical_images/controllers/medical_images_controller.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/filter_bottom_sheet.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/filter_controller.dart';
 import 'package:health_care_app/app/modules/medical_images/widgets/record_card.dart';
 import 'package:health_care_app/app/widgets/image_viewer.dart';
+import 'package:shimmer/shimmer.dart';
 
 class MedicalImagesView extends GetView<MedicalImagesController> {
   const MedicalImagesView({Key? key}) : super(key: key);
@@ -70,6 +71,13 @@ class MedicalImagesView extends GetView<MedicalImagesController> {
                   );
 
                   if (res != null) {
+// chake if data
+                    // if (res.from != null && res.to != null) {
+                    //   Notifier.of.error("From date must be before to date",
+                    //       title: "Invalid date range");
+                    //   return;
+                    // }
+
                     controller.filteredImages(res);
                   }
                 },
@@ -211,6 +219,7 @@ class MedicalImagesView extends GetView<MedicalImagesController> {
                   ],
                 ),
               ),
+              onLoading: _buildShimmerLoading(),
             ),
           ),
         ),
@@ -277,6 +286,71 @@ class MedicalImagesView extends GetView<MedicalImagesController> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildShimmerLoading() {
+    return Column(
+      children: [
+        // Shimmer filter chips
+        SizedBox(
+          height: 35.h,
+          child: ListView.builder(
+            scrollDirection: Axis.horizontal,
+            itemCount: 5,
+            itemBuilder: (context, index) {
+              return Padding(
+                padding: EdgeInsets.only(right: 8.w),
+                child: Shimmer.fromColors(
+                  baseColor: Colors.grey[300]!,
+                  highlightColor: Colors.grey[100]!,
+                  child: Container(
+                    width: 80.w,
+                    height: 30.h,
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(20.r),
+                    ),
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+        SizedBox(height: 16.h),
+        // Shimmer grid
+        Expanded(
+          child: GridView.builder(
+            padding: EdgeInsets.only(bottom: 20.h),
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.8,
+              crossAxisSpacing: 12.w,
+              mainAxisSpacing: 12.h,
+            ),
+            itemCount: 6,
+            itemBuilder: (context, index) {
+              return Shimmer.fromColors(
+                baseColor: Colors.grey[300]!,
+                highlightColor: Colors.grey[100]!,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(22.r),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Color(0x12000000),
+                        blurRadius: 16,
+                        offset: Offset(0, 8),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

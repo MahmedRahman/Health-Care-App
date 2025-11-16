@@ -313,15 +313,15 @@ class HomeView extends GetView<HomeController> {
 
             SizedBox(height: 12.h),
 
-            DashboardItemHorizontal(
-              title: "Medications",
-              svgPath: "assets/svg/Medications.svg",
-              iconColor: Colors.blue,
-              onTap: () {
-                Get.toNamed(Routes.MEDICATIONS);
-              },
-            ),
-            SizedBox(height: 12.h),
+            // DashboardItemHorizontal(
+            //   title: "Medications",
+            //   svgPath: "assets/svg/Medications.svg",
+            //   iconColor: Colors.blue,
+            //   onTap: () {
+            //     Get.toNamed(Routes.MEDICATIONS);
+            //   },
+            // ),
+            // SizedBox(height: 12.h),
           ],
         ),
       ),

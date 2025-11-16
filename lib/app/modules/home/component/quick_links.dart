@@ -28,57 +28,61 @@ class QuickLinks extends StatelessWidget {
           SizedBox(height: 8.h),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Row(
+            child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                DashboardItem(
-                  svgPath: "assets/svg/Vitals.svg",
-                  label: "Vitals",
-                  iconColor: Color(0xffDD4369),
-                  onTap: () {
-                    Get.toNamed(Routes.MEDICATIONS);
-                  },
+                Row(
+                  children: [
+                    DashboardItem(
+                      svgPath: "assets/images/Vitals.png",
+                      label: "Vitals",
+                      iconColor: Color(0xffECDEDE),
+                      onTap: () {
+                        Get.toNamed(Routes.MEDICATIONS);
+                      },
+                    ),
+                    SizedBox(width: 8.w),
+                    DashboardItem(
+                      svgPath: "assets/images/Medications.png",
+                      label: "Medications",
+                      iconColor: Color(0xffE7EDF3),
+                      onTap: () {
+                        Get.toNamed(Routes.MEDICATIONS);
+                      },
+                    ),
+                    SizedBox(width: 8.w),
+                    DashboardItem(
+                      svgPath: "assets/images/Images.png",
+                      label: "Images",
+                      iconColor: Color(0xffF2E7DC),
+                      onTap: () {
+                        Get.toNamed(Routes.MEDICAL_IMAGES);
+                      },
+                    ),
+                  ],
                 ),
-                SizedBox(width: 8.w),
-                DashboardItem(
-                  svgPath: "assets/svg/Medications.svg",
-                  label: "Medications",
-                  iconColor: Color(0xff0D268D),
-                  onTap: () {
-                    Get.toNamed(Routes.MEDICATIONS);
-                  },
-                ),
-                SizedBox(width: 8.w),
-                DashboardItem(
-                  svgPath: "assets/svg/Images.svg",
-                  label: "Images",
-                  iconColor: Color(0xffFE6F2B),
-                  onTap: () {
-                    Get.toNamed(Routes.MEDICAL_IMAGES);
-                  },
-                ),
-                // SizedBox(width: 8.w),
-                // DashboardItem(
-                //   svgPath: "assets/svg/Appointments.svg",
-                //   label: "Appointments",
-                //   iconColor: Color(0xffC6A7D1),
-                //   onTap: () {},
-                // ),
-                SizedBox(width: 8.w),
-                DashboardItem(
-                  svgPath: "assets/svg/Labs.svg",
-                  label: "Labs",
-                  iconColor: Color(0xffDC61E0),
-                  onTap: () {
-                    Get.toNamed(Routes.LABS);
-                  },
-                ),
-                SizedBox(width: 8.w),
-                DashboardItem(
-                  svgPath: "assets/svg/Reports.svg",
-                  label: "Reports",
-                  iconColor: Color(0xff25C87F),
-                  onTap: () {},
+                SizedBox(height: 8.h),
+                Row(
+                  children: [
+                    DashboardItem(
+                      svgPath: "assets/images/Labs.png",
+                      label: "Labs",
+                      iconColor: Color(0xffF1ECF1),
+                      onTap: () {
+                        Get.toNamed(Routes.LABS);
+                      },
+                    ),
+                    SizedBox(width: 8.w),
+                    DashboardItem(
+                      svgPath: "assets/images/Reports.png",
+                      label: "Reports",
+                      iconColor: Color(0xffE8EFEB),
+                      onTap: () {
+                        Get.toNamed(Routes.REPORTS);
+                      },
+                    ),
+                  ],
                 ),
               ],
             ),
@@ -88,3 +92,12 @@ class QuickLinks extends StatelessWidget {
     );
   }
 }
+
+
+  // SizedBox(width: 8.w),
+                // DashboardItem(
+                //   svgPath: "assets/svg/Appointments.svg",
+                //   label: "Appointments",
+                //   iconColor: Color(0xffC6A7D1),
+                //   onTap: () {},
+                // ),

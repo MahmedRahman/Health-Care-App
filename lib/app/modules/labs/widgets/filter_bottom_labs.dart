@@ -1,10 +1,13 @@
 // filter_bottom_sheet.dart
+// filter_controller.dart
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'filter_controller.dart';
+import 'package:health_care_app/app/widgets/app_drop_down_field.dart';
+import 'package:intl/intl.dart';
 
-class FilterBottomSheet extends GetView<FilterController> {
-  const FilterBottomSheet({super.key});
+class FilterBottomLabs extends GetView<FilterLabsController> {
+  FilterLabsController controller = Get.put(FilterLabsController());
 
   String _fmt(DateTime? d) => d == null
       ? ''
@@ -13,7 +16,7 @@ class FilterBottomSheet extends GetView<FilterController> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    const orange = Color(0xFFFF6A2A);
+    const orange = Color(0xFFFDC61E0);
     const navy = Color(0xFF0E2A38);
 
     InputBorder _fieldBorder() => OutlineInputBorder(
@@ -74,6 +77,30 @@ class FilterBottomSheet extends GetView<FilterController> {
                         )),
                   ),
                 ],
+              ),
+
+              const SizedBox(height: 8),
+              Align(alignment: Alignment.centerLeft, child: label('Lab Type')),
+
+              // add dropdown for lab type selete one item
+
+              AppBottomSheetSelectField(
+                label: 'Lab Type',
+                items: [
+                  'Blood Test',
+                  'Urine Test',
+                  'X-Ray',
+                  'CT Scan',
+                  'MRI',
+                  'Ultrasound',
+                  'Endoscopy',
+                  'Biopsy',
+                  'Other'
+                ],
+                value: "Other",
+                onChanged: (value) {
+                  print(value);
+                },
               ),
 
               const SizedBox(height: 8),
@@ -140,31 +167,7 @@ class FilterBottomSheet extends GetView<FilterController> {
                 ),
               ]),
 
-              const SizedBox(height: 22),
-              Align(
-                alignment: Alignment.centerLeft,
-                child: label('Sort Order'),
-              ),
-
               // Sort selector (dropdown feel + list underneath like the mock)
-              Obx(() {
-                final current = controller.sort.value;
-                return Column(
-                  children: [
-                    _SortTile(
-                      title: 'Newest First',
-                      selected: current == SortOrder.newestFirst,
-                      onTap: () => controller.selectSort(SortOrder.newestFirst),
-                    ),
-                    const SizedBox(height: 10),
-                    _SortTile(
-                      title: 'Oldest First',
-                      selected: current == SortOrder.oldestFirst,
-                      onTap: () => controller.selectSort(SortOrder.oldestFirst),
-                    ),
-                  ],
-                );
-              }),
 
               const SizedBox(height: 26),
 
@@ -261,4 +264,100 @@ class _SortTile extends StatelessWidget {
       ),
     );
   }
+}
+
+class FilterLabsController extends GetxController {
+  final from = Rxn<DateTime>();
+  final to = Rxn<DateTime>();
+
+  final formKey = GlobalKey<FormState>();
+
+  // Pickers
+  Future<void> pickFromDate(BuildContext context) async {
+    final now = DateTime.now();
+    final first = DateTime(now.year - 10);
+    final last = DateTime(now.year + 10);
+    final initial = from.value ?? now;
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: initial,
+      firstDate: first,
+      lastDate: last,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Color(0xFFFDC61E0), // لون الهيدرات والأزرار
+              onPrimary: Colors.white, // لون النص داخل الهيدر
+              surface: Color(0xFFFDC61E0), // لون الخلفية (الأساسية)
+              onSurface: Colors.black, // لون النص داخل التقويم
+            ),
+            dialogBackgroundColor:
+                Colors.yellow[50], // خلفية نافذة الـ dialog نفسها
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) {
+      from.value = picked;
+      // keep consistency: if to < from, clear to
+      if (to.value != null && to.value!.isBefore(picked)) {
+        to.value = null;
+      }
+    }
+  }
+
+  Future<void> pickToDate(BuildContext context) async {
+    final now = DateTime.now();
+    final first = from.value ?? DateTime(now.year - 10);
+    final last = DateTime(now.year + 10);
+    final initial = to.value ?? (from.value ?? now);
+    final picked = await showDatePicker(
+      context: context,
+      initialDate: initial,
+      firstDate: first,
+      lastDate: last,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Color(0xFFFDC61E0), // لون الهيدرات والأزرار
+              onPrimary: Colors.white, // لون النص داخل الهيدر
+              surface: Color(0xFFFDC61E0), // لون الخلفية (الأساسية)
+              onSurface: Colors.black, // لون النص داخل التقويم
+            ),
+            dialogBackgroundColor:
+                Colors.yellow[50], // خلفية نافذة الـ dialog نفسها
+          ),
+          child: child!,
+        );
+      },
+    );
+    if (picked != null) to.value = picked;
+  }
+
+  void resetAll() {
+    from.value = null;
+    to.value = null;
+  }
+
+  void apply() {
+    if (!formKey.currentState!.validate()) return;
+    final dateFormat = DateFormat('MM-dd-yyyy');
+    Get.back(
+      result: FilterResult(
+        from:
+            from.value != null ? dateFormat.format(from.value!).toString() : "",
+        to: to.value != null ? dateFormat.format(to.value!).toString() : "",
+      ),
+    );
+  }
+}
+
+class FilterResult {
+  final String? from;
+  final String? to;
+
+  const FilterResult({this.from, this.to});
 }

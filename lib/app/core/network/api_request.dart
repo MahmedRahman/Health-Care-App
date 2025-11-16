@@ -399,8 +399,8 @@ class ApiRequest {
       body: {
         "dateFrom": dateFrom, //format in mm-DD-yyyy
         "dateTo": dateTo,
-        "xrayType": "test",
-        // "ordering": ordering,
+        "xrayType": xrayType,
+        "ordering": ordering,
       },
     );
   }

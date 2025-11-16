@@ -3,27 +3,12 @@ import 'package:get/get.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-// filter_result.dart
-enum SortOrder { newestFirst, oldestFirst }
-
-class FilterResult {
-  final String? from;
-  final String? to;
-  final SortOrder? sort;
-
-  const FilterResult({this.from, this.to, this.sort});
-
-  FilterResult copyWith({String? from, String? to, SortOrder? sort}) =>
-      FilterResult(
-          from: from ?? this.from, to: to ?? this.to, sort: sort ?? this.sort);
-
-  bool get isEmpty => from == null && to == null && sort == null;
-}
-
 class FilterController extends GetxController {
   final from = Rxn<DateTime>();
   final to = Rxn<DateTime>();
   final sort = Rxn<SortOrder>(); // null = "Select"
+
+  final formKey = GlobalKey<FormState>();
 
   // Pickers
   Future<void> pickFromDate(BuildContext context) async {
@@ -36,6 +21,21 @@ class FilterController extends GetxController {
       initialDate: initial,
       firstDate: first,
       lastDate: last,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.deepOrange, // لون الهيدرات والأزرار
+              onPrimary: Colors.white, // لون النص داخل الهيدر
+              surface: Colors.amber, // لون الخلفية (الأساسية)
+              onSurface: Colors.black, // لون النص داخل التقويم
+            ),
+            dialogBackgroundColor:
+                Colors.yellow[50], // خلفية نافذة الـ dialog نفسها
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) {
       from.value = picked;
@@ -56,6 +56,21 @@ class FilterController extends GetxController {
       initialDate: initial,
       firstDate: first,
       lastDate: last,
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: Theme.of(context).copyWith(
+            colorScheme: ColorScheme.light(
+              primary: Colors.deepOrange, // لون الهيدرات والأزرار
+              onPrimary: Colors.white, // لون النص داخل الهيدر
+              surface: Colors.amber, // لون الخلفية (الأساسية)
+              onSurface: Colors.black, // لون النص داخل التقويم
+            ),
+            dialogBackgroundColor:
+                Colors.yellow[50], // خلفية نافذة الـ dialog نفسها
+          ),
+          child: child!,
+        );
+      },
     );
     if (picked != null) to.value = picked;
   }
@@ -69,6 +84,7 @@ class FilterController extends GetxController {
   }
 
   void apply() {
+    if (!formKey.currentState!.validate()) return;
     final dateFormat = DateFormat('MM-dd-yyyy');
     Get.back(
       result: FilterResult(
@@ -80,4 +96,21 @@ class FilterController extends GetxController {
       ),
     );
   }
+}
+
+// filter_result.dart
+enum SortOrder { newestFirst, oldestFirst }
+
+class FilterResult {
+  final String? from;
+  final String? to;
+  final SortOrder? sort;
+
+  const FilterResult({this.from, this.to, this.sort});
+
+  FilterResult copyWith({String? from, String? to, SortOrder? sort}) =>
+      FilterResult(
+          from: from ?? this.from, to: to ?? this.to, sort: sort ?? this.sort);
+
+  bool get isEmpty => from == null && to == null && sort == null;
 }

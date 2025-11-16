@@ -23,8 +23,8 @@ import '../modules/labs/views/labs_view.dart';
 import '../modules/medical_images/bindings/medical_images_binding.dart';
 import '../modules/medical_images/views/medical_images_view.dart';
 import '../modules/medications/bindings/medications_binding.dart';
-import '../modules/medications/views/medications_view.dart';
 import '../modules/medications/views/doses_schedule_view.dart';
+import '../modules/medications/views/medications_view.dart';
 import '../modules/medicine_add/bindings/medicine_add_binding.dart';
 import '../modules/medicine_add/views/medicine_add_view.dart';
 import '../modules/medicine_details/bindings/medicine_details_binding.dart';
@@ -41,6 +41,8 @@ import '../modules/otp/bindings/otp_binding.dart';
 import '../modules/otp/views/otp_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
 import '../modules/profile/views/profile_view.dart';
+import '../modules/reports/bindings/reports_binding.dart';
+import '../modules/reports/views/reports_view.dart';
 import '../modules/sign_in/bindings/sign_in_binding.dart';
 import '../modules/sign_in/views/sign_in_view.dart';
 import '../modules/sign_up/bindings/sign_up_binding.dart';
@@ -175,6 +177,11 @@ class AppPages {
       name: _Paths.APPOINTMENTS,
       page: () => AppointmentsView(),
       binding: AppointmentsBinding(),
+    ),
+    GetPage(
+      name: _Paths.REPORTS,
+      page: () => const ReportsView(),
+      binding: ReportsBinding(),
     ),
   ];
 }
